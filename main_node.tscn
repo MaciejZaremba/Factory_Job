@@ -1,26 +1,10 @@
 [gd_scene format=3 uid="uid://kcugmojpfryh"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_dqc5a"]
-size = Vector3(1, 2, 1)
+[ext_resource type="PackedScene" uid="uid://b1rn028ttn64k" path="res://scenes/player/player.tscn" id="1_lwogq"]
+[ext_resource type="PackedScene" uid="uid://bxv4hgtsyk1u3" path="res://scenes/Test/test_room.tscn" id="3_bxfy6"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lwogq"]
+[node name="Node3D" type="Node3D" unique_id=707789418]
 
-[sub_resource type="Sky" id="Sky_dhalm"]
-sky_material = SubResource("PanoramaSkyMaterial_lwogq")
+[node name="CharacterBody3D" parent="." unique_id=1211865206 instance=ExtResource("1_lwogq")]
 
-[sub_resource type="Environment" id="Environment_bxfy6"]
-background_mode = 1
-background_color = Color(1.8289685e-06, 0.44971776, 0.5601146, 1)
-sky = SubResource("Sky_dhalm")
-
-[node name="mainNode" type="Node3D" unique_id=739231599]
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=897939175]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1657677977]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.005, 0)
-shape = SubResource("BoxShape3D_dqc5a")
-debug_color = Color(1, 1, 1, 0.41960785)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=603524798]
-environment = SubResource("Environment_bxfy6")
+[node name="TestRoom" parent="." unique_id=1034424344 instance=ExtResource("3_bxfy6")]
