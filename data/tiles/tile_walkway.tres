@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://4umakv43s6od"]
+
+[ext_resource type="Script" uid="uid://dlhuma0vc6wia" path="res://scripts/generator/TileConnector.cs" id="1_04ur6"]
+[ext_resource type="PackedScene" uid="uid://b4m2v63m3ya27" path="res://scenes/rooms/tile_walkway.tscn" id="2_0ltyb"]
+[ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="3_fe7hy"]
+
+[sub_resource type="Resource" id="Resource_l3hih"]
+script = ExtResource("1_04ur6")
+Level = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_ugube"]
+script = ExtResource("1_04ur6")
+Direction = 1
+Level = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[resource]
+script = ExtResource("3_fe7hy")
+TileId = "walkway"
+Scene = ExtResource("2_0ltyb")
+Connectors = Array[ExtResource("1_04ur6")]([SubResource("Resource_l3hih"), SubResource("Resource_ugube")])
+metadata/_custom_type_script = "uid://2rtejamnpff1"

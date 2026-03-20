@@ -1,10 +1,20 @@
 [gd_scene format=3 uid="uid://kcugmojpfryh"]
 
 [ext_resource type="PackedScene" uid="uid://b1rn028ttn64k" path="res://scenes/player/player.tscn" id="1_lwogq"]
-[ext_resource type="PackedScene" uid="uid://bxv4hgtsyk1u3" path="res://scenes/Test/test_room.tscn" id="3_bxfy6"]
+[ext_resource type="PackedScene" uid="uid://bgoy2fylxtq1x" path="res://scenes/rooms/tile.tscn" id="2_621oa"]
+[ext_resource type="PackedScene" uid="uid://dbqke038u83gb" path="res://scenes/rooms/tile_open.tscn" id="3_wywo8"]
+[ext_resource type="PackedScene" uid="uid://dscnrwsgsvx72" path="res://scenes/rooms/tile_stairs.tscn" id="4_yjirp"]
+[ext_resource type="PackedScene" uid="uid://b4m2v63m3ya27" path="res://scenes/rooms/tile_walkway.tscn" id="5_4vv7w"]
 
 [node name="Node3D" type="Node3D" unique_id=707789418]
 
 [node name="CharacterBody3D" parent="." unique_id=1211865206 instance=ExtResource("1_lwogq")]
 
-[node name="TestRoom" parent="." unique_id=1034424344 instance=ExtResource("3_bxfy6")]
+[node name="Tile" parent="." unique_id=524883469 instance=ExtResource("2_621oa")]
+
+[node name="TileOpen" parent="." unique_id=1378790568 instance=ExtResource("3_wywo8")]
+
+[node name="TileStairs" parent="." unique_id=1432166414 instance=ExtResource("4_yjirp")]
+
+[node name="TileWalkway" parent="." unique_id=401418162 instance=ExtResource("5_4vv7w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)

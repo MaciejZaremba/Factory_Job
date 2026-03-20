@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://dscnrwsgsvx72"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_27oun"]
+size = Vector3(4, 0.2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jvue1"]
+size = Vector3(2, 0.2, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jp4dh"]
+albedo_color = Color(0.9411765, 0, 0, 1)
+
+[node name="TileStairs" type="Node3D" unique_id=1432166414]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=902103127]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor" unique_id=227840848]
+size = Vector3(4, 0.2, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1983500890]
+shape = SubResource("BoxShape3D_27oun")
+
+[node name="Ramp" type="StaticBody3D" parent="." unique_id=1682706903]
+transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 0, 1.2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramp" unique_id=2001166073]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15383065, 0.18765444)
+shape = SubResource("BoxShape3D_jvue1")
+
+[node name="Connectors" type="Node3D" parent="." unique_id=1118346360]
+
+[node name="ground_north" type="Marker3D" parent="Connectors" unique_id=1219273849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="upper_south" type="Marker3D" parent="Connectors" unique_id=523139086]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 2)
+
+[node name="Geometry" type="Node3D" parent="." unique_id=1858417910]
+
+[node name="Step_01" type="CSGBox3D" parent="Geometry" unique_id=609660414]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07489512, -1.7497616)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_02" type="CSGBox3D" parent="Geometry" unique_id=1674689484]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22400823, -1.5517321)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_03" type="CSGBox3D" parent="Geometry" unique_id=347745319]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37359798, -1.3548949)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_04" type="CSGBox3D" parent="Geometry" unique_id=5309969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5221095, -1.1581962)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_05" type="CSGBox3D" parent="Geometry" unique_id=1639942320]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.671411, -0.9614976)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_06" type="CSGBox3D" parent="Geometry" unique_id=1745537378]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8215024, -0.77111846)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_07" type="CSGBox3D" parent="Geometry" unique_id=613648720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.97185385, -0.5618454)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_08" type="CSGBox3D" parent="Geometry" unique_id=101035411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1215283, -0.36205402)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_09" type="CSGBox3D" parent="Geometry" unique_id=1204442137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2715822, -0.1669588)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_10" type="CSGBox3D" parent="Geometry" unique_id=971738716]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4199283, 0.03298576)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_11" type="CSGBox3D" parent="Geometry" unique_id=1753339657]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5701172, 0.22924496)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_12" type="CSGBox3D" parent="Geometry" unique_id=234849182]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7193847, 0.4273469)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_13" type="CSGBox3D" parent="Geometry" unique_id=796708670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8686522, 0.6199205)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_14" type="CSGBox3D" parent="Geometry" unique_id=589800135]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0169983, 0.8198653)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_15" type="CSGBox3D" parent="Geometry" unique_id=827155362]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.166266, 1.0234957)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_16" type="CSGBox3D" parent="Geometry" unique_id=251409276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.316455, 1.2160692)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_17" type="CSGBox3D" parent="Geometry" unique_id=1069965080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.464801, 1.4169354)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_18" type="CSGBox3D" parent="Geometry" unique_id=2013283677]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6146762, 1.5984522)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_19" type="CSGBox3D" parent="Geometry" unique_id=1954927444]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7648647, 1.8178207)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="Step_20" type="CSGBox3D" parent="Geometry" unique_id=1164588087]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9141657, 2.0058293)
+size = Vector3(2, 0.15, 0.5)
+material = SubResource("StandardMaterial3D_jp4dh")

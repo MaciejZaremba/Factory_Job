@@ -4,6 +4,7 @@ using Godot;
 public partial class Player : CharacterBody3D
 {
 	//Base Player Values
+	//[Export] declares a runtime attribute - it can be freely changed by outside sources while the program is running, use it often.
 	[Export] public float walkSpeed = 3.5f;
 	[Export] public float sprintSpeed = 5.5f;
 	[Export] public float mouseSensitivity = 0.002f;
@@ -14,7 +15,7 @@ public partial class Player : CharacterBody3D
 	//How to see
 	private Node3D _head;
 	
-	//What needs to happen for the node to load in
+	//Basically a Constructor
 	public override void _Ready()
 	{
 		//How to see part 2
@@ -23,7 +24,7 @@ public partial class Player : CharacterBody3D
 		//Capture the mouse
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
-	
+	// What could Input mean, truly a mystery
 	public override void _Input(InputEvent @event)
 	{
 		if (@event is InputEventMouseMotion mouseMotion)
@@ -48,7 +49,7 @@ public partial class Player : CharacterBody3D
 			}
 		}
 	}
-	
+	// Physics? In my video game?
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector3 velocity = Velocity;

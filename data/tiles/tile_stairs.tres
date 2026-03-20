@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://ctlc7buyeqt8c"]
+
+[ext_resource type="Script" uid="uid://dlhuma0vc6wia" path="res://scripts/generator/TileConnector.cs" id="1_4t1o1"]
+[ext_resource type="PackedScene" uid="uid://dscnrwsgsvx72" path="res://scenes/rooms/tile_stairs.tscn" id="2_mgimt"]
+[ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="2_vjhr8"]
+
+[sub_resource type="Resource" id="Resource_mdxai"]
+script = ExtResource("1_4t1o1")
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_7juag"]
+script = ExtResource("1_4t1o1")
+Direction = 1
+Level = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[resource]
+script = ExtResource("2_vjhr8")
+TileId = "stairs"
+Scene = ExtResource("2_mgimt")
+Connectors = Array[ExtResource("1_4t1o1")]([SubResource("Resource_mdxai"), SubResource("Resource_7juag")])
+metadata/_custom_type_script = "uid://2rtejamnpff1"
