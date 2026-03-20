@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bgoy2fylxtq1x"]
+
+[node name="Tile" type="Node3D" unique_id=524883469]
+
+[node name="Geometry" type="Node3D" parent="." unique_id=422270125]
+
+[node name="Collision" type="Node3D" parent="." unique_id=35392818]
+
+[node name="Connectors" type="Node3D" parent="." unique_id=236132161]

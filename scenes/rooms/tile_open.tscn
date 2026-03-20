@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dbqke038u83gb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rloo2"]
+size = Vector3(4, 0.2, 4)
+
+[node name="TileOpen" type="Node3D" unique_id=1378790568]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=189185756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor" unique_id=978211775]
+size = Vector3(4, 0.2, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=465235530]
+shape = SubResource("BoxShape3D_rloo2")
+
+[node name="Connectors" type="Node3D" parent="." unique_id=1520988953]
+
+[node name="ground_north" type="Marker3D" parent="Connectors" unique_id=1791320838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="ground_south" type="Marker3D" parent="Connectors" unique_id=1558256823]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="ground_east" type="Marker3D" parent="Connectors" unique_id=583209553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="ground_west" type="Marker3D" parent="Connectors" unique_id=1860288160]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)

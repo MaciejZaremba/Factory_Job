@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://w47vl87nqffc"]
+
+[ext_resource type="Script" uid="uid://dlhuma0vc6wia" path="res://scripts/generator/TileConnector.cs" id="1_ttrtj"]
+[ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="2_nkwbi"]
+[ext_resource type="PackedScene" uid="uid://dbqke038u83gb" path="res://scenes/rooms/tile_open.tscn" id="2_xjnd6"]
+
+[sub_resource type="Resource" id="Resource_epryg"]
+script = ExtResource("1_ttrtj")
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_8vly0"]
+script = ExtResource("1_ttrtj")
+Direction = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_jg7n8"]
+script = ExtResource("1_ttrtj")
+Direction = 2
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_4j5fj"]
+script = ExtResource("1_ttrtj")
+Direction = 3
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[resource]
+script = ExtResource("2_nkwbi")
+TileId = "open"
+Scene = ExtResource("2_xjnd6")
+Connectors = Array[ExtResource("1_ttrtj")]([SubResource("Resource_epryg"), SubResource("Resource_8vly0"), SubResource("Resource_jg7n8"), SubResource("Resource_4j5fj")])
+metadata/_custom_type_script = "uid://2rtejamnpff1"

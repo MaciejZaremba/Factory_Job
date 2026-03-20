@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://bf1sd6loc8co7"]
+
+[ext_resource type="Script" uid="uid://dlhuma0vc6wia" path="res://scripts/generator/TileConnector.cs" id="1_4drat"]
+[ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="2_a4jsd"]
+
+[resource]
+script = ExtResource("2_a4jsd")
+TileId = "empty"
+CanRotate = false
+metadata/_custom_type_script = "uid://2rtejamnpff1"
