@@ -7,16 +7,18 @@ public partial class TileRegistry : Node
 {
 	public static TileRegistry Instance {get; private set;}
 	private List<TileVariant> _variants = new();
-	[Export] public string TileDataPath {get; set;} = "res://data/tiles";
+	[Export] public string TileDataPath {get; set;} = "res://data/tiles/";
 	
 	public override void _Ready()
 	{
+		GD.Print("TileRegistry: _Ready() entered.");
 		Instance = this;
 		loadTiles();
 	}
 	
 	private void loadTiles() 
 	{
+		GD.Print("TileRegistry: Trying to open path...");
 		using var dir = DirAccess.Open(TileDataPath);
 		
 		//check if path is correct
@@ -32,6 +34,7 @@ public partial class TileRegistry : Node
 		//go through approperiate file and register it as a tile
 		while(fileName != "")
 		{
+			GD.Print($"TileRegistry: Trying to load '{TileDataPath + fileName}...");
 			if(fileName.EndsWith(".tres"))
 			{
 				var definition = GD.Load<TileDefinition>(TileDataPath + fileName);
@@ -39,8 +42,8 @@ public partial class TileRegistry : Node
 				{
 					registerDefinition(definition);
 				}
-				fileName = dir.GetNext();
 			}
+			fileName = dir.GetNext();
 		}
 		
 		dir.ListDirEnd();
@@ -50,6 +53,7 @@ public partial class TileRegistry : Node
 	//register all tiles
 	private void registerDefinition(TileDefinition definition)
 	{
+		GD.Print($"TileRegistry: Registering '{definition.tileId}'...");
 		 _variants.Add(new TileVariant(definition, 0));
 		
 		//if it can't be rotated, end here
@@ -65,6 +69,7 @@ public partial class TileRegistry : Node
 			if(!IsDuplicateVariant(candidate))
 			{
 				_variants.Add(candidate);
+				GD.Print($"TileRegistry: Added rotated variant '{definition.tileId}' at {rotation} degrees.");
 			}
 		}
 	}
@@ -72,6 +77,7 @@ public partial class TileRegistry : Node
 	//Checks duplicates
 	public bool IsDuplicateVariant(TileVariant candidate)
 	{
+		GD.Print($"TileRegistry: Checking for duplicate for '{candidate.definition.tileId}'...");
 		// the '=>' is basically a Java stream, a "simplified" foreach loop
 		return _variants.Any(existing =>
 			existing.definition.tileId == candidate.definition.tileId &&
@@ -81,6 +87,8 @@ public partial class TileRegistry : Node
 	private bool ConnectorSetsMatch(List<TileConnector> existing, List<TileConnector> candidate)
 	{
 		if(existing.Count != candidate.Count) return false;
+		foreach(var existing_t in existing) GD.Print ($"Comparing: {existing_t.direction}/{existing_t.level}");
+		foreach(var candidate_t in candidate) GD.Print ($"Against: {candidate_t.direction}/{candidate_t.level}");
 		return existing.All(existing_t => candidate.Any(
 			candidate_t => candidate_t.direction == existing_t.direction && candidate_t.level == existing_t.level
 		));

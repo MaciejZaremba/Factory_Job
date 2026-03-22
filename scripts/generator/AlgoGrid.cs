@@ -60,30 +60,56 @@ public class AlgoGrid
 			_cells[i,0].ForceCollapse(emptyVariant);
 			_cells[i,height-1].ForceCollapse(emptyVariant);
 		}
-		for(int j = 0; j<width; j++)
+		for(int j = 0; j<height; j++)
 		{
 			_cells[0,j].ForceCollapse(emptyVariant);
 			_cells[width-1,j].ForceCollapse(emptyVariant);
 		}
 		
 		//propagate communicates the consequences of a collapse to neighbouring cells
-		for(int i = 0; i<width; i++)
-		{
-			Propagate(_cells[i,0]);
-			Propagate(_cells[i,height-1]);
-		}
-		for(int j = 0; j<width; j++)
-		{
-			Propagate(_cells[0,j]);
-			Propagate(_cells[width-1,j]);
-		}
+		//for(int i = 0; i<width; i++)
+		//{
+			//Propagate(_cells[i,0]);
+			//Propagate(_cells[i,height-1]);
+		//}
+		//for(int j = 0; j<width; j++)
+		//{
+			//Propagate(_cells[0,j]);
+			//Propagate(_cells[width-1,j]);
+		//}
 	}
 	
 	//the main loop of the algorithm
 	public bool Solve()
 	{
+		//debugging feature
+		int stepLimit = width * height * 100;
+		int steps = 0;
+		
+		//var initialQueue = new Queue<AlgoCell>();
+		//for(int i = 0; i<width; i++)
+		//{
+			//initialQueue.Enqueue(_cells[i,0]);
+			//initialQueue.Enqueue(_cells[i,height-1]);
+		//}
+		//for(int j = 0; j<width; j++)
+		//{
+			//initialQueue.Enqueue(_cells[0,j]);
+			//initialQueue.Enqueue(_cells[width-1,j]);
+		//}
+		//foreach (var borderCell in initialQueue)
+		//{
+			//if (!Propagate(borderCell)) return false;
+		//}
+		
 		while(true)
 		{
+			if(steps++ > stepLimit)
+			{
+				GD.PrintErr("AlgoGrid: Step limit exceeded - possible infinite loop.");
+				return false;
+			}
+	
 			var target = GetLowestEntropyCell();
 			
 			//if no target = success
@@ -104,7 +130,7 @@ public class AlgoGrid
 	{
 		var queue = new Queue<AlgoCell>();
 		queue.Enqueue(startCell);
-		while (queue.Count > 0);
+		while (queue.Count > 0)
 		{
 			var cell = queue.Dequeue();
 			foreach (var (direction, offset) in DirectionOffsets)
@@ -131,25 +157,18 @@ public class AlgoGrid
 		var oppositeDirection = Opposite[direction];
 		foreach(var variant in cell.possibleVariants)
 		{
-			bool cellHasConnector = variant.HasConnectors(direction, ConnectorLevel.Ground) 
-									|| variant.HasConnectors(direction, ConnectorLevel.Upper);
+			bool cellHasGroundConnector = variant.HasConnectors(direction, ConnectorLevel.Ground);
+			bool cellHasUpperConnector = variant.HasConnectors(direction, ConnectorLevel.Upper);
 			
 			foreach(var candidate in _allVariants)
 			{
-				bool neighbourHasConnector = candidate.HasConnectors(oppositeDirection, ConnectorLevel.Ground)
-											|| candidate.HasConnectors(oppositeDirection, ConnectorLevel.Upper);
+				bool neighbourHasGroundConnector = candidate.HasConnectors(oppositeDirection, ConnectorLevel.Ground);
+				bool neighbourHasUpperConnector = candidate.HasConnectors(oppositeDirection, ConnectorLevel.Upper);
 				
-				bool compatible = cellHasConnector == neighbourHasConnector;
+				bool groundCompatible = cellHasGroundConnector == neighbourHasGroundConnector;
+				bool upperCompatible = cellHasUpperConnector == neighbourHasUpperConnector;
 				
-				if(compatible && cellHasConnector)
-				{
-					bool groundMatch = variant.HasConnectors(direction, ConnectorLevel.Ground)
-									&& candidate.HasConnectors(oppositeDirection, ConnectorLevel.Ground);
-					bool upperMatch = variant.HasConnectors(direction, ConnectorLevel.Upper)
-									&& candidate.HasConnectors(oppositeDirection, ConnectorLevel.Upper);
-					compatible = groundMatch || upperMatch;
-				}
-				if (compatible)
+				if(groundCompatible  && upperCompatible)
 				{
 					allowed.Add((candidate.definition.tileId, candidate.rotation));
 				}

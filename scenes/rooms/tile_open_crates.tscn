@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://su3tlvq56t7l"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rloo2"]
+size = Vector3(4, 0.2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hj1d1"]
+size = Vector3(1, 2.5, 4)
+
+[node name="TileOpen" type="Node3D" unique_id=1378790568]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=189185756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor" unique_id=978211775]
+size = Vector3(4, 0.2, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=465235530]
+shape = SubResource("BoxShape3D_rloo2")
+
+[node name="Connectors" type="Node3D" parent="." unique_id=1520988953]
+
+[node name="ground_north" type="Marker3D" parent="Connectors" unique_id=1791320838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="ground_south" type="Marker3D" parent="Connectors" unique_id=1558256823]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="ground_west" type="Marker3D" parent="Connectors" unique_id=1860288160]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="Crate" type="StaticBody3D" parent="." unique_id=1225238747]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Crate" unique_id=349599063]
+transform = Transform3D(0.96325636, 0, 0.2685836, 0, 1, 0, -0.2685836, 0, 0.96325636, 1.6, 0.5, 0.15646565)
+use_collision = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Crate" unique_id=123257255]
+transform = Transform3D(0.9470199, 0, 0.321175, 0, 1, 0, -0.321175, 0, 0.9470199, 1.6, 1.5, -0.577)
+use_collision = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Crate" unique_id=134937822]
+transform = Transform3D(0.9110942, 0, -0.41219825, 0, 1, 0, 0.41219825, 0, 0.9110942, 1.6, 0.5, 1.3912374)
+use_collision = true
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Crate" unique_id=799076416]
+transform = Transform3D(0.794563, 0, -0.6071817, 0, 1, 0, 0.6071817, 0, 0.794563, 1.6, 0.5, -1.1246961)
+use_collision = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Crate" unique_id=1374313425]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4972944, 1.2488306, 0)
+shape = SubResource("BoxShape3D_hj1d1")

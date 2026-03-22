@@ -5,6 +5,5 @@
 
 [resource]
 script = ExtResource("2_a4jsd")
-TileId = "empty"
-CanRotate = false
+tileId = "empty"
 metadata/_custom_type_script = "uid://2rtejamnpff1"

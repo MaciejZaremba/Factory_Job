@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://b10yik4u53yha"]
+
+[ext_resource type="PackedScene" uid="uid://b1rn028ttn64k" path="res://scenes/player/player.tscn" id="1_hofnl"]
+[ext_resource type="PackedScene" uid="uid://dbqke038u83gb" path="res://scenes/rooms/tile_open.tscn" id="2_sumsi"]
+[ext_resource type="PackedScene" uid="uid://su3tlvq56t7l" path="res://scenes/rooms/tile_open_crates.tscn" id="3_2cmr0"]
+[ext_resource type="PackedScene" uid="uid://b4m2v63m3ya27" path="res://scenes/rooms/tile_walkway.tscn" id="4_1dk7r"]
+[ext_resource type="PackedScene" uid="uid://dfg1j40re0cn2" path="res://scenes/rooms/tile_walkway_split.tscn" id="5_wy16i"]
+[ext_resource type="PackedScene" uid="uid://dscnrwsgsvx72" path="res://scenes/rooms/tile_stairs.tscn" id="6_031ts"]
+[ext_resource type="PackedScene" uid="uid://cwq0hoo52lxf8" path="res://scenes/rooms/tile_open_pipe.tscn" id="7_lgiim"]
+
+[node name="TestRoom" type="Node3D" unique_id=1034424344]
+
+[node name="CharacterBody3D" parent="." unique_id=1211865206 instance=ExtResource("1_hofnl")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1, 0)
+
+[node name="TileOpen" parent="." unique_id=1378790568 instance=ExtResource("2_sumsi")]
+
+[node name="TileOpen2" parent="." unique_id=1112902129 instance=ExtResource("2_sumsi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 12)
+
+[node name="TileOpen3" parent="." unique_id=610038855 instance=ExtResource("2_sumsi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 12)
+
+[node name="TileOpen4" parent="." unique_id=709387999 instance=ExtResource("3_2cmr0")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -4)
+
+[node name="TileOpen5" parent="." unique_id=1812386929 instance=ExtResource("3_2cmr0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 12)
+
+[node name="TileOpen6" parent="." unique_id=1530673719 instance=ExtResource("3_2cmr0")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -16, 0, 12)
+
+[node name="TileWalkway" parent="." unique_id=401418162 instance=ExtResource("4_1dk7r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+
+[node name="TileWalkway2" parent="." unique_id=410917787 instance=ExtResource("5_wy16i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12)
+
+[node name="TileWalkway3" parent="." unique_id=435757827 instance=ExtResource("4_1dk7r")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 0, 12)
+
+[node name="TileWalkway4" parent="." unique_id=1333765589 instance=ExtResource("4_1dk7r")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4, 0, 12)
+
+[node name="TileStairs" parent="." unique_id=1432166414 instance=ExtResource("6_031ts")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="TileStairs2" parent="." unique_id=704860763 instance=ExtResource("6_031ts")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -8, 0, 12)
+
+[node name="TileStairs3" parent="." unique_id=1496745788 instance=ExtResource("6_031ts")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 8, 0, 12)
+
+[node name="TileOpen7" parent="." unique_id=1512494035 instance=ExtResource("7_lgiim")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4, 0, -4)
+
+[node name="TileOpen8" parent="." unique_id=1039274364 instance=ExtResource("7_lgiim")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
+
+[node name="TileOpen9" parent="." unique_id=419912102 instance=ExtResource("7_lgiim")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 0, 4)
+
+[node name="TileOpen10" parent="." unique_id=1201257149 instance=ExtResource("7_lgiim")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, -4)
+
+[node name="TileOpen11" parent="." unique_id=1250470931 instance=ExtResource("3_2cmr0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="TileOpen12" parent="." unique_id=798061666 instance=ExtResource("3_2cmr0")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4, 0, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=413855627]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4488974, 3.7107944, -4.2927427)
+light_energy = 3.947
