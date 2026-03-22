@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://doxveqyabku35"]
+
+[ext_resource type="Script" uid="uid://dlhuma0vc6wia" path="res://scripts/generator/TileConnector.cs" id="1_r7ubb"]
+[ext_resource type="PackedScene" uid="uid://su3tlvq56t7l" path="res://scenes/rooms/tile_open_crates.tscn" id="2_j6brp"]
+[ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="2_u81cj"]
+
+[sub_resource type="Resource" id="Resource_bwxv8"]
+script = ExtResource("1_r7ubb")
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_i33nv"]
+script = ExtResource("1_r7ubb")
+direction = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_dqa4c"]
+script = ExtResource("1_r7ubb")
+direction = 3
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[resource]
+script = ExtResource("2_u81cj")
+tileId = "crates"
+scene = ExtResource("2_j6brp")
+connectors = Array[ExtResource("1_r7ubb")]([SubResource("Resource_bwxv8"), SubResource("Resource_i33nv"), SubResource("Resource_dqa4c")])
+metadata/_custom_type_script = "uid://2rtejamnpff1"

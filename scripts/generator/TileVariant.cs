@@ -1,3 +1,4 @@
+using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,7 +24,7 @@ public class TileVariant
 	// get all connectors at set rotation
 	private static List<TileConnector> DeriveConnectors(TileDefinition definition, int rotation)
 	{
-		int steps = (rotation/90) / 4;
+		int steps = (rotation/90) % 4;
 		var result = new List<TileConnector>();
 		
 		foreach(var connector in definition.connectors)
@@ -34,7 +35,6 @@ public class TileVariant
 				level = connector.level
 			});
 		}
-		
 		return result;
 	}
 	

@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://dfg1j40re0cn2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ed0k6"]
+size = Vector3(2, 0.15, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nhd17"]
+size = Vector3(4, 0.15, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8itey"]
+size = Vector3(0.1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4joks"]
+size = Vector3(0.1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s1nsa"]
+size = Vector3(4, 1, 0.1)
+
+[node name="TileWalkway" type="Node3D" unique_id=401418162]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=121644029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.95, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor" unique_id=286229208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+size = Vector3(2, 0.15, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Floor" unique_id=244070234]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+size = Vector3(2, 0.15, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1308606851]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+shape = SubResource("BoxShape3D_ed0k6")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Floor" unique_id=1576955991]
+shape = SubResource("BoxShape3D_nhd17")
+
+[node name="Connectors" type="Node3D" parent="." unique_id=1869416472]
+
+[node name="upper_north" type="Marker3D" parent="Connectors" unique_id=392962152]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -2)
+
+[node name="upper_west" type="Marker3D" parent="Connectors" unique_id=128235857]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 0)
+
+[node name="upper_east" type="Marker3D" parent="Connectors" unique_id=1855207944]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 0)
+
+[node name="Railings" type="StaticBody3D" parent="." unique_id=1868257924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3.5, 0)
+
+[node name="RailingNorthLeft" type="CSGBox3D" parent="Railings" unique_id=255772469]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+size = Vector3(0.1, 1, 1)
+
+[node name="RailingNorthWest" type="CSGBox3D" parent="Railings" unique_id=2063998838]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.5, 0, -1)
+size = Vector3(0.1, 1, 1)
+
+[node name="RailingSouth" type="CSGBox3D" parent="Railings" unique_id=767725730]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1, 0, 1)
+size = Vector3(0.1, 1, 4)
+
+[node name="RailingNorthLeft2" type="CollisionShape3D" parent="Railings" unique_id=934434193]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+shape = SubResource("BoxShape3D_8itey")
+
+[node name="RailingNorthWest2" type="CollisionShape3D" parent="Railings" unique_id=1279465145]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.5, 0, -1)
+shape = SubResource("BoxShape3D_8itey")
+
+[node name="RailingNorthEast2" type="CollisionShape3D" parent="Railings" unique_id=1038229599]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.5, 0, -1)
+shape = SubResource("BoxShape3D_8itey")
+
+[node name="RailingNorthRight" type="CSGBox3D" parent="Railings" unique_id=699637490]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1.5)
+size = Vector3(0.1, 1, 1)
+
+[node name="RailingNorthEast" type="CSGBox3D" parent="Railings" unique_id=879586175]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.5, 0, -1)
+size = Vector3(0.1, 1, 1)
+
+[node name="RailingNorthRight2" type="CollisionShape3D" parent="Railings" unique_id=1102598677]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1.5)
+shape = SubResource("BoxShape3D_4joks")
+
+[node name="RailingSouth2" type="CollisionShape3D" parent="Railings" unique_id=1651336215]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)
+shape = SubResource("BoxShape3D_s1nsa")

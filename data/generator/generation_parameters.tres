@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="GenerationParameters" format=3 uid="uid://bik6b2fukmxyl"]
+
+[ext_resource type="Script" uid="uid://cdt68o5d3uh4j" path="res://scripts/generator/GenerationParameters.cs" id="1_4ssqr"]
+
+[resource]
+script = ExtResource("1_4ssqr")
+metadata/_custom_type_script = "uid://cdt68o5d3uh4j"

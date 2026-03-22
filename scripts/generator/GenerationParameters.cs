@@ -1,5 +1,6 @@
 using Godot;
 
+[GlobalClass]
 public partial class GenerationParameters : Resource
 {
 	[Export] public int gridWidth {get; set;} = 12;

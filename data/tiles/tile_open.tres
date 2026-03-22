@@ -4,28 +4,28 @@
 [ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="2_nkwbi"]
 [ext_resource type="PackedScene" uid="uid://dbqke038u83gb" path="res://scenes/rooms/tile_open.tscn" id="2_xjnd6"]
 
+[sub_resource type="Resource" id="Resource_nkwbi"]
+script = ExtResource("1_ttrtj")
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[sub_resource type="Resource" id="Resource_xjnd6"]
+script = ExtResource("1_ttrtj")
+direction = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
 [sub_resource type="Resource" id="Resource_epryg"]
 script = ExtResource("1_ttrtj")
+direction = 2
 metadata/_custom_type_script = "uid://dlhuma0vc6wia"
 
 [sub_resource type="Resource" id="Resource_8vly0"]
 script = ExtResource("1_ttrtj")
-Direction = 1
-metadata/_custom_type_script = "uid://dlhuma0vc6wia"
-
-[sub_resource type="Resource" id="Resource_jg7n8"]
-script = ExtResource("1_ttrtj")
-Direction = 2
-metadata/_custom_type_script = "uid://dlhuma0vc6wia"
-
-[sub_resource type="Resource" id="Resource_4j5fj"]
-script = ExtResource("1_ttrtj")
-Direction = 3
+direction = 3
 metadata/_custom_type_script = "uid://dlhuma0vc6wia"
 
 [resource]
 script = ExtResource("2_nkwbi")
-TileId = "open"
-Scene = ExtResource("2_xjnd6")
-Connectors = Array[ExtResource("1_ttrtj")]([SubResource("Resource_epryg"), SubResource("Resource_8vly0"), SubResource("Resource_jg7n8"), SubResource("Resource_4j5fj")])
+tileId = "open"
+scene = ExtResource("2_xjnd6")
+connectors = Array[ExtResource("1_ttrtj")]([SubResource("Resource_nkwbi"), SubResource("Resource_xjnd6"), SubResource("Resource_epryg"), SubResource("Resource_8vly0")])
 metadata/_custom_type_script = "uid://2rtejamnpff1"

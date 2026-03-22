@@ -1,19 +1,23 @@
 [gd_scene format=3 uid="uid://bxv4hgtsyk1u3"]
 
+[ext_resource type="Script" uid="uid://cavm0nrs47hj2" path="res://scenes/test/TestRoom.cs" id="1_5phle"]
 [ext_resource type="PackedScene" uid="uid://b1rn028ttn64k" path="res://scenes/player/player.tscn" id="1_ge6nc"]
-[ext_resource type="PackedScene" uid="uid://dbqke038u83gb" path="res://scenes/rooms/tile_open.tscn" id="2_5phle"]
-[ext_resource type="PackedScene" uid="uid://dscnrwsgsvx72" path="res://scenes/rooms/tile_stairs.tscn" id="3_jvmgk"]
-[ext_resource type="PackedScene" uid="uid://b4m2v63m3ya27" path="res://scenes/rooms/tile_walkway.tscn" id="4_sy3jx"]
+[ext_resource type="Script" uid="uid://cxk8qe2jtg4f1" path="res://scripts/generator/DungeonGenerator.cs" id="2_1f7hh"]
+[ext_resource type="Script" uid="uid://cdt68o5d3uh4j" path="res://scripts/generator/GenerationParameters.cs" id="3_p7t0b"]
 
-[node name="TestRoom" type="Node3D" unique_id=1034424344]
+[sub_resource type="Resource" id="Resource_5phle"]
+script = ExtResource("3_p7t0b")
+metadata/_custom_type_script = "uid://cdt68o5d3uh4j"
+
+[node name="TestRoom" type="Node3D" unique_id=1676406239]
+script = ExtResource("1_5phle")
 
 [node name="CharacterBody3D" parent="." unique_id=1211865206 instance=ExtResource("1_ge6nc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8, 1, 8)
 
-[node name="TileOpen" parent="." unique_id=1378790568 instance=ExtResource("2_5phle")]
+[node name="DungeonGenerator" type="Node" parent="." unique_id=921756438]
+script = ExtResource("2_1f7hh")
+Parameters = SubResource("Resource_5phle")
+FloorContainerPath = NodePath("../FloorContainer")
 
-[node name="TileStairs" parent="." unique_id=1432166414 instance=ExtResource("3_jvmgk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
-
-[node name="TileWalkway" parent="." unique_id=401418162 instance=ExtResource("4_sy3jx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+[node name="FloorContainer" type="Node3D" parent="." unique_id=368580736]

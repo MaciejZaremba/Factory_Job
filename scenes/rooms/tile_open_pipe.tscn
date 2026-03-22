@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://cwq0hoo52lxf8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rloo2"]
+size = Vector3(4, 0.2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uftpc"]
+size = Vector3(0.25, 2.5, 4)
+
+[node name="TileOpen" type="Node3D" unique_id=1378790568]
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=189185756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor" unique_id=978211775]
+size = Vector3(4, 0.2, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=465235530]
+shape = SubResource("BoxShape3D_rloo2")
+
+[node name="Connectors" type="Node3D" parent="." unique_id=1520988953]
+
+[node name="ground_north" type="Marker3D" parent="Connectors" unique_id=1791320838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="ground_east" type="Marker3D" parent="Connectors" unique_id=583209553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="Pipe" type="StaticBody3D" parent="." unique_id=110681734]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Pipe" unique_id=2000804496]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.26934534, 0.3417836, 1.5880985)
+use_collision = true
+radius = 0.212
+height = 3.4353027
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Pipe" unique_id=1586128021]
+transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, -1.658293, 0.3417836, -0.3036778)
+use_collision = true
+radius = 0.212
+height = 3.3555298
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Pipe" unique_id=29035257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.597196, 0.28228235, 1.4299083)
+use_collision = true
+radius = 0.41204053
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pipe" unique_id=142075008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8603611, 1.2083458, 0)
+shape = SubResource("BoxShape3D_uftpc")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Pipe" unique_id=689004633]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.208, 1.86)
+shape = SubResource("BoxShape3D_uftpc")
