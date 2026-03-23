@@ -7,7 +7,8 @@ public class AlgoGrid
 	public int width {get;}
 	public int height {get;}
 	
-	private AlgoCell[,] _cells;
+	private AlgoCell[,] _groundCells;
+	private AlgoCell[,] _upperCells;
 	private List<TileVariant> _allVariants;
 	private System.Random _rand;
 	
@@ -40,12 +41,36 @@ public class AlgoGrid
 	//creates the grid
 	private void InitialiseCells()
 	{
-		_cells = new AlgoCell[width, height];
+		_groundCells = new AlgoCell[width, height];
+		_upperCells = new AlgoCell[width, height];
+		
+		var groundVariants = _allVariants
+			.Where(vant => vant.definition.tileId == "empty" ||
+				(!vant.definition.tileId.StartsWith("walkway") &&
+				(vant.HasConnectors(ConnectorDirection.North,ConnectorLevel.Ground) || 
+				vant.HasConnectors(ConnectorDirection.South,ConnectorLevel.Ground) || 
+				vant.HasConnectors(ConnectorDirection.West,ConnectorLevel.Ground) || 
+				vant.HasConnectors(ConnectorDirection.East,ConnectorLevel.Ground)))
+			).ToList();
+			
+		var upperVariants = _allVariants
+			.Where(vant => vant.definition.tileId == "empty" ||
+				(vant.definition.tileId != "stairs" &&
+				(vant.HasConnectors(ConnectorDirection.North,ConnectorLevel.Upper) || 
+				vant.HasConnectors(ConnectorDirection.South,ConnectorLevel.Upper) || 
+				vant.HasConnectors(ConnectorDirection.West,ConnectorLevel.Upper) || 
+				vant.HasConnectors(ConnectorDirection.East,ConnectorLevel.Upper)))
+			).ToList();
+		GD.Print("Upper layer variants:");
+		foreach (var v in upperVariants)
+			GD.Print($"  {v.definition.tileId} @ {v.rotation}°");
+	
 		for(int i = 0; i<width; i++)
 		{
 			for(int j = 0; j<height; j++)
 			{
-				_cells[i,j] = new AlgoCell(new Vector2I(i,j), _allVariants);
+				_groundCells[i,j] = new AlgoCell(new Vector2I(i,j), groundVariants);
+				_upperCells[i,j] = new AlgoCell(new Vector2I(i,j), upperVariants);
 			}
 		}
 	}
@@ -57,13 +82,17 @@ public class AlgoGrid
 		
 		for(int i = 0; i<width; i++)
 		{
-			_cells[i,0].ForceCollapse(emptyVariant);
-			_cells[i,height-1].ForceCollapse(emptyVariant);
+			_groundCells[i,0].ForceCollapse(emptyVariant);
+			_groundCells[i,height-1].ForceCollapse(emptyVariant);
+			_upperCells[i,0].ForceCollapse(emptyVariant);
+			_upperCells[i,height-1].ForceCollapse(emptyVariant);
 		}
 		for(int j = 0; j<height; j++)
 		{
-			_cells[0,j].ForceCollapse(emptyVariant);
-			_cells[width-1,j].ForceCollapse(emptyVariant);
+			_groundCells[0,j].ForceCollapse(emptyVariant);
+			_groundCells[width-1,j].ForceCollapse(emptyVariant);
+			_upperCells[0,j].ForceCollapse(emptyVariant);
+			_upperCells[width-1,j].ForceCollapse(emptyVariant);
 		}
 		
 		//propagate communicates the consequences of a collapse to neighbouring cells
@@ -82,25 +111,10 @@ public class AlgoGrid
 	//the main loop of the algorithm
 	public bool Solve()
 	{
+		GD.Print("AlgoGrid: Solve() entered.");
 		//debugging feature
-		int stepLimit = width * height * 100;
+		int stepLimit = width * height * 200;
 		int steps = 0;
-		
-		//var initialQueue = new Queue<AlgoCell>();
-		//for(int i = 0; i<width; i++)
-		//{
-			//initialQueue.Enqueue(_cells[i,0]);
-			//initialQueue.Enqueue(_cells[i,height-1]);
-		//}
-		//for(int j = 0; j<width; j++)
-		//{
-			//initialQueue.Enqueue(_cells[0,j]);
-			//initialQueue.Enqueue(_cells[width-1,j]);
-		//}
-		//foreach (var borderCell in initialQueue)
-		//{
-			//if (!Propagate(borderCell)) return false;
-		//}
 		
 		while(true)
 		{
@@ -110,23 +124,52 @@ public class AlgoGrid
 				return false;
 			}
 	
-			var target = GetLowestEntropyCell();
+			var groundTarget = GetLowestEntropyCell(_groundCells);
+			var upperTarget = GetLowestEntropyCell(_upperCells);
 			
 			//if no target = success
-			if(target == null) return true;
+			if(groundTarget == null && upperTarget == null) 
+			{
+				GD.Print("AlgoGrid: All cells collapsed successfully.");
+				return true;
+			}
 			
 			//if contradiction = restart
-			if(target.isContradiction) return false;
+			if(groundTarget?.isContradiction == true || upperTarget?.isContradiction == true) return false;
+			
+			AlgoCell target;
+			bool isUpper;
+			if(groundTarget == null) {target = upperTarget; isUpper = true;}
+			else if(upperTarget == null) {target = groundTarget; isUpper = false;}
+			else if(upperTarget.Entropy < groundTarget.Entropy) {target = upperTarget; isUpper = true;}
+			else{target = groundTarget; isUpper = false;}
+			
 			
 			target.CollapseRandom(_rand);
 			
+			if(!isUpper && target.collapsedVariant.definition.tileId == "stairs")
+			{
+				var stairVariant = target.collapsedVariant;
+				var stairsTop = GetMatchingStairsTop(stairVariant);
+				if(stairsTop != null)
+				{
+					var upperCell =_upperCells[target.gridPosition.X, target.gridPosition.Y];
+					upperCell.ForceCollapse(stairsTop);
+					if(!Propagate(upperCell,_upperCells)) return false;
+				}
+			}
+			
 			//if cant propagate = restart
-			if(!Propagate(target)) return false;
+			if(!Propagate(target, isUpper ? _upperCells : _groundCells))
+			{
+				GD.PrintErr($"AlgoGrid: Propagation failed from {target.gridPosition}.");
+				return false;
+			}
 		}
 	}
 	
 	//propagation - explanation on line 61 
-	private bool Propagate(AlgoCell startCell)
+	private bool Propagate(AlgoCell startCell, AlgoCell[,] layer)
 	{
 		var queue = new Queue<AlgoCell>();
 		queue.Enqueue(startCell);
@@ -137,7 +180,7 @@ public class AlgoGrid
 			{
 				var neighbourPosition = cell.gridPosition + offset;
 				if (!InBounds(neighbourPosition)) continue;
-				var neighbour = _cells[neighbourPosition.X, neighbourPosition.Y];
+				var neighbour = layer[neighbourPosition.X, neighbourPosition.Y];
 				if(neighbour.isCollapsed) continue;
 				var allowed = GetAllowedVariants(cell, direction);
 				if(neighbour.Constrain(allowed))
@@ -165,12 +208,22 @@ public class AlgoGrid
 				bool neighbourHasGroundConnector = candidate.HasConnectors(oppositeDirection, ConnectorLevel.Ground);
 				bool neighbourHasUpperConnector = candidate.HasConnectors(oppositeDirection, ConnectorLevel.Upper);
 				
-				bool groundCompatible = cellHasGroundConnector == neighbourHasGroundConnector;
-				bool upperCompatible = cellHasUpperConnector == neighbourHasUpperConnector;
-				
-				if(groundCompatible  && upperCompatible)
+				if(cellHasGroundConnector == neighbourHasGroundConnector && cellHasUpperConnector == neighbourHasUpperConnector)
 				{
-					allowed.Add((candidate.definition.tileId, candidate.rotation));
+					bool forbidden = false;
+					if(variant.definition.blacklistTags != null)
+					{
+						foreach(var blacklistTag in variant.definition.blacklistTags)
+						{
+							if(candidate.definition.tags != null && candidate.definition.tags.Contains(blacklistTag))
+							{
+								forbidden = true;
+								break;
+							}
+						}
+					}
+					
+					if(!forbidden) allowed.Add((candidate.definition.tileId, candidate.rotation));
 				}
 			}
 		}
@@ -180,7 +233,7 @@ public class AlgoGrid
 	}
 	
 	//finds the cell with the least possible tile options
-	private AlgoCell GetLowestEntropyCell()
+	private AlgoCell GetLowestEntropyCell(AlgoCell[,] layer)
 	{
 		AlgoCell lowest = null;
 		
@@ -188,7 +241,7 @@ public class AlgoGrid
 		{
 			for(int j = 0; j<height; j++)
 			{
-				var cell = _cells[i,j];
+				var cell = layer[i,j];
 				if(cell.isCollapsed) continue;
 				if(cell.isContradiction) return cell;
 				if (lowest == null || cell.Entropy < lowest.Entropy) lowest = cell;
@@ -197,8 +250,14 @@ public class AlgoGrid
 		return lowest;
 	}
 	
+	private TileVariant GetMatchingStairsTop(TileVariant stairVariant)
+	{
+		return _allVariants.FirstOrDefault(vant => vant.definition.tileId == "stairs_top" && vant.rotation == stairVariant.rotation);
+	}
+	
 	private bool InBounds(Vector2I position) => position.X>=0 && position.X<width 
 												&& position.Y>=0 && position.Y<height;
 												
-	public AlgoCell GetCell(int x, int y) => _cells[x,y];
+	public AlgoCell GetGroundCell(int x, int y) => _groundCells[x,y];
+	public AlgoCell GetUpperCell(int x, int y) => _upperCells[x,y];
 }

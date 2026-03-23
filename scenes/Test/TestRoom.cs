@@ -2,19 +2,23 @@ using Godot;
 
 public partial class TestRoom : Node
 {
-
+	private DungeonGenerator _generator;
+	private CharacterBody3D _player;
 	public override void _Ready()
 	{
 		GD.Print("TestRoom: _Ready() entered.");
-		var generator = GetNode<DungeonGenerator>("DungeonGenerator");
-		generator.FloorGenerated+=OnFloorGenerated;
-		generator.GenerationFailed+=OnGenerationFailed;
-		generator.Generate();
+		_generator = GetNode<DungeonGenerator>("DungeonGenerator");
+		_player = GetNode<CharacterBody3D>("CharacterBody3D");
+		_generator.FloorGenerated+=OnFloorGenerated;
+		_generator.GenerationFailed+=OnGenerationFailed;
+		_generator.Generate();
 	}
 	
 	public void OnFloorGenerated(int seed)
 	{
 		GD.Print($"Floor generated successfully. Seed {seed}");
+		var spawnPos = _generator.GetSpawnPosition();
+		_player.GlobalPosition=spawnPos;
 	}
 	
 	public void OnGenerationFailed()
