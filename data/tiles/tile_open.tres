@@ -27,5 +27,6 @@ metadata/_custom_type_script = "uid://dlhuma0vc6wia"
 script = ExtResource("2_nkwbi")
 tileId = "open"
 scene = ExtResource("2_xjnd6")
+weight = 8.0
 connectors = Array[ExtResource("1_ttrtj")]([SubResource("Resource_nkwbi"), SubResource("Resource_xjnd6"), SubResource("Resource_epryg"), SubResource("Resource_8vly0")])
 metadata/_custom_type_script = "uid://2rtejamnpff1"

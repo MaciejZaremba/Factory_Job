@@ -11,6 +11,8 @@ public partial class DungeonGenerator : Node
 	//emits when generation fails
 	[Signal] public delegate void GenerationFailedEventHandler();
 	
+	private AlgoGrid _lastGrid {get; set;}
+	
 	private Node3D _floorContainer;
 	
 	// Called when the node enters the scene tree for the first time.
@@ -31,8 +33,6 @@ public partial class DungeonGenerator : Node
 			GD.PrintErr("DungeonGenerator: No GenerationParameters assigned.");
 		}
 		
-		ApplyEmptyTileWeight();
-		
 		int seed = Parameters.seed != 0 ? Parameters.seed : (int)Time.GetTicksMsec();
 		
 		for(int attempt=0; attempt < Parameters.maxRetries; attempt++)
@@ -45,6 +45,8 @@ public partial class DungeonGenerator : Node
 			if(grid.Solve())
 			{
 				ClearFloor();
+				_lastGrid = grid;
+				DiagnoseStairs(grid);
 				InstanceTiles(grid, seed);
 				EmitSignal(SignalName.FloorGenerated, seed);
 				return;
@@ -57,36 +59,62 @@ public partial class DungeonGenerator : Node
 		EmitSignal(SignalName.GenerationFailed);
 	}
 	
+	public Vector3 GetSpawnPosition()
+	{
+		if(_lastGrid == null)
+		{
+			GD.PrintErr("DungeonGenerator: GetSpawnPosition Called before generation.");
+			return Vector3.Zero;
+		}
+		for(int i = 1; i<Parameters.gridWidth-1; i++)
+		{
+			for(int j = 1; j < Parameters.gridHeight-1; j++)
+			{
+				var cell = _lastGrid.GetGroundCell(i,j);
+				if(!cell.isCollapsed) continue;
+				var variant = cell.collapsedVariant;
+				if(variant.definition.tileId == "empty") continue;
+				if(variant.definition.tileId == "stairs") continue;
+				if(variant.definition.tileId.StartsWith("walkway")) continue;
+				
+				return new Vector3(i*4f,1f,j*4f);
+			}
+		}
+		return new Vector3(Parameters.gridWidth*2f,1f,Parameters.gridHeight*2f);
+	}
+	
 	// i dont know how to spell or say 'Instantiate'
 	private void InstanceTiles(AlgoGrid grid, int seed)
 	{
-		int collapsed = 0;
-		int empty = 0;
-		int nullScene = 0;
 		int instanced = 0;
 		
 		for(int i = 0; i < Parameters.gridWidth; i++)
 		{
 			for(int j = 0; j < Parameters.gridHeight; j++)
 			{
-				var cell = grid.GetCell(i,j);
-				if(!cell.isCollapsed) continue;
-				collapsed++;
-				var variant = cell.collapsedVariant;
-				
-				if(variant.definition.tileId == "empty") {empty++; continue;}
-				if(variant.definition.scene == null) {nullScene++; continue;}
-				
-				var instance = variant.definition.scene.Instantiate<Node3D>();
-				
-				instance.Position = new Vector3(i*4f, 0f, j*4f);
-				instance.RotationDegrees = new Vector3(0f, variant.rotation, 0f);
-				
-				_floorContainer.AddChild(instance);
-				instanced++;
+				instanced += InstanceCell(grid.GetGroundCell(i,j),i,j);
+				instanced += InstanceCell(grid.GetUpperCell(i,j),i,j);
 			}
 		}
-		GD.Print($"InstanceTiles: collapsed={collapsed}, empty={empty}, nullScene={nullScene}, instanced={instanced}");
+		GD.Print($"InstanceTiles: instanced={instanced}");
+	}
+	
+	private int InstanceCell(AlgoCell cell, int i, int j)
+	{
+		if(!cell.isCollapsed) return 0;
+		var variant = cell.collapsedVariant;
+		
+		if(variant.definition.tileId == "empty") return 0;
+		if(variant.definition.tileId == "stairs_top") return 0;
+		if(variant.definition.scene == null) return 0;
+		
+		var instance = variant.definition.scene.Instantiate<Node3D>();
+		
+		instance.Position = new Vector3(i*4f, 0f, j*4f);
+		instance.RotationDegrees = new Vector3(0f, variant.rotation, 0f);
+		
+		_floorContainer.AddChild(instance);
+		return 1;
 	}
 	
 	private void ClearFloor()
@@ -97,10 +125,64 @@ public partial class DungeonGenerator : Node
 		}
 	}
 	
-	private void ApplyEmptyTileWeight()
+// Add this temporary method to DungeonGenerator
+// Call it right after generation succeeds, before InstantiateTiles
+private void DiagnoseStairs(AlgoGrid grid)
+{
+	GD.Print("=== STAIR DIAGNOSIS ===");
+
+	// First print what the registry thinks stairs looks like
+	foreach (var variant in TileRegistry.Instance.GetAllVariants())
 	{
-		var emptyVariant = TileRegistry.Instance.GetEmptyVariant();
-		emptyVariant.definition.weight = Parameters.emptyTileWeight;
+		if (variant.definition.tileId != "stairs") continue;
+		GD.Print($"Stair variant at {variant.rotation}°:");
+		foreach (var connector in variant.connectors)
+			GD.Print($"  {connector.level}_{connector.direction}");
 	}
+
+	// Then print every placed stair and its neighbours
+	for (int x = 0; x < Parameters.gridWidth; x++)
+	{
+		for (int y = 0; y < Parameters.gridHeight; y++)
+		{
+			var groundCell = grid.GetGroundCell(x, y);
+			if (!groundCell.isCollapsed) continue;
+			if (groundCell.collapsedVariant.definition.tileId != "stairs") continue;
+
+			var variant = groundCell.collapsedVariant;
+			GD.Print($"Stair at ({x},{y}) rotation {variant.rotation}°");
+
+			// Print all 4 neighbours on both layers
+			foreach (var (dir, offset) in new System.Collections.Generic.Dictionary
+				<ConnectorDirection, Vector2I>
+			{
+				{ ConnectorDirection.North, new Vector2I(0,-1) },
+				{ ConnectorDirection.South, new Vector2I(0, 1) },
+				{ ConnectorDirection.East,  new Vector2I(1, 0) },
+				{ ConnectorDirection.West,  new Vector2I(-1,0) }
+			})
+			{
+				int nx = x + offset.X;
+				int ny = y + offset.Y;
+				if (nx < 0 || nx >= Parameters.gridWidth ||
+					ny < 0 || ny >= Parameters.gridHeight) continue;
+
+				var groundNeighbour = grid.GetGroundCell(nx, ny);
+				var upperNeighbour = grid.GetUpperCell(nx, ny);
+
+				string groundId = groundNeighbour.isCollapsed
+					? $"{groundNeighbour.collapsedVariant.definition.tileId}@{groundNeighbour.collapsedVariant.rotation}°"
+					: "uncollapsed";
+				string upperId = upperNeighbour.isCollapsed
+					? $"{upperNeighbour.collapsedVariant.definition.tileId}@{upperNeighbour.collapsedVariant.rotation}°"
+					: "uncollapsed";
+
+				GD.Print($"  {dir} → ground: {groundId} | upper: {upperId}");
+			}
+		}
+	}
+
+	GD.Print("=== END STAIR DIAGNOSIS ===");
+}
 	
 }

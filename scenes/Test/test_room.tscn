@@ -21,3 +21,6 @@ Parameters = SubResource("Resource_5phle")
 FloorContainerPath = NodePath("../FloorContainer")
 
 [node name="FloorContainer" type="Node3D" parent="." unique_id=368580736]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1052873220]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)

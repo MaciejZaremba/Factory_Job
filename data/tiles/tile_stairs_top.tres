@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://bejph54jhxqk0"]
+
+[ext_resource type="Script" uid="uid://dlhuma0vc6wia" path="res://scripts/generator/TileConnector.cs" id="1_nbuag"]
+[ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="2_fq4i6"]
+
+[sub_resource type="Resource" id="Resource_nbuag"]
+script = ExtResource("1_nbuag")
+direction = 1
+level = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[resource]
+script = ExtResource("2_fq4i6")
+tileId = "stairs_top"
+connectors = Array[ExtResource("1_nbuag")]([SubResource("Resource_nbuag")])
+metadata/_custom_type_script = "uid://2rtejamnpff1"
