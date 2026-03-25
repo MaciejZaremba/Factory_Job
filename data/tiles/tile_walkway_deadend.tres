@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://ccf30jomms1p2"]
+
+[ext_resource type="Script" uid="uid://dlhuma0vc6wia" path="res://scripts/generator/TileConnector.cs" id="1_tti6x"]
+[ext_resource type="Script" uid="uid://2rtejamnpff1" path="res://scripts/generator/TileDefinition.cs" id="2_abfg1"]
+[ext_resource type="PackedScene" uid="uid://b8jddti0vgwch" path="res://scenes/rooms/tile_walkway_deadend.tscn" id="2_v7r7q"]
+
+[sub_resource type="Resource" id="Resource_xxn36"]
+script = ExtResource("1_tti6x")
+direction = 1
+level = 1
+metadata/_custom_type_script = "uid://dlhuma0vc6wia"
+
+[resource]
+script = ExtResource("2_abfg1")
+tileId = "walkway_deadend"
+scene = ExtResource("2_v7r7q")
+weight = 0.0
+connectors = Array[ExtResource("1_tti6x")]([SubResource("Resource_xxn36")])
+tags = Array[String](["walkway"])
+metadata/_custom_type_script = "uid://2rtejamnpff1"
