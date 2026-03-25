@@ -94,78 +94,79 @@ public class AlgoGrid
 			_upperCells[0,j].ForceCollapse(emptyVariant);
 			_upperCells[width-1,j].ForceCollapse(emptyVariant);
 		}
-		
-		//propagate communicates the consequences of a collapse to neighbouring cells
-		//for(int i = 0; i<width; i++)
-		//{
-			//Propagate(_cells[i,0]);
-			//Propagate(_cells[i,height-1]);
-		//}
-		//for(int j = 0; j<width; j++)
-		//{
-			//Propagate(_cells[0,j]);
-			//Propagate(_cells[width-1,j]);
-		//}
 	}
 	
 	//the main loop of the algorithm
 	public bool Solve()
 	{
 		GD.Print("AlgoGrid: Solve() entered.");
-		//debugging feature
-		int stepLimit = width * height * 200;
-		int steps = 0;
-		
-		while(true)
-		{
-			if(steps++ > stepLimit)
-			{
-				GD.PrintErr("AlgoGrid: Step limit exceeded - possible infinite loop.");
-				return false;
-			}
-	
-			var groundTarget = GetLowestEntropyCell(_groundCells);
-			var upperTarget = GetLowestEntropyCell(_upperCells);
-			
-			//if no target = success
-			if(groundTarget == null && upperTarget == null) 
-			{
-				GD.Print("AlgoGrid: All cells collapsed successfully.");
-				return true;
-			}
-			
-			//if contradiction = restart
-			if(groundTarget?.isContradiction == true || upperTarget?.isContradiction == true) return false;
-			
-			AlgoCell target;
-			bool isUpper;
-			if(groundTarget == null) {target = upperTarget; isUpper = true;}
-			else if(upperTarget == null) {target = groundTarget; isUpper = false;}
-			else if(upperTarget.Entropy < groundTarget.Entropy) {target = upperTarget; isUpper = true;}
-			else{target = groundTarget; isUpper = false;}
-			
-			
-			target.CollapseRandom(_rand);
-			
-			if(!isUpper && target.collapsedVariant.definition.tileId == "stairs")
-			{
-				var stairVariant = target.collapsedVariant;
-				var stairsTop = GetMatchingStairsTop(stairVariant);
-				if(stairsTop != null)
-				{
-					var upperCell =_upperCells[target.gridPosition.X, target.gridPosition.Y];
-					upperCell.ForceCollapse(stairsTop);
-					if(!Propagate(upperCell,_upperCells)) return false;
-				}
-			}
-			
-			//if cant propagate = restart
-			if(!Propagate(target, isUpper ? _upperCells : _groundCells))
-			{
-				GD.PrintErr($"AlgoGrid: Propagation failed from {target.gridPosition}.");
-				return false;
-			}
-		}
+		////debugging feature
+		//int stepLimit = width * height * 200;
+		//int steps = 0;
+		//
+		//while(true)
+		//{
+			//if(steps++ > stepLimit)
+			//{
+				//GD.PrintErr("AlgoGrid: Step limit exceeded - possible infinite loop.");
+				//return false;
+			//}
+	//
+			//var groundTarget = GetLowestEntropyCell(_groundCells);
+			//var upperTarget = GetLowestEntropyCell(_upperCells);
+			//
+			////if no target = success
+			//if(groundTarget == null && upperTarget == null) 
+			//{
+				//GD.Print("AlgoGrid: All cells collapsed successfully.");
+				//return true;
+			//}
+			//
+			////if contradiction = restart
+			//if(groundTarget?.isContradiction == true || upperTarget?.isContradiction == true) return false;
+			//
+			//AlgoCell target;
+			//bool isUpper;
+			//if(groundTarget == null) {target = upperTarget; isUpper = true;}
+			//else if(upperTarget == null) {target = groundTarget; isUpper = false;}
+			//else if(upperTarget.Entropy < groundTarget.Entropy) {target = upperTarget; isUpper = true;}
+			//else{target = groundTarget; isUpper = false;}
+			//
+			//
+			//target.CollapseRandom(_rand);
+			//
+			//if(!isUpper && target.collapsedVariant.definition.tileId == "stairs")
+			//{
+				//var stairVariant = target.collapsedVariant;
+				//var stairsTop = GetMatchingStairsTop(stairVariant);
+				//if(stairsTop != null)
+				//{
+					//var upperCell =_upperCells[target.gridPosition.X, target.gridPosition.Y];
+					//upperCell.ForceCollapse(stairsTop);
+					//if(!Propagate(upperCell,_upperCells)) return false;
+				//}
+			//}
+			//
+			////if cant propagate = restart
+			//if(!Propagate(target, isUpper ? _upperCells : _groundCells))
+			//{
+				//GD.PrintErr($"AlgoGrid: Propagation failed from {target.gridPosition}.");
+				//return false;
+			//}
+		//}
+		//Solve the upper layer
+		if(!SolveLayerSkipEmpty(_upperCells, width*height*100)) return false;
+		GD.Print("AlgoGrid: Upper layer first pass complete.");
+		//Solve staircases
+		ForceStairSpawns(stairThreshold, stairScaling)
+		GD.Print("AlgoGrid: Stair seeding complete");
+		//Solve ground layer
+		if(!SolveLayer(_groundCells, width*height*100)) return false;
+		GD.Print("AlgoGrid: Upper layer first pass complete.");
+		//Get rid of remaining upper layer cells
+		if(!SolveLayerWithDeadends()) return false;
+		GD.Print("AlgoGrid: Upper layer second pass complete.");
+		return true;
 	}
 	
 	//propagation - explanation on line 61 
@@ -250,9 +251,58 @@ public class AlgoGrid
 		return lowest;
 	}
 	
+	private AlgoCell GetLowestEntropyCellExcludeEmpty(AlgoCell[,] layer)
+	{
+		AlgoCell lowest = null
+		for(int i=0; i<width;i++)
+		{
+			for(int j=0; j<height;j++)
+			{
+				var cell = layer[i,j];
+				if(cell.isCollapsed) continue;
+				
+				bool hasNonEmpty = cell.possibleVariants.Any(vant => vant.definition.tileId != "empty");
+				if(!hasNonEmpty) continue;
+				
+				if(cell.isContradiction) return cell;
+				if(lowest == null || cell.Entropy < lowest.Entropy) lowest = cell;
+			}
+		}
+		return lowest;
+	}
+	
 	private TileVariant GetMatchingStairsTop(TileVariant stairVariant)
 	{
-		return _allVariants.FirstOrDefault(vant => vant.definition.tileId == "stairs_top" && vant.rotation == stairVariant.rotation);
+		var match = _allVariants.FirstOrDefault(vant => vant.definition.tileId == "stairs_top" && vant.rotation == stairVariant.rotation);
+		GD.Print($"GetMatchingStairsTop: stair rotation {stairVariant.rotation}°, " +
+			 $"stair upper connector: {stairVariant.connectors.FirstOrDefault(c => c.level == ConnectorLevel.Upper)?.direction}, " +
+			 $"matched top rotation: {match?.rotation}°, " +
+			 $"top connectors: {string.Join(", ", match?.connectors.Select(c => $"{c.level}_{c.direction}") ?? new List<string>{"none"})}");	
+		return match;
+	}
+	
+	private bool SolveLayerSkipEmpty(AlgoCell[,] layer, int stepLimit)
+	{
+		int steps = 0;
+		while(true)
+		{
+			if(steps++ > stepLimit)
+			{
+				GD.PrintErr("AlgoGrid: Step limit exceeded in upper first pass.");
+				return false;
+			}
+			var target = GetLowestEntropyCellExcludeEmpty(layer);
+			if(target == null) return true;
+			if(target.isContradiction) return false;
+			
+			target.CollapseRandom(_rand);
+			if(!Propagate(target,layer)) return false;
+		}
+	}
+	
+	priuate void ForceStairSpawns(int stairThreshold, float stairScaling)
+	{
+		
 	}
 	
 	private bool InBounds(Vector2I position) => position.X>=0 && position.X<width 

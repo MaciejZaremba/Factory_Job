@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class DungeonGenerator : Node
 {
@@ -146,6 +147,9 @@ private void DiagnoseStairs(AlgoGrid grid)
 		for (int y = 0; y < Parameters.gridHeight; y++)
 		{
 			var groundCell = grid.GetGroundCell(x, y);
+			var upperSelf = grid.GetUpperCell(x, y);
+			if (upperSelf.isCollapsed)
+   				GD.Print($"  Upper self → {upperSelf.collapsedVariant.definition.tileId}@{upperSelf.collapsedVariant.rotation}°, connectors: {string.Join(", ", upperSelf.collapsedVariant.connectors.Select(c => $"{c.level}_{c.direction}"))}");
 			if (!groundCell.isCollapsed) continue;
 			if (groundCell.collapsedVariant.definition.tileId != "stairs") continue;
 

@@ -11,4 +11,5 @@ public partial class TileDefinition : Resource
 	[Export] public Array<TileConnector> connectors {get; set;} = new();
 	[Export] public Array<string> tags {get;set;} = new();
 	[Export] public Array<string> blacklistTags {get;set;} = new();
+	[Export] public Array<string> requiredTags {get;set;} = new ();
 }
