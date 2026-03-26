@@ -97,72 +97,18 @@ public class AlgoGrid
 	}
 	
 	//the main loop of the algorithm
-	public bool Solve()
+	public bool Solve(int stairThreshold, float stairScaling)
 	{
 		GD.Print("AlgoGrid: Solve() entered.");
-		////debugging feature
-		//int stepLimit = width * height * 200;
-		//int steps = 0;
-		//
-		//while(true)
-		//{
-			//if(steps++ > stepLimit)
-			//{
-				//GD.PrintErr("AlgoGrid: Step limit exceeded - possible infinite loop.");
-				//return false;
-			//}
-	//
-			//var groundTarget = GetLowestEntropyCell(_groundCells);
-			//var upperTarget = GetLowestEntropyCell(_upperCells);
-			//
-			////if no target = success
-			//if(groundTarget == null && upperTarget == null) 
-			//{
-				//GD.Print("AlgoGrid: All cells collapsed successfully.");
-				//return true;
-			//}
-			//
-			////if contradiction = restart
-			//if(groundTarget?.isContradiction == true || upperTarget?.isContradiction == true) return false;
-			//
-			//AlgoCell target;
-			//bool isUpper;
-			//if(groundTarget == null) {target = upperTarget; isUpper = true;}
-			//else if(upperTarget == null) {target = groundTarget; isUpper = false;}
-			//else if(upperTarget.Entropy < groundTarget.Entropy) {target = upperTarget; isUpper = true;}
-			//else{target = groundTarget; isUpper = false;}
-			//
-			//
-			//target.CollapseRandom(_rand);
-			//
-			//if(!isUpper && target.collapsedVariant.definition.tileId == "stairs")
-			//{
-				//var stairVariant = target.collapsedVariant;
-				//var stairsTop = GetMatchingStairsTop(stairVariant);
-				//if(stairsTop != null)
-				//{
-					//var upperCell =_upperCells[target.gridPosition.X, target.gridPosition.Y];
-					//upperCell.ForceCollapse(stairsTop);
-					//if(!Propagate(upperCell,_upperCells)) return false;
-				//}
-			//}
-			//
-			////if cant propagate = restart
-			//if(!Propagate(target, isUpper ? _upperCells : _groundCells))
-			//{
-				//GD.PrintErr($"AlgoGrid: Propagation failed from {target.gridPosition}.");
-				//return false;
-			//}
-		//}
 		//Solve the upper layer
 		if(!SolveLayerSkipEmpty(_upperCells, width*height*100)) return false;
 		GD.Print("AlgoGrid: Upper layer first pass complete.");
 		//Solve staircases
-		ForceStairSpawns(stairThreshold, stairScaling)
+		ForceStairSpawns(stairThreshold, stairScaling);
 		GD.Print("AlgoGrid: Stair seeding complete");
 		//Solve ground layer
 		if(!SolveLayer(_groundCells, width*height*100)) return false;
-		GD.Print("AlgoGrid: Upper layer first pass complete.");
+		GD.Print("AlgoGrid: Ground layer complete.");
 		//Get rid of remaining upper layer cells
 		if(!SolveLayerWithDeadends()) return false;
 		GD.Print("AlgoGrid: Upper layer second pass complete.");
@@ -253,7 +199,7 @@ public class AlgoGrid
 	
 	private AlgoCell GetLowestEntropyCellExcludeEmpty(AlgoCell[,] layer)
 	{
-		AlgoCell lowest = null
+		AlgoCell lowest = null;
 		for(int i=0; i<width;i++)
 		{
 			for(int j=0; j<height;j++)
@@ -281,8 +227,47 @@ public class AlgoGrid
 		return match;
 	}
 	
+	private bool SolveLayer(AlgoCell[,] layer, int stepLimit)
+	{
+		int steps = 0;
+		while(true)
+		{
+			if(steps++ > stepLimit)
+			{
+				GD.PrintErr("AlgoGrid: Step limit exceeded.");
+				return false;
+			}
+			
+			var target = GetLowestEntropyCell(layer);
+			if(target == null) return true;
+			if(target.isContradiction) return false;
+			target.CollapseRandom(_rand);
+			if(!Propagate(target,layer)) return false;
+		}
+	}
+	
 	private bool SolveLayerSkipEmpty(AlgoCell[,] layer, int stepLimit)
 	{
+		GD.Print("SolveLayerSkipEmpty: entered.");
+		
+		for(int i =0; i<width;i++)
+		{
+			if(!Propagate(layer[i,0], layer)) return false;
+			if(!Propagate(layer[i,height-1], layer)) return false;
+		}
+		for(int j =0; j<height;j++)
+		{
+			if(!Propagate(layer[0,j], layer)) return false;
+			if(!Propagate(layer[width-1,j], layer)) return false;
+		}
+		
+		int initialNonEmpty = 0;
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < height; y++)
+				if (layer[x,y].possibleVariants.Any(v => v.definition.tileId != "empty"))
+					initialNonEmpty++;
+		
+		GD.Print($"SolveLayerSkipEmpty: {initialNonEmpty} cells have non-empty options.");
 		int steps = 0;
 		while(true)
 		{
@@ -292,7 +277,26 @@ public class AlgoGrid
 				return false;
 			}
 			var target = GetLowestEntropyCellExcludeEmpty(layer);
-			if(target == null) return true;
+			if(target == null) 
+			{
+				int collapsedWalkway = 0;
+				int collapsedEmpty = 0;
+				int uncollapsed = 0;
+
+				for (int x = 0; x < width; x++)
+				{
+					for (int y = 0; y < height; y++)
+					{
+						var cell = layer[x, y];
+						if (!cell.isCollapsed) { uncollapsed++; continue; }
+						if (cell.collapsedVariant.definition.tileId == "empty") collapsedEmpty++;
+						else collapsedWalkway++;
+					}
+				}
+
+				GD.Print($"SolveLayerSkipEmpty: walkway={collapsedWalkway}, empty={collapsedEmpty}, uncollapsed={uncollapsed}");
+				return true;
+			}
 			if(target.isContradiction) return false;
 			
 			target.CollapseRandom(_rand);
@@ -300,9 +304,229 @@ public class AlgoGrid
 		}
 	}
 	
-	priuate void ForceStairSpawns(int stairThreshold, float stairScaling)
+	private bool SolveLayerWithDeadends()
 	{
+		if(!SolveLayer(_upperCells, width*height*100)) return false;
 		
+		for(int i = 0; i<width;i++)
+		{
+			for(int j=0; j<height;j++)
+			{
+				var upperCell = _upperCells[i,j];
+				if(!upperCell.isCollapsed) continue;
+				var variant = upperCell.collapsedVariant;
+				if(variant.definition.tileId == "empty") continue;
+				if(variant.definition.tileId == "stairs_top") continue;
+				
+				foreach(var (direction,offset) in DirectionOffsets)
+				{
+					if(!variant.HasConnectors(direction, ConnectorLevel.Upper)) continue;
+					
+					var neighbour = new Vector2I(i,j) + offset;
+					if(!InBounds(neighbour)) continue;
+					
+					var upperNeighbour = _upperCells[neighbour.X, neighbour.Y];
+					if(upperNeighbour.isCollapsed) continue;
+					if(upperNeighbour.collapsedVariant.definition.tileId != "empty") continue;
+					
+					var groundNeighbour = _groundCells[neighbour.X,neighbour.Y];
+					if(!groundNeighbour.isCollapsed) continue;
+					
+					var groundVariant = groundNeighbour.collapsedVariant.definition.tileId;
+					if(groundVariant == "empty") continue;
+					
+					TryPlaceDeadend(new Vector2I(i,j), direction);
+				}
+			}
+		}
+		return true;
+	}
+	
+	private List<Vector2I> FloodFillWalkwayNetworks(Vector2I start, HashSet<Vector2I> globalVis)
+	{
+		var network = new List<Vector2I>();
+		var queue = new Queue<Vector2I>();
+		var localVis = new HashSet<Vector2I>();
+		
+		queue.Enqueue(start);
+		localVis.Add(start);
+		
+		while(queue.Count > 0)
+		{
+			var current = queue.Dequeue();
+			network.Add(current);
+			globalVis.Add(current);
+			var currentCell = _upperCells[current.X, current.Y];
+			if(!currentCell.isCollapsed) continue;
+			
+			var variant = currentCell.collapsedVariant;
+			
+			foreach(var (direction,offset) in DirectionOffsets)
+			{
+				if(!variant.HasConnectors(direction, ConnectorLevel.Upper)) continue;
+				var neighbour = current + offset;
+				if(!InBounds(neighbour)) continue;
+				if(localVis.Contains(neighbour)) continue;
+				
+				var neighbourCell = _upperCells[neighbour.X, neighbour.Y];
+				if(!neighbourCell.isCollapsed) continue;
+				
+				var neighbourVariant = neighbourCell.collapsedVariant.definition.tileId;
+				if(neighbourVariant == "empty") continue;
+				if(neighbourVariant == "stairs_top") continue;
+				localVis.Add(neighbour);
+				queue.Enqueue(neighbour);
+			}
+		}
+		return network;
+	}
+	
+	private void ProcessWalkwayNetwork(List<Vector2I> network, int stairThreshold, float stairScaling)
+	{
+		GD.Print($"ProcessWalkwayNetwork: network size={network.Count}");
+		var openEdges = new List<(Vector2I pos, ConnectorDirection dir)>();
+		foreach(var pos in network)
+		{
+			var cell = _upperCells[pos.X, pos.Y];
+			if(!cell.isCollapsed) continue;
+			var variant = cell.collapsedVariant;
+			
+			foreach(var (direction, offset) in DirectionOffsets)
+			{
+				if(!variant.HasConnectors(direction, ConnectorLevel.Upper)) continue;
+				var neighbour = pos+offset;
+				if(!InBounds(neighbour)) continue;
+				if(neighbour.X == 0 || neighbour.X == 0 || neighbour.X == width-1 || neighbour.Y == height-1) continue;
+				var neighbourCell = _upperCells[neighbour.X, neighbour.Y];
+				if(neighbourCell.isCollapsed)
+				{
+					var neighbourVariant = neighbourCell.collapsedVariant.definition.tileId;
+					if(neighbourVariant == "empty") continue;
+				}
+				openEdges.Add((pos,direction));
+			}
+		}
+		GD.Print($"ProcessWalkwayNetwork: found {openEdges.Count} open edges.");
+		Shuffle(openEdges);
+		int stairCount = 0;
+		var placedStairPositions = new HashSet<Vector2I>();
+		foreach(var (pos,direction) in openEdges)
+		{
+			var offset = DirectionOffsets[direction];
+			var groundPos = pos+offset;
+			if(placedStairPositions.Contains(groundPos)) continue;
+			
+			bool placeStair = ShouldPlaceStair(stairCount, stairThreshold, stairScaling);
+			GD.Print($"ProcessWalkwayNetwork: edge at {pos} dir={direction}, " +
+				 $"groundPos={groundPos}, placeStair={placeStair}, stairCount={stairCount}");
+			if(placeStair && TryForceStair(groundPos, direction)) 
+			{
+				GD.Print($"ProcessWalkwayNetwork: stair placed at {groundPos}.");
+				placedStairPositions.Add(groundPos);
+				stairCount++;
+			} else GD.Print($"ProcessWalkwayNetwork: stair skipped or failed at {groundPos}.");
+		}
+		 GD.Print($"ProcessWalkwayNetwork: finished, placed {stairCount} stairs.");
+	}
+	
+	private void ForceStairSpawns(int stairThreshold, float stairScaling)
+	{
+		GD.Print("ForceStairsAtWalkwayEdges: entered.");
+	
+		int walkwayCells = 0;
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < height; y++)
+			{
+				var cell = _upperCells[x, y];
+				if (!cell.isCollapsed) continue;
+				var id = cell.collapsedVariant.definition.tileId;
+				if (id != "empty" && id != "stairs_top") walkwayCells++;
+			}
+		
+		GD.Print($"ForceStairsAtWalkwayEdges: {walkwayCells} collapsed walkway cells found.");
+		
+		
+		
+		var visited = new HashSet<Vector2I>();
+		for(int i = 0; i<width;i++)
+		{
+			for(int j=0; j<height;j++)
+			{
+				var pos = new Vector2I(i,j);
+				if(visited.Contains(pos)) continue;
+				var cell = _upperCells[i,j];
+				if(!cell.isCollapsed) continue;
+				if(cell.collapsedVariant.definition.tileId == "empty") continue;
+				if(cell.collapsedVariant.definition.tileId == "stairs_top") continue;
+				var network = FloodFillWalkwayNetworks(pos,visited);
+				ProcessWalkwayNetwork(network, stairThreshold, stairScaling);
+			}
+		}
+	}
+	
+	private bool ShouldPlaceStair(int stairCount, int threshold, float scaling)
+	{
+		if(stairCount < threshold) return true;
+		
+		int excess = stairCount - threshold;
+		float chance = excess / (excess + scaling);
+		return (float) _rand.NextDouble() > chance;
+	}
+	
+	private bool TryForceStair(Vector2I groundPos, ConnectorDirection walkwayEdgeDirection)
+	{
+		GD.Print($"TryForceStair: entered for groundPos={groundPos}, direction={walkwayEdgeDirection}");
+		if(!InBounds(groundPos)) return false;
+		var groundCell = _groundCells[groundPos.X, groundPos.Y];
+		if(groundCell.isCollapsed)
+		{
+			
+			if(groundCell.collapsedVariant.definition.tileId != "stairs") return false;
+		}
+		
+		var requiredUpperDirection = Opposite[walkwayEdgeDirection];
+		var stairVariant = _allVariants.FirstOrDefault(vant => vant.definition.tileId == "stairs" && 
+							vant.HasConnectors(requiredUpperDirection,ConnectorLevel.Upper));
+		GD.Print($"TryForceStair: pos={groundPos}, walkwayEdge={walkwayEdgeDirection}, " +
+			 $"requiredUpper={requiredUpperDirection}, " +
+			 $"stairVariant={(stairVariant == null ? "NULL" : $"{stairVariant.definition.tileId}@{stairVariant.rotation}")}");
+
+		if(stairVariant == null) return false;
+		groundCell.ForceCollapse(stairVariant);
+		
+		var stairsTop = GetMatchingStairsTop(stairVariant);
+		GD.Print($"TryForceStair: stairsTop={(stairsTop == null ? "NULL" : $"{stairsTop.definition.tileId}@{stairsTop.rotation}")}");
+		if(stairsTop != null)
+		{
+			_upperCells[groundPos.X,groundPos.Y].ForceCollapse(stairsTop);
+			Propagate(_upperCells[groundPos.X,groundPos.Y], _upperCells);
+		}
+		Propagate(groundCell, _groundCells);
+		return true;
+	}
+	
+	private void TryPlaceDeadend(Vector2I pos, ConnectorDirection direction)
+	{
+		var oppositeDir = Opposite[direction];
+		var deadendVariant = _allVariants.FirstOrDefault(vant => vant.definition.tileId == "walkway_deadend" &&
+								vant.HasConnectors(oppositeDir,ConnectorLevel.Upper));
+		if(deadendVariant == null) return;
+		
+		var offset = DirectionOffsets[direction];
+		var target = pos+offset;
+		if(!InBounds(target)) return;
+		
+		var targetCell = _upperCells[target.X,target.Y];
+		targetCell.ForceCollapse(deadendVariant);
+	}
+	
+	private void Shuffle<T>(List<T> list)
+	{
+		for(int i = list.Count - 1; i>0; i--)
+		{
+			int j = _rand.Next(i+1);
+			(list[i], list[j]) = (list[j], list[i]);
+		}
 	}
 	
 	private bool InBounds(Vector2I position) => position.X>=0 && position.X<width 

@@ -19,7 +19,6 @@ metadata/_custom_type_script = "uid://dlhuma0vc6wia"
 script = ExtResource("3_fe7hy")
 tileId = "walkway"
 scene = ExtResource("2_0ltyb")
-weight = 1.5
 connectors = Array[ExtResource("1_04ur6")]([SubResource("Resource_04ur6"), SubResource("Resource_0ltyb")])
 tags = Array[String](["walkway"])
 requiredTags = Array[String](["stair", "walkway"])

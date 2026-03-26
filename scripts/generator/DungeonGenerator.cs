@@ -43,7 +43,7 @@ public partial class DungeonGenerator : Node
 			var grid = new AlgoGrid(Parameters.gridWidth, Parameters.gridHeight, seed, TileRegistry.Instance.GetAllVariants());
 			
 			//if the grid algorithm succeeds, instance it.
-			if(grid.Solve())
+			if(grid.Solve(Parameters.stairThreshold, Parameters.stairScaling))
 			{
 				ClearFloor();
 				_lastGrid = grid;
