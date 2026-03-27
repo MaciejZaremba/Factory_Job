@@ -40,14 +40,14 @@ public partial class DungeonGenerator : Node
 		{
 			GD.Print($"DungeonGenerator: Attempt {attempt + 1} with seed {seed}.");
 			//every attempt creats a grid
-			var grid = new AlgoGrid(Parameters.gridWidth, Parameters.gridHeight, seed, TileRegistry.Instance.GetAllVariants());
+			var grid = new AlgoGrid(Parameters.gridWidth, Parameters.gridHeight, seed, Parameters.stairMaxThreshold, TileRegistry.Instance.GetAllVariants());
 			
 			//if the grid algorithm succeeds, instance it.
-			if(grid.Solve(Parameters.stairThreshold, Parameters.stairScaling))
+			if(grid.Solve(Parameters.stairMinThreshold, Parameters.stairScaling, Parameters.maxWalkwayNetworks))
 			{
 				ClearFloor();
 				_lastGrid = grid;
-				DiagnoseStairs(grid);
+				//DiagnoseStairs(grid);
 				InstanceTiles(grid, seed);
 				EmitSignal(SignalName.FloorGenerated, seed);
 				return;
@@ -128,65 +128,65 @@ public partial class DungeonGenerator : Node
 	
 // Add this temporary method to DungeonGenerator
 // Call it right after generation succeeds, before InstantiateTiles
-private void DiagnoseStairs(AlgoGrid grid)
-{
-	GD.Print("=== STAIR DIAGNOSIS ===");
-
-	// First print what the registry thinks stairs looks like
-	foreach (var variant in TileRegistry.Instance.GetAllVariants())
-	{
-		if (variant.definition.tileId != "stairs") continue;
-		GD.Print($"Stair variant at {variant.rotation}°:");
-		foreach (var connector in variant.connectors)
-			GD.Print($"  {connector.level}_{connector.direction}");
-	}
-
-	// Then print every placed stair and its neighbours
-	for (int x = 0; x < Parameters.gridWidth; x++)
-	{
-		for (int y = 0; y < Parameters.gridHeight; y++)
-		{
-			var groundCell = grid.GetGroundCell(x, y);
-			var upperSelf = grid.GetUpperCell(x, y);
-			if (upperSelf.isCollapsed)
-   				GD.Print($"  Upper self → {upperSelf.collapsedVariant.definition.tileId}@{upperSelf.collapsedVariant.rotation}°, connectors: {string.Join(", ", upperSelf.collapsedVariant.connectors.Select(c => $"{c.level}_{c.direction}"))}");
-			if (!groundCell.isCollapsed) continue;
-			if (groundCell.collapsedVariant.definition.tileId != "stairs") continue;
-
-			var variant = groundCell.collapsedVariant;
-			GD.Print($"Stair at ({x},{y}) rotation {variant.rotation}°");
-
-			// Print all 4 neighbours on both layers
-			foreach (var (dir, offset) in new System.Collections.Generic.Dictionary
-				<ConnectorDirection, Vector2I>
-			{
-				{ ConnectorDirection.North, new Vector2I(0,-1) },
-				{ ConnectorDirection.South, new Vector2I(0, 1) },
-				{ ConnectorDirection.East,  new Vector2I(1, 0) },
-				{ ConnectorDirection.West,  new Vector2I(-1,0) }
-			})
-			{
-				int nx = x + offset.X;
-				int ny = y + offset.Y;
-				if (nx < 0 || nx >= Parameters.gridWidth ||
-					ny < 0 || ny >= Parameters.gridHeight) continue;
-
-				var groundNeighbour = grid.GetGroundCell(nx, ny);
-				var upperNeighbour = grid.GetUpperCell(nx, ny);
-
-				string groundId = groundNeighbour.isCollapsed
-					? $"{groundNeighbour.collapsedVariant.definition.tileId}@{groundNeighbour.collapsedVariant.rotation}°"
-					: "uncollapsed";
-				string upperId = upperNeighbour.isCollapsed
-					? $"{upperNeighbour.collapsedVariant.definition.tileId}@{upperNeighbour.collapsedVariant.rotation}°"
-					: "uncollapsed";
-
-				GD.Print($"  {dir} → ground: {groundId} | upper: {upperId}");
-			}
-		}
-	}
-
-	GD.Print("=== END STAIR DIAGNOSIS ===");
-}
-	
+//private void DiagnoseStairs(AlgoGrid grid)
+//{
+	//GD.Print("=== STAIR DIAGNOSIS ===");
+//
+	//// First print what the registry thinks stairs looks like
+	//foreach (var variant in TileRegistry.Instance.GetAllVariants())
+	//{
+		//if (variant.definition.tileId != "stairs") continue;
+		//GD.Print($"Stair variant at {variant.rotation}°:");
+		//foreach (var connector in variant.connectors)
+			//GD.Print($"  {connector.level}_{connector.direction}");
+	//}
+//
+	//// Then print every placed stair and its neighbours
+	//for (int x = 0; x < Parameters.gridWidth; x++)
+	//{
+		//for (int y = 0; y < Parameters.gridHeight; y++)
+		//{
+			//var groundCell = grid.GetGroundCell(x, y);
+			//var upperSelf = grid.GetUpperCell(x, y);
+			//if (upperSelf.isCollapsed)
+   				//GD.Print($"  Upper self → {upperSelf.collapsedVariant.definition.tileId}@{upperSelf.collapsedVariant.rotation}°, connectors: {string.Join(", ", upperSelf.collapsedVariant.connectors.Select(c => $"{c.level}_{c.direction}"))}");
+			//if (!groundCell.isCollapsed) continue;
+			//if (groundCell.collapsedVariant.definition.tileId != "stairs") continue;
+//
+			//var variant = groundCell.collapsedVariant;
+			//GD.Print($"Stair at ({x},{y}) rotation {variant.rotation}°");
+//
+			//// Print all 4 neighbours on both layers
+			//foreach (var (dir, offset) in new System.Collections.Generic.Dictionary
+				//<ConnectorDirection, Vector2I>
+			//{
+				//{ ConnectorDirection.North, new Vector2I(0,-1) },
+				//{ ConnectorDirection.South, new Vector2I(0, 1) },
+				//{ ConnectorDirection.East,  new Vector2I(1, 0) },
+				//{ ConnectorDirection.West,  new Vector2I(-1,0) }
+			//})
+			//{
+				//int nx = x + offset.X;
+				//int ny = y + offset.Y;
+				//if (nx < 0 || nx >= Parameters.gridWidth ||
+					//ny < 0 || ny >= Parameters.gridHeight) continue;
+//
+				//var groundNeighbour = grid.GetGroundCell(nx, ny);
+				//var upperNeighbour = grid.GetUpperCell(nx, ny);
+//
+				//string groundId = groundNeighbour.isCollapsed
+					//? $"{groundNeighbour.collapsedVariant.definition.tileId}@{groundNeighbour.collapsedVariant.rotation}°"
+					//: "uncollapsed";
+				//string upperId = upperNeighbour.isCollapsed
+					//? $"{upperNeighbour.collapsedVariant.definition.tileId}@{upperNeighbour.collapsedVariant.rotation}°"
+					//: "uncollapsed";
+//
+				//GD.Print($"  {dir} → ground: {groundId} | upper: {upperId}");
+			//}
+		//}
+	//}
+//
+	//GD.Print("=== END STAIR DIAGNOSIS ===");
+//}
+	//
 }
