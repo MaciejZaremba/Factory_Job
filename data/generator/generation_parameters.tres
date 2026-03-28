@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_4ssqr")
 seed = 2137
+stairScaling = 15.0
 metadata/_custom_type_script = "uid://cdt68o5d3uh4j"

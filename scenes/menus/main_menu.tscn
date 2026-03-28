@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://yxlrjihdtu57"]
+
+[ext_resource type="FontFile" uid="uid://8ipyr6ruhgw4" path="res://data/fonts/FhaCondensedFrenchNc-O2n3.ttf" id="1_2o76q"]
+[ext_resource type="Script" uid="uid://dfeoh37lirhbb" path="res://scripts/main_menu/MainMenu.cs" id="1_6bivr"]
+[ext_resource type="PackedScene" uid="uid://b10yik4u53yha" path="res://scenes/menus/menu_room.tscn" id="1_xqga4"]
+[ext_resource type="Environment" uid="uid://jjigth1gwo5q" path="res://data/enviroments/main_menu.tres" id="2_ovrgc"]
+[ext_resource type="PackedScene" uid="uid://bhojj54headqb" path="res://scenes/menus/settings.tscn" id="3_imvie"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vn8vg"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2o76q"]
+bg_color = Color(0.27450982, 0.50980395, 0.7058824, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xqga4"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bivr"]
+bg_color = Color(0.27450982, 0.50980395, 0.7058824, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ovrgc"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_imvie"]
+bg_color = Color(0.27450982, 0.50980395, 0.7058824, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="MainMenu" type="Node3D" unique_id=705521038]
+script = ExtResource("1_6bivr")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1844567026]
+
+[node name="Menu" type="VBoxContainer" parent="CanvasLayer" unique_id=1097455679]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -122.875
+offset_top = -146.0
+offset_right = 122.875
+offset_bottom = 146.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Start" type="Button" parent="CanvasLayer/Menu" unique_id=1714425609]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("1_2o76q")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_vn8vg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2o76q")
+text = "Start Game"
+
+[node name="Settings" type="Button" parent="CanvasLayer/Menu" unique_id=203164573]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("1_2o76q")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_xqga4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6bivr")
+text = "Settings"
+
+[node name="Exit" type="Button" parent="CanvasLayer/Menu" unique_id=708147523]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("1_2o76q")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_ovrgc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_imvie")
+action_mode = 0
+text = "Exit
+"
+
+[node name="Settings" parent="CanvasLayer" unique_id=1991367013 instance=ExtResource("3_imvie")]
+visible = false
+
+[node name="TestRoom" parent="." unique_id=1034424344 instance=ExtResource("1_xqga4")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1303322738]
+environment = ExtResource("2_ovrgc")
+
+[connection signal="pressed" from="CanvasLayer/Menu/Start" to="." method="OnStartPressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/Settings" to="." method="OnSettingsPressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/Exit" to="." method="OnExitPressed"]

@@ -18,6 +18,7 @@ metadata/_custom_type_script = "uid://dlhuma0vc6wia"
 script = ExtResource("2_vjhr8")
 tileId = "stairs"
 scene = ExtResource("2_mgimt")
+weight = 0.0
 connectors = Array[ExtResource("1_4t1o1")]([SubResource("Resource_vjhr8"), SubResource("Resource_mgimt")])
 tags = Array[String](["stair"])
 blacklistTags = Array[String](["stair"])

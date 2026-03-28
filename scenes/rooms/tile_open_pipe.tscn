@@ -26,28 +26,51 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 
 [node name="Pipe" type="StaticBody3D" parent="." unique_id=110681734]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="Pipe" unique_id=2000804496]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.26934534, 0.3417836, 1.5880985)
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.342, 1.588)
 use_collision = true
 radius = 0.212
 height = 3.4353027
 
 [node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Pipe" unique_id=1586128021]
-transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, -1.658293, 0.3417836, -0.3036778)
+transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, -1.658, 0.342, 0)
 use_collision = true
 radius = 0.212
-height = 3.3555298
+height = 3.435
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Pipe" unique_id=29035257]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.597196, 0.28228235, 1.4299083)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6712003, 0.34572625, 1.6537397)
 use_collision = true
-radius = 0.41204053
+radius = 0.23
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="Pipe" unique_id=160856002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7020432, 0.40305406, 1.5837435)
+use_collision = true
+radius = 0.23
+
+[node name="CSGSphere3D3" type="CSGSphere3D" parent="Pipe" unique_id=197303462]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6497517, 0.403, -1.673261)
+use_collision = true
+radius = 0.23
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pipe" unique_id=142075008]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8603611, 1.2083458, 0)
+visible = false
 shape = SubResource("BoxShape3D_uftpc")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Pipe" unique_id=689004633]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.208, 1.86)
+visible = false
 shape = SubResource("BoxShape3D_uftpc")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="Pipe" unique_id=485497401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6986936, -0.047614694, 1.588)
+radius = 0.212
+height = 0.9589844
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="Pipe" unique_id=1196731871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6583139, -0.03999999, -1.6602035)
+radius = 0.212
+height = 0.959
