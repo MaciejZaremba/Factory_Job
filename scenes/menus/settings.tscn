@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://bhojj54headqb"]
 
 [ext_resource type="Script" uid="uid://d34fxvvnovlue" path="res://scripts/main_menu/Settings.cs" id="1_del6v"]
+[ext_resource type="FontFile" uid="uid://8ipyr6ruhgw4" path="res://data/fonts/FhaCondensedFrenchNc-O2n3.ttf" id="2_g2810"]
+[ext_resource type="StyleBox" uid="uid://b7scj8jp1go15" path="res://data/styles/button.tres" id="3_swl1s"]
+[ext_resource type="StyleBox" uid="uid://bwwje3e3381ra" path="res://data/styles/button_hover.tres" id="4_d8vgy"]
 
 [node name="Settings" type="VBoxContainer" unique_id=1991367013]
 anchors_preset = 8
@@ -10,8 +13,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -96.0
 offset_top = -27.5
-offset_right = 96.0
-offset_bottom = 27.5
+offset_right = 110.0
+offset_bottom = 149.5
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -19,6 +22,12 @@ script = ExtResource("1_del6v")
 
 [node name="Fullscreen" type="CheckButton" parent="." unique_id=1528822771]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_colors/font_focus_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_colors/font_pressed_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_colors/font_hover_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("2_g2810")
+theme_override_font_sizes/font_size = 32
 text = "Fullscreen"
 
 [node name="Resolution" type="HBoxContainer" parent="." unique_id=2070126453]
@@ -27,6 +36,9 @@ alignment = 1
 
 [node name="Label" type="Label" parent="Resolution" unique_id=1200199327]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("2_g2810")
+theme_override_font_sizes/font_size = 32
 text = "Resolution:"
 
 [node name="Resolution" type="OptionButton" parent="Resolution" unique_id=1942683783]
@@ -53,9 +65,13 @@ layout_mode = 2
 
 [node name="Music" type="HBoxContainer" parent="Volume" unique_id=1012359772]
 layout_mode = 2
+alignment = 1
 
 [node name="Label" type="Label" parent="Volume/Music" unique_id=121040084]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("2_g2810")
+theme_override_font_sizes/font_size = 32
 text = "Music: "
 
 [node name="MusicSlide" type="HSlider" parent="Volume/Music" unique_id=2050485132]
@@ -64,14 +80,29 @@ layout_mode = 2
 
 [node name="SFX" type="HBoxContainer" parent="Volume" unique_id=2075051077]
 layout_mode = 2
+alignment = 1
 
 [node name="Label" type="Label" parent="Volume/SFX" unique_id=850799351]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("2_g2810")
+theme_override_font_sizes/font_size = 32
 text = "Sound:"
 
 [node name="SFXSlide" type="HSlider" parent="Volume/SFX" unique_id=608619579]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 
+[node name="Exit" type="Button" parent="." unique_id=1539180050]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/font = ExtResource("2_g2810")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = ExtResource("3_swl1s")
+theme_override_styles/hover = ExtResource("4_d8vgy")
+text = "Back"
+
 [connection signal="toggled" from="Fullscreen" to="." method="OnFullscreenToggled"]
 [connection signal="item_selected" from="Resolution/Resolution" to="." method="OnResolutionSelected"]
+[connection signal="drag_ended" from="Volume/Music/MusicSlide" to="." method="OnMusicDragEnded"]
+[connection signal="drag_ended" from="Volume/SFX/SFXSlide" to="." method="OnSFXDragEnded"]
