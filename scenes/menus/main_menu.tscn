@@ -4,23 +4,9 @@
 [ext_resource type="Script" uid="uid://dfeoh37lirhbb" path="res://scripts/main_menu/MainMenu.cs" id="1_6bivr"]
 [ext_resource type="PackedScene" uid="uid://b10yik4u53yha" path="res://scenes/menus/menu_room.tscn" id="1_xqga4"]
 [ext_resource type="Environment" uid="uid://jjigth1gwo5q" path="res://data/enviroments/main_menu.tres" id="2_ovrgc"]
+[ext_resource type="StyleBox" uid="uid://b7scj8jp1go15" path="res://data/styles/button.tres" id="3_8r73w"]
 [ext_resource type="PackedScene" uid="uid://bhojj54headqb" path="res://scenes/menus/settings.tscn" id="3_imvie"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vn8vg"]
-content_margin_top = 6.0
-content_margin_bottom = 6.0
-bg_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2o76q"]
-bg_color = Color(0.27450982, 0.50980395, 0.7058824, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
+[ext_resource type="StyleBox" uid="uid://bwwje3e3381ra" path="res://data/styles/button_hover.tres" id="4_1hnlc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xqga4"]
 content_margin_top = 6.0
@@ -79,8 +65,8 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
 theme_override_fonts/font = ExtResource("1_2o76q")
 theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_vn8vg")
-theme_override_styles/hover = SubResource("StyleBoxFlat_2o76q")
+theme_override_styles/normal = ExtResource("3_8r73w")
+theme_override_styles/hover = ExtResource("4_1hnlc")
 text = "Start Game"
 
 [node name="Settings" type="Button" parent="CanvasLayer/Menu" unique_id=203164573]
