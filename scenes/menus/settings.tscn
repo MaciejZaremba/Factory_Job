@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://bhojj54headqb"]
+
+[ext_resource type="Script" uid="uid://d34fxvvnovlue" path="res://scripts/main_menu/Settings.cs" id="1_del6v"]
+
+[node name="Settings" type="VBoxContainer" unique_id=1991367013]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = -27.5
+offset_right = 96.0
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("1_del6v")
+
+[node name="Fullscreen" type="CheckButton" parent="." unique_id=1528822771]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="Resolution" type="HBoxContainer" parent="." unique_id=2070126453]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Resolution" unique_id=1200199327]
+layout_mode = 2
+text = "Resolution:"
+
+[node name="Resolution" type="OptionButton" parent="Resolution" unique_id=1942683783]
+layout_mode = 2
+allow_reselect = true
+item_count = 7
+popup/item_0/text = "3840x2160"
+popup/item_0/id = 0
+popup/item_1/text = "2560x1440"
+popup/item_1/id = 1
+popup/item_2/text = "1920x1080"
+popup/item_2/id = 2
+popup/item_3/text = "1440x900"
+popup/item_3/id = 3
+popup/item_4/text = "1280x1200"
+popup/item_4/id = 4
+popup/item_5/text = "1280x720"
+popup/item_5/id = 5
+popup/item_6/text = "800x600"
+popup/item_6/id = 6
+
+[node name="Volume" type="VBoxContainer" parent="." unique_id=207995936]
+layout_mode = 2
+
+[node name="Music" type="HBoxContainer" parent="Volume" unique_id=1012359772]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Volume/Music" unique_id=121040084]
+layout_mode = 2
+text = "Music: "
+
+[node name="MusicSlide" type="HSlider" parent="Volume/Music" unique_id=2050485132]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+
+[node name="SFX" type="HBoxContainer" parent="Volume" unique_id=2075051077]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Volume/SFX" unique_id=850799351]
+layout_mode = 2
+text = "Sound:"
+
+[node name="SFXSlide" type="HSlider" parent="Volume/SFX" unique_id=608619579]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+
+[connection signal="toggled" from="Fullscreen" to="." method="OnFullscreenToggled"]
+[connection signal="item_selected" from="Resolution/Resolution" to="." method="OnResolutionSelected"]

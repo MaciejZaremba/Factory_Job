@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Factory_Job"
-run/main_scene="uid://bxv4hgtsyk1u3"
+run/main_scene="uid://yxlrjihdtu57"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -21,7 +21,7 @@ TileRegistry="*uid://unsolha1dvbt"
 
 [display]
 
-window/size/mode=2
+window/size/mode=3
 
 [dotnet]
 

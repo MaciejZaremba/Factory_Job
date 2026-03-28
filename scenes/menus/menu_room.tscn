@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://b10yik4u53yha"]
 
-[ext_resource type="PackedScene" uid="uid://b1rn028ttn64k" path="res://scenes/player/player.tscn" id="1_hofnl"]
 [ext_resource type="PackedScene" uid="uid://dbqke038u83gb" path="res://scenes/rooms/tile_open.tscn" id="2_sumsi"]
 [ext_resource type="PackedScene" uid="uid://su3tlvq56t7l" path="res://scenes/rooms/tile_open_crates.tscn" id="3_2cmr0"]
 [ext_resource type="PackedScene" uid="uid://b4m2v63m3ya27" path="res://scenes/rooms/tile_walkway.tscn" id="4_1dk7r"]
@@ -8,10 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://dscnrwsgsvx72" path="res://scenes/rooms/tile_stairs.tscn" id="6_031ts"]
 [ext_resource type="PackedScene" uid="uid://cwq0hoo52lxf8" path="res://scenes/rooms/tile_open_pipe.tscn" id="7_lgiim"]
 
-[node name="TestRoom" type="Node3D" unique_id=1034424344]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_bi0au"]
+dof_blur_far_enabled = true
 
-[node name="CharacterBody3D" parent="." unique_id=1211865206 instance=ExtResource("1_hofnl")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1, 0)
+[node name="TestRoom" type="Node3D" unique_id=1034424344]
 
 [node name="TileOpen" parent="." unique_id=1378790568 instance=ExtResource("2_sumsi")]
 
@@ -69,6 +68,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
 [node name="TileOpen12" parent="." unique_id=798061666 instance=ExtResource("3_2cmr0")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4, 0, 0)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=413855627]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4488974, 3.7107944, -4.2927427)
-light_energy = 3.947
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=427239768]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=327678045]
+transform = Transform3D(-1, 1.7763568e-15, -8.7422784e-08, 2.4505907e-08, 0.9599081, -0.2803149, 8.391783e-08, -0.2803149, -0.9599081, 0, 0.26187158, -4.3707423)
+attributes = SubResource("CameraAttributesPractical_bi0au")
