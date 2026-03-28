@@ -47,7 +47,6 @@ public partial class DungeonGenerator : Node
 			{
 				ClearFloor();
 				_lastGrid = grid;
-				//DiagnoseStairs(grid);
 				InstanceTiles(grid, seed);
 				EmitSignal(SignalName.FloorGenerated, seed);
 				return;
@@ -67,6 +66,8 @@ public partial class DungeonGenerator : Node
 			GD.PrintErr("DungeonGenerator: GetSpawnPosition Called before generation.");
 			return Vector3.Zero;
 		}
+		
+		
 		for(int i = 1; i<Parameters.gridWidth-1; i++)
 		{
 			for(int j = 1; j < Parameters.gridHeight-1; j++)
@@ -82,6 +83,7 @@ public partial class DungeonGenerator : Node
 			}
 		}
 		return new Vector3(Parameters.gridWidth*2f,1f,Parameters.gridHeight*2f);
+		//return new Vector3(4f,4f,4f);
 	}
 	
 	// i dont know how to spell or say 'Instantiate'
@@ -112,7 +114,7 @@ public partial class DungeonGenerator : Node
 		var instance = variant.definition.scene.Instantiate<Node3D>();
 		
 		instance.Position = new Vector3(i*4f, 0f, j*4f);
-		instance.RotationDegrees = new Vector3(0f, variant.rotation, 0f);
+		instance.RotationDegrees = new Vector3(0f, -variant.rotation, 0f);
 		
 		_floorContainer.AddChild(instance);
 		return 1;

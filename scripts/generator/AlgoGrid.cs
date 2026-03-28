@@ -61,16 +61,16 @@ public class AlgoGrid
 			
 		upperVariants = _allVariants
 			.Where(vant => vant.definition.tileId == "empty" ||
-				(vant.definition.tileId != "stairs" &&
+				(!vant.definition.tileId.StartsWith("stairs") &&
 				(vant.HasConnectors(ConnectorDirection.North,ConnectorLevel.Upper) || 
 				vant.HasConnectors(ConnectorDirection.South,ConnectorLevel.Upper) || 
 				vant.HasConnectors(ConnectorDirection.West,ConnectorLevel.Upper) || 
 				vant.HasConnectors(ConnectorDirection.East,ConnectorLevel.Upper)))
 			).ToList();
-		//GD.Print("Upper layer variants:");
-		//foreach (var v in upperVariants)
-			//GD.Print($"  {v.definition.tileId} @ {v.rotation}°");
-	//
+			GD.Print("Upper layer variants:");
+			foreach (var v in upperVariants)
+				GD.Print($"  {v.definition.tileId} @ {v.rotation}°");
+				
 		for(int i = 0; i<width; i++)
 		{
 			for(int j = 0; j<height; j++)
@@ -106,6 +106,8 @@ public class AlgoGrid
 	public bool Solve(int stairMinT, float stairScaling, int maxNetworks)
 	{
 		GD.Print("AlgoGrid: Solve() entered.");
+		//Create spawn point -> also helps kickstart upper layer
+		CreateSpawnPoint();
 		//Solve the upper layer
 		if(!SolveLayerSkipEmpty(_upperCells, width*height*100, ConnectorLevel.Upper)) return false;
 		GD.Print("AlgoGrid: Upper layer first pass complete.");
@@ -157,16 +159,11 @@ public class AlgoGrid
 		foreach(var variant in cell.possibleVariants)
 		{
 			bool cellHasConnector = variant.HasConnectors(direction, level);
-			//bool cellHasGroundConnector = variant.HasConnectors(direction, ConnectorLevel.Ground);
-			//bool cellHasUpperConnector = variant.HasConnectors(direction, ConnectorLevel.Upper);
 			
 			foreach(var candidate in _allVariants)
 			{
 				bool neighbourHasConnector = candidate.HasConnectors(oppositeDirection,level);
-				//bool neighbourHasGroundConnector = candidate.HasConnectors(oppositeDirection, ConnectorLevel.Ground);
-				//bool neighbourHasUpperConnector = candidate.HasConnectors(oppositeDirection, ConnectorLevel.Upper);
-				
-				//if(cellHasGroundConnector == neighbourHasGroundConnector && cellHasUpperConnector == neighbourHasUpperConnector)
+
 				if(cellHasConnector == neighbourHasConnector)
 				{
 					bool forbidden = false;
@@ -368,7 +365,7 @@ public class AlgoGrid
 					if(!InBounds(neighbour)) continue;
 					
 					var upperNeighbour = _upperCells[neighbour.X, neighbour.Y];
-					if(upperNeighbour.isCollapsed) continue;
+					if(!upperNeighbour.isCollapsed) continue;
 					if(upperNeighbour.collapsedVariant.definition.tileId != "empty") continue;
 					
 					var groundNeighbour = _groundCells[neighbour.X,neighbour.Y];
@@ -433,34 +430,47 @@ public class AlgoGrid
 			if(!cell.isCollapsed) continue;
 			var variant = cell.collapsedVariant;
 			
-			foreach(var (direction, offset) in DirectionOffsets)
-			{
-				if(!variant.HasConnectors(direction, ConnectorLevel.Upper)) continue;
-				var neighbour = pos+offset;
-				if(!InBounds(neighbour)) continue;
-				if(neighbour.X == 0 || neighbour.X == 0 || neighbour.X == width-1 || neighbour.Y == height-1) continue;
-				var neighbourCell = _upperCells[neighbour.X, neighbour.Y];
-				if(neighbourCell.isCollapsed)
-				{
-					var neighbourVariant = neighbourCell.collapsedVariant.definition.tileId;
-					if(neighbourVariant == "empty") continue;
-				}
-				openEdges.Add((pos,direction));
-			}
+			var upperConnectors = variant.connectors.Where(con => con.level == ConnectorLevel.Upper).ToList();
+			
+			if (upperConnectors.Count != 1) continue;
+			
+			var connectorDir = upperConnectors[0].direction;
+			var walkwayEdgeDir = Opposite[connectorDir];
+			
+			if(pos.X <=1 || pos.Y <=1 || pos.X >=width-2 || pos.Y >= height-2) continue;
+			openEdges.Add((pos, walkwayEdgeDir));
+			
+			//foreach(var (direction, offset) in DirectionOffsets)
+			//{
+				//if(!variant.HasConnectors(direction, ConnectorLevel.Upper)) continue;
+				//var neighbour = pos+offset;
+				//if(!InBounds(neighbour)) continue;
+				//if(neighbour.X == 0 || neighbour.Y == 0 || neighbour.X == width-1 || neighbour.Y == height-1) continue;
+				//var neighbourCell = _upperCells[neighbour.X, neighbour.Y];
+				//if(neighbourCell.isCollapsed)
+				//{
+					//var neighbourVariant = neighbourCell.collapsedVariant.definition.tileId;
+					//if(neighbourVariant != "empty") continue;
+					//openEdges.Add((pos,direction));
+				//} else {
+					//openEdges.Add((pos,direction));
+				//}
+				
+			//}
 		}
-		GD.Print($"ProcessWalkwayNetwork: found {openEdges.Count} open edges.");
+		GD.Print($"ProcessWalkwayNetwork: found {openEdges.Count} dead-end edges.");
 		Shuffle(openEdges);
 		int stairCount = 0;
 		var placedStairPositions = new HashSet<Vector2I>();
-		foreach(var (pos,direction) in openEdges)
+		foreach(var (groundPos,direction) in openEdges)
 		{
-			var offset = DirectionOffsets[direction];
-			var groundPos = pos+offset;
+			//var offset = DirectionOffsets[direction];
+			//var groundPos = pos+offset;
 			if(placedStairPositions.Contains(groundPos)) continue;
 			
 			bool placeStair = ShouldPlaceStair(stairCount, stairMinT ,stairScaling);
-			GD.Print($"ProcessWalkwayNetwork: edge at {pos} dir={direction}, " +
-				 $"groundPos={groundPos}, placeStair={placeStair}, stairCount={stairCount}");
+			GD.Print($"ProcessWalkwayNetwork: dead-end at {groundPos} dir={direction}, " +
+				 $"placeStair={placeStair}, stairCount={stairCount}");
 			if(placeStair && TryForceStair(groundPos, direction)) 
 			{
 				GD.Print($"ProcessWalkwayNetwork: stair placed at {groundPos}.");
@@ -474,8 +484,19 @@ public class AlgoGrid
 	
 	private void ForceStairSpawns(int stairMinT, float stairScaling)
 	{
-		GD.Print("ForceStairsAtWalkwayEdges: entered.");
-	
+		GD.Print("ForceStairSpawns: entered.");
+		
+		GD.Print("ForceStairSpawns: upper layer state:");
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < height; y++)
+			{
+				var cell = _upperCells[x, y];
+				if (!cell.isCollapsed) continue;
+				var id = cell.collapsedVariant.definition.tileId;
+				if (id != "empty")
+					GD.Print($"  ({x},{y}) = {id}@{cell.collapsedVariant.rotation}°");
+			}
+			
 		int walkwayCells = 0;
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++)
@@ -486,7 +507,7 @@ public class AlgoGrid
 				if (id != "empty" && id != "stairs_top") walkwayCells++;
 			}
 		
-		GD.Print($"ForceStairsAtWalkwayEdges: {walkwayCells} collapsed walkway cells found.");
+		GD.Print($"ForceStairSpawns: {walkwayCells} collapsed walkway cells found.");
 		
 		var visited = new HashSet<Vector2I>();
 		for(int i = 0; i<width;i++)
@@ -611,10 +632,19 @@ public class AlgoGrid
 		}
 		GD.Print($"PruneSmallWalkwayNetworks: Found {networks.Count} networks.");
 		
-		if(networks.Count <= maxNetworks) return;
+		//if(networks.Count <= maxNetworks) return;
 		
 		networks.Sort((a,b) => b.Count.CompareTo(a.Count()));
 		var networksToKeep = new HashSet<Vector2I>();
+		int kept = 0;
+		foreach(var network in networks)
+		{
+			if(kept >= maxNetworks) break;
+			if(network.Count < 3) continue;
+			foreach(var pos in network) networksToKeep.Add(pos);
+			kept++;
+		}
+		
 		for(int i=0; i<maxNetworks && i<networks.Count; i++)
 		{
 			foreach(var pos in networks[i]) networksToKeep.Add(pos);
@@ -640,6 +670,12 @@ public class AlgoGrid
 			}
 		}
 		GD.Print($"PruneSmallWalkwayNetworks: pruned {pruned} cells from small networks.");
+	}
+	
+	private void CreateSpawnPoint()
+	{
+		var spawnVariant = _allVariants.FirstOrDefault(vant => vant.definition.tileId == "walkway_right" && vant.rotation == 0);
+		if(spawnVariant != null) _upperCells[1,1].ForceCollapse(spawnVariant);
 	}
 	
 	private void Shuffle<T>(List<T> list)
