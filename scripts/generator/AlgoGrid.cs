@@ -12,7 +12,7 @@ public class AlgoGrid
 	private List<TileVariant> _allVariants;
 	private List<TileVariant> groundVariants;
 	private List<TileVariant> upperVariants;
-	private System.Random _rand;
+	private RandomNumberGenerator _rand;
 	private int totalStairCount = 0;
 	private int stairMaxT;
 	
@@ -32,12 +32,12 @@ public class AlgoGrid
 		{ConnectorDirection.West, ConnectorDirection.East}
 	};
 	
-	public AlgoGrid(int width, int height, int seed, int stairMaxT ,List<TileVariant> allVariants)
+	public AlgoGrid(int width, int height, RandomNumberGenerator seed, int stairMaxT ,List<TileVariant> allVariants)
 	{
 		this.width = width;
 		this.height = height;
 		this._allVariants = allVariants;
-		this._rand = new System.Random(seed);
+		this._rand = seed;
 		this.stairMaxT = stairMaxT;
 		InitialiseCells();
 		PreCollapseBorders();
@@ -549,7 +549,7 @@ public class AlgoGrid
 		if(totalStairCount >= stairMaxT) return false;
 		int excess = stairCount - stairMinT;
 		float chance = excess / (excess + scaling);
-		return (float) _rand.NextDouble() > chance;
+		return _rand.Randf() > chance;
 	}
 	
 	private bool TryForceStair(Vector2I groundPos, ConnectorDirection walkwayEdgeDirection)
@@ -682,7 +682,8 @@ public class AlgoGrid
 	{
 		for(int i = list.Count - 1; i>0; i--)
 		{
-			int j = _rand.Next(i+1);
+			int j = _rand.RandiRange(0, i);
+			GD.Print($"CreateSpawnPoint: j = {j}, RandiRange max = {i+1}");
 			(list[i], list[j]) = (list[j], list[i]);
 		}
 	}

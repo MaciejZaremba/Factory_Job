@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 TileRegistry="*uid://unsolha1dvbt"
+EventManager="*uid://bmu2rgt14fsqv"
 
 [display]
 
@@ -26,6 +27,10 @@ window/size/mode=3
 [dotnet]
 
 project/assembly_name="Factory_Job"
+
+[global_group]
+
+playerGroup=""
 
 [input]
 

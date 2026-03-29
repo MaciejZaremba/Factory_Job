@@ -15,6 +15,9 @@ size = Vector3(0.1, 1, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_s1nsa"]
 size = Vector3(4, 1, 0.1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ullpc"]
+size = Vector3(1.9, 0.19580078, 0.9379883)
+
 [node name="TileWalkway" type="Node3D" unique_id=401418162]
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=121644029]
@@ -88,3 +91,17 @@ shape = SubResource("BoxShape3D_4joks")
 [node name="RailingSouth2" type="CollisionShape3D" parent="Railings" unique_id=1651336215]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1)
 shape = SubResource("BoxShape3D_s1nsa")
+
+[node name="WalkwayEventTrigger" type="Area3D" parent="." unique_id=1884047943]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WalkwayEventTrigger" unique_id=2116787416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0052466393, 3.027588, -1.3677605)
+shape = SubResource("BoxShape3D_ullpc")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="WalkwayEventTrigger" unique_id=1476650088]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.423775, 3.027588, 0.01990503)
+shape = SubResource("BoxShape3D_ullpc")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="WalkwayEventTrigger" unique_id=200887679]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.376225, 3.027588, 0.06990504)
+shape = SubResource("BoxShape3D_ullpc")

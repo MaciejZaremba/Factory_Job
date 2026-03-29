@@ -7,8 +7,10 @@ public partial class DungeonGenerator : Node
 	[Export] public GenerationParameters Parameters {get; set;}
 	// creats a Node3D object that holds the tiles during generation
 	[Export] public NodePath FloorContainerPath {get; set;}
+	//seed
+	[Export] public ulong Seed {get; private set;}
 	//emits when generation succeeds - used to extract the seed
-	[Signal] public delegate void FloorGeneratedEventHandler(int seed);
+	[Signal] public delegate void FloorGeneratedEventHandler(RandomNumberGenerator seed);
 	//emits when generation fails
 	[Signal] public delegate void GenerationFailedEventHandler();
 	
@@ -33,26 +35,34 @@ public partial class DungeonGenerator : Node
 		{
 			GD.PrintErr("DungeonGenerator: No GenerationParameters assigned.");
 		}
-		
-		int seed = Parameters.seed != 0 ? Parameters.seed : (int)Time.GetTicksMsec();
+		var _rand = new RandomNumberGenerator();
+		if(Parameters.seed == 0)
+		{
+			_rand.Randomize();
+			Seed = _rand.Seed;
+		} else {
+			_rand.Seed = Parameters.seed;
+			Seed = _rand.Seed;
+		}
 		
 		for(int attempt=0; attempt < Parameters.maxRetries; attempt++)
 		{
-			GD.Print($"DungeonGenerator: Attempt {attempt + 1} with seed {seed}.");
+			GD.Print($"DungeonGenerator: Attempt {attempt + 1} with Seed {Seed}.");
 			//every attempt creats a grid
-			var grid = new AlgoGrid(Parameters.gridWidth, Parameters.gridHeight, seed, Parameters.stairMaxThreshold, TileRegistry.Instance.GetAllVariants());
+			var grid = new AlgoGrid(Parameters.gridWidth, Parameters.gridHeight, _rand, Parameters.stairMaxThreshold, TileRegistry.Instance.GetAllVariants());
 			
 			//if the grid algorithm succeeds, instance it.
 			if(grid.Solve(Parameters.stairMinThreshold, Parameters.stairScaling, Parameters.maxWalkwayNetworks))
 			{
 				ClearFloor();
 				_lastGrid = grid;
-				InstanceTiles(grid, seed);
-				EmitSignal(SignalName.FloorGenerated, seed);
+				InstanceTiles(grid, Seed);
+				EmitSignal(SignalName.FloorGenerated, _rand);
+				EventManager.Instance.FloorGenerated(_rand);
 				return;
 			}
 			
-			seed++;
+			_rand.Seed = Seed++;
 		}
 		
 		GD.PrintErr($"DungeonGenerator: Failed after {Parameters.maxRetries} attempts.");
@@ -87,7 +97,7 @@ public partial class DungeonGenerator : Node
 	}
 	
 	// i dont know how to spell or say 'Instantiate'
-	private void InstanceTiles(AlgoGrid grid, int seed)
+	private void InstanceTiles(AlgoGrid grid, ulong Seed)
 	{
 		int instanced = 0;
 		
