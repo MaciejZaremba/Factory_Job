@@ -10,7 +10,7 @@
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_bi0au"]
 dof_blur_far_enabled = true
 
-[node name="TestRoom" type="Node3D" unique_id=1034424344]
+[node name="MenuRoom" type="Node3D" unique_id=1034424344]
 
 [node name="TileOpen" parent="." unique_id=1378790568 instance=ExtResource("2_sumsi")]
 

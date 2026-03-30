@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b1rn028ttn64k" path="res://scenes/player/player.tscn" id="1_ge6nc"]
 [ext_resource type="Script" uid="uid://cxk8qe2jtg4f1" path="res://scripts/generator/DungeonGenerator.cs" id="2_1f7hh"]
 [ext_resource type="Script" uid="uid://cdt68o5d3uh4j" path="res://scripts/generator/GenerationParameters.cs" id="3_p7t0b"]
+[ext_resource type="PackedScene" uid="uid://bueqo41daoki8" path="res://scenes/game/event_popup.tscn" id="5_jvmgk"]
 
 [sub_resource type="Resource" id="Resource_5phle"]
 script = ExtResource("3_p7t0b")
@@ -24,3 +25,6 @@ FloorContainerPath = NodePath("../FloorContainer")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1052873220]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+
+[node name="EventPopup" parent="." unique_id=253225637 instance=ExtResource("5_jvmgk")]
+visible = false

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EventDefinition" format=3 uid="uid://7ojv2u3h2m54"]
+
+[ext_resource type="Script" uid="uid://dvc4c3m08lr3p" path="res://scripts/game/EventDefinition.cs" id="1_re3nc"]
+
+[resource]
+script = ExtResource("1_re3nc")
+title = "test2"
+description = "testin2"
+outcome = Array[int]([2, 4])
+outcomeTitle = Array[String](["Yes", "No"])
+weight = 3.0
+unique = true
+metadata/_custom_type_script = "uid://dvc4c3m08lr3p"

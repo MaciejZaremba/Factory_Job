@@ -22,7 +22,7 @@ public partial class Tile : Node3D
 		{
 			GD.Print("Tile: Player Entered Tile.");
 			_hasTriggered = true;
-			EventManager.Instance.TileEntered();
+			EventManager.Instance.TileEntered(GetParent().GetParent().GetNode<CanvasLayer>("EventPopup"), "tile");
 		}
 	}
 }

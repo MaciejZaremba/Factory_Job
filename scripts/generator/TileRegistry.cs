@@ -47,7 +47,7 @@ public partial class TileRegistry : Node
 		}
 		
 		dir.ListDirEnd();
-		//GD.Print($"TileRegistry: Registered {_variants.Count} tile variants");
+		GD.Print($"TileRegistry: Registered {_variants.Count} tile variants");
 	}
 	
 	//register all tiles
