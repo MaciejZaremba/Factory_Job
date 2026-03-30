@@ -9,6 +9,9 @@ size = Vector3(2, 0.2, 5)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jp4dh"]
 albedo_color = Color(0.9411765, 0, 0, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_jp4dh"]
+size = Vector3(3.7, 0.3, 3.7)
+
 [node name="TileStairs" type="Node3D" unique_id=1432166414]
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=902103127]
@@ -136,3 +139,12 @@ material = SubResource("StandardMaterial3D_jp4dh")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9141657, 2.0058293)
 size = Vector3(2, 0.15, 0.5)
 material = SubResource("StandardMaterial3D_jp4dh")
+
+[node name="StairEventTrigger" type="Area3D" parent="." unique_id=1033003333]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StairEventTrigger" unique_id=868202916]
+shape = SubResource("BoxShape3D_jp4dh")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StairEventTrigger" unique_id=1185166049]
+transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 0, 1.654, 0.188)
+shape = SubResource("BoxShape3D_jvue1")

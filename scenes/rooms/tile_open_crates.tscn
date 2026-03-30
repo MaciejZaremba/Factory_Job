@@ -1,12 +1,18 @@
 [gd_scene format=3 uid="uid://su3tlvq56t7l"]
 
+[ext_resource type="Script" uid="uid://i7un81in4ids" path="res://scripts/game/Tile.cs" id="1_6ubj8"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_rloo2"]
 size = Vector3(4, 0.2, 4)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hj1d1"]
 size = Vector3(1, 2.5, 4)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_6ubj8"]
+size = Vector3(3.7, 0.3, 3.7)
+
 [node name="TileOpen" type="Node3D" unique_id=1378790568]
+script = ExtResource("1_6ubj8")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=189185756]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
@@ -49,3 +55,10 @@ use_collision = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Crate" unique_id=1374313425]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4972944, 1.2488306, 0)
 shape = SubResource("BoxShape3D_hj1d1")
+
+[node name="TileEventTrigger" type="Area3D" parent="." unique_id=1517313381]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TileEventTrigger" unique_id=1415170072]
+shape = SubResource("BoxShape3D_6ubj8")
+
+[connection signal="body_entered" from="TileEventTrigger" to="." method="OnTileEntered"]

@@ -14,9 +14,9 @@ public partial class TestRoom : Node
 		_generator.Generate();
 	}
 	
-	public void OnFloorGenerated(int seed)
+	public void OnFloorGenerated(RandomNumberGenerator seed)
 	{
-		GD.Print($"Floor generated successfully. Seed {seed}");
+		GD.Print($"Floor generated successfully. Seed {seed.Seed}");
 		var spawnPos = _generator.GetSpawnPosition();
 		_player.GlobalPosition=spawnPos;
 	}

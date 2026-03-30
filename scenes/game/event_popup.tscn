@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bueqo41daoki8"]
+
+[ext_resource type="Script" uid="uid://bbux3a3hidsmr" path="res://scripts/game/EventPopup.cs" id="1_marg2"]
+[ext_resource type="FontFile" uid="uid://8ipyr6ruhgw4" path="res://data/fonts/FhaCondensedFrenchNc-O2n3.ttf" id="2_ff6wp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_marg2"]
+bg_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="EventPopup" type="CanvasLayer" unique_id=253225637]
+script = ExtResource("1_marg2")
+
+[node name="Control" type="Control" parent="." unique_id=1240466098]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Control" unique_id=1136866742]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.5
+offset_top = -78.5
+offset_right = 96.5
+offset_bottom = 78.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/CenterContainer" unique_id=1206479775]
+layout_mode = 2
+
+[node name="Description" type="RichTextLabel" parent="Control/CenterContainer/VBoxContainer" unique_id=36840818]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+theme_override_fonts/normal_font = ExtResource("2_ff6wp")
+theme_override_font_sizes/normal_font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_marg2")
+bbcode_enabled = true
+text = "test"
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters = 5
+visible_ratio = 1.25
+
+[node name="Buttons" type="VBoxContainer" parent="Control/CenterContainer/VBoxContainer" unique_id=1962708189]
+layout_mode = 2

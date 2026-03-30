@@ -55,12 +55,12 @@ public class AlgoCell
 	}
 	
 	//randomly collapses a cell to one of the remaining variants
-	public void CollapseRandom(System.Random rand)
+	public void CollapseRandom(RandomNumberGenerator rand)
 	{
 		if(isCollapsed) return;
 		
 		float totalWeight = possibleVariants.Sum(vant => vant.definition.weight);
-		float roll = (float)rand.NextDouble() * totalWeight;
+		float roll = (rand.Randf() * totalWeight);
 		float count = 0f;
 		
 		foreach (var variant in possibleVariants)
