@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://b4knwg7ijo51o"]
+
+[ext_resource type="PackedScene" uid="uid://co0utciwu7tkp" path="res://scenes/game/inventory_slot.tscn" id="1_17o8c"]
+
+[node name="Inventory" type="CanvasLayer" unique_id=752087043]
+
+[node name="Control" type="Control" parent="." unique_id=777555090]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=948107250]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Equipment" type="GridContainer" parent="Control/HBoxContainer" unique_id=2142296624]
+layout_mode = 2
+columns = 2
+
+[node name="InventorySlot1" parent="Control/HBoxContainer/Equipment" unique_id=25839187 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 1
+
+[node name="InventorySlot2" parent="Control/HBoxContainer/Equipment" unique_id=531716310 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 2
+
+[node name="InventorySlot3" parent="Control/HBoxContainer/Equipment" unique_id=78218927 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 3
+
+[node name="InventorySlot4" parent="Control/HBoxContainer/Equipment" unique_id=416508500 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 3
+
+[node name="InventorySlot5" parent="Control/HBoxContainer/Equipment" unique_id=402695245 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 4
+
+[node name="InventorySlot6" parent="Control/HBoxContainer/Equipment" unique_id=2000450302 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 5
+
+[node name="InventorySlot7" parent="Control/HBoxContainer/Equipment" unique_id=318606421 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 5
+
+[node name="InventorySlot8" parent="Control/HBoxContainer/Equipment" unique_id=864402484 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 6
+
+[node name="InventorySlot9" parent="Control/HBoxContainer/Equipment" unique_id=1541016484 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 6
+
+[node name="InventorySlot10" parent="Control/HBoxContainer/Equipment" unique_id=1144741811 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 6
+
+[node name="InventorySlot11" parent="Control/HBoxContainer/Equipment" unique_id=617333176 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 6
+
+[node name="InventorySlot12" parent="Control/HBoxContainer/Equipment" unique_id=788889870 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+
+[node name="InventorySlot13" parent="Control/HBoxContainer/Equipment" unique_id=718885465 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+
+[node name="Storage" type="GridContainer" parent="Control/HBoxContainer" unique_id=1386474307]
+layout_direction = 3
+layout_mode = 2
+columns = 2
+
+[node name="InventorySlot1" parent="Control/HBoxContainer/Storage" unique_id=1685779356 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot2" parent="Control/HBoxContainer/Storage" unique_id=1642148810 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot3" parent="Control/HBoxContainer/Storage" unique_id=1118007491 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot4" parent="Control/HBoxContainer/Storage" unique_id=653456929 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot5" parent="Control/HBoxContainer/Storage" unique_id=571733941 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot6" parent="Control/HBoxContainer/Storage" unique_id=2028499402 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot7" parent="Control/HBoxContainer/Storage" unique_id=983127706 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot8" parent="Control/HBoxContainer/Storage" unique_id=648272340 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot9" parent="Control/HBoxContainer/Storage" unique_id=1481719817 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot10" parent="Control/HBoxContainer/Storage" unique_id=2083409647 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot11" parent="Control/HBoxContainer/Storage" unique_id=2011628958 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot12" parent="Control/HBoxContainer/Storage" unique_id=356159996 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot13" parent="Control/HBoxContainer/Storage" unique_id=244402627 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot14" parent="Control/HBoxContainer/Storage" unique_id=2033499350 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot15" parent="Control/HBoxContainer/Storage" unique_id=1462705928 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot16" parent="Control/HBoxContainer/Storage" unique_id=709135489 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot17" parent="Control/HBoxContainer/Storage" unique_id=1512709480 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot18" parent="Control/HBoxContainer/Storage" unique_id=1607416191 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot19" parent="Control/HBoxContainer/Storage" unique_id=80226546 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12
+
+[node name="InventorySlot20" parent="Control/HBoxContainer/Storage" unique_id=1894184175 instance=ExtResource("1_17o8c")]
+layout_mode = 2
+category = 12

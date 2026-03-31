@@ -8,7 +8,6 @@ public partial class Player : CharacterBody3D
 	[Export] public float walkSpeed = 3.5f;
 	[Export] public float sprintSpeed = 5.5f;
 	[Export] public float mouseSensitivity = 0.002f;
-	[Export] public Array<string> Inventory = new();
 	//Keeps you grounded
 	private float _gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 	
@@ -65,7 +64,7 @@ public partial class Player : CharacterBody3D
 		
 		//Determine if the player is sprinting
 		float speed = Input.IsActionPressed("sprint") ? sprintSpeed : walkSpeed;
-		
+		speed += PlayerState.Instance.movementSpeed;
 		//Order sensitive (learned the hard way)
 		Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_back");
 		//Movement black magic
@@ -83,5 +82,61 @@ public partial class Player : CharacterBody3D
 		}
 		Velocity = velocity;
 		MoveAndSlide();
+	}
+	
+	public void _StatCalculations()
+	{
+		foreach(var (slot, item) in Inventory.Instance.equipment)
+		{
+			foreach(var buff in item.buffs)
+			{
+				switch(buff.type)
+				{
+					case BuffCategory.MaxHP: 
+						var previousMaxHP = PlayerState.Instance.maxHP;
+						PlayerState.Instance.maxHP = (int)GameState.Instance.defaultStats["maxHP"] + (int)buff.strength;
+						 if(previousMaxHP > PlayerState.Instance.maxHP)
+						{
+							PlayerState.Instance.currentHP += (int)buff.strength;
+						} else {
+							PlayerState.Instance.currentHP -= (int)buff.strength;
+						}
+						
+						break;
+					case BuffCategory.CardDrawFight: 
+						PlayerState.Instance.cardDraw += (int)buff.strength;
+						break;
+					case BuffCategory.CardRetention: 
+						PlayerState.Instance.cardRetention += (int)buff.strength;
+						break;
+					case BuffCategory.MovementSpeed: 
+						PlayerState.Instance.movementSpeed += buff.strength;
+						break;
+					case BuffCategory.ConsumableRetention: 
+						PlayerState.Instance.consumableRetention += buff.strength;
+						break;
+					case BuffCategory.CardAttackFight: 
+						PlayerState.Instance.cardAttackStrength += (int)buff.strength;
+						break;
+					case BuffCategory.CardDefenseFight: 
+						PlayerState.Instance.cardDefenseStrength += (int)buff.strength;
+						break;
+					default: break;
+				}
+			}
+		}
+	}
+	
+	private void _StartingStats()
+	{
+		PlayerState.Instance.maxHP = (int)GameState.Instance.defaultStats["maxHP"];
+		PlayerState.Instance.currentHP = (int)GameState.Instance.defaultStats["currentHP"];
+		PlayerState.Instance.cardDraw = (int)GameState.Instance.defaultStats["cardDraw"];
+		PlayerState.Instance.cardRetention = (int)GameState.Instance.defaultStats["cardRetention"];
+		PlayerState.Instance.movementSpeed = GameState.Instance.defaultStats["movementSpeed"];
+		PlayerState.Instance.consumableRetention = GameState.Instance.defaultStats["consumableRetention"];
+		PlayerState.Instance.cardAttackStrength = (int)GameState.Instance.defaultStats["cardAttackStrength"];
+		PlayerState.Instance.cardDefenseStrength = (int)GameState.Instance.defaultStats["cardDefenseStrength"];
+		PlayerState.Instance.cardUtilityStrength = (int)GameState.Instance.defaultStats["cardUtilityStrength"];
 	}
 }
