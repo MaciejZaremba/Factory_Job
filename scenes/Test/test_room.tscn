@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cxk8qe2jtg4f1" path="res://scripts/generator/DungeonGenerator.cs" id="2_1f7hh"]
 [ext_resource type="Script" uid="uid://cdt68o5d3uh4j" path="res://scripts/generator/GenerationParameters.cs" id="3_p7t0b"]
 [ext_resource type="PackedScene" uid="uid://bueqo41daoki8" path="res://scenes/game/event_popup.tscn" id="5_jvmgk"]
+[ext_resource type="PackedScene" uid="uid://b4knwg7ijo51o" path="res://scenes/game/inventory.tscn" id="6_sy3jx"]
 
 [sub_resource type="Resource" id="Resource_5phle"]
 script = ExtResource("3_p7t0b")
@@ -28,3 +29,7 @@ transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70
 
 [node name="EventPopup" parent="." unique_id=253225637 instance=ExtResource("5_jvmgk")]
 visible = false
+
+[node name="Inventory" parent="." unique_id=752087043 instance=ExtResource("6_sy3jx")]
+visible = false
+script = null

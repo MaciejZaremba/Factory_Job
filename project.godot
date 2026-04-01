@@ -22,6 +22,7 @@ EventManager="*uid://bmu2rgt14fsqv"
 GameState="*uid://c71mjqenk8dp5"
 PlayerState="*uid://bvv66xe185gpg"
 Inventory="*uid://xealmj1u3rkc"
+UiManager="*uid://bn6b0hoq23to"
 
 [display]
 

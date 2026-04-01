@@ -5,6 +5,8 @@ public partial class GameState : Node
 {
 	public static GameState Instance {get; private set;}
 	[Export] public bool inEvent {get;set;}
+	[Export] public bool inGame {get;set;}
+	[Export] public bool inInventory {get;set;}
 	[Export] public bool startEvent {get;set;}
 	[Export] public Dictionary<string, float> defaultStats {get;private set;} = new();
 	
@@ -12,6 +14,7 @@ public partial class GameState : Node
 	{
 		Instance = this;
 		inEvent = false;
+		inInventory = false;
 		startEvent = false;
 		_setDefaultStats();
 	}
