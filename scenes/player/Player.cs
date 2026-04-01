@@ -43,18 +43,18 @@ public partial class Player : CharacterBody3D
 			}
 		}
 		//Debug tool - release mouse on Esc
-		if (@event is InputEventKey keyEvent && keyEvent.Pressed)
-		{
-			if (keyEvent.Keycode == Key.Escape)
-			{
-				Input.MouseMode = Input.MouseModeEnum.Visible;
-			}
-		}
+		//if (@event is InputEventKey keyEvent && keyEvent.Pressed)
+		//{
+			//if (keyEvent.Keycode == Key.Escape)
+			//{
+				//Input.MouseMode = Input.MouseModeEnum.Visible;
+			//}
+		//}
 	}
 	// Physics? In my video game?
 	public override void _PhysicsProcess(double delta)
 	{
-		if(GameState.Instance.inEvent) return;
+		if(GameState.Instance.inEvent || GameState.Instance.inEvent) return;
 		Vector3 velocity = Velocity;
 		// Apply Gravity
 		if (!IsOnFloor())

@@ -69,6 +69,7 @@ public partial class EventManager : Node
 			Input.MouseMode = Input.MouseModeEnum.Confined;
 			GameState.Instance.inEvent = true;
 			GameState.Instance.startEvent = true;
+			GD.Print($"EventManager: Start event completed: {GameState.Instance.startEvent}");
 			return;
 		}
 		var _event = _rand.RandfRange(0f,eventWeight * 1.5f);

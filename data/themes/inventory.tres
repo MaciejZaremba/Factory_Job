@@ -1,0 +1,20 @@
+[gd_resource type="Theme" format=3 uid="uid://bmb3fyxbkogj1"]
+
+[ext_resource type="FontFile" uid="uid://8ipyr6ruhgw4" path="res://data/fonts/FhaCondensedFrenchNc-O2n3.ttf" id="1_pueae"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pueae"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[resource]
+default_font = ExtResource("1_pueae")
+default_font_size = 32
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_pueae")

@@ -1,8 +1,38 @@
 [gd_scene format=3 uid="uid://b4knwg7ijo51o"]
 
 [ext_resource type="PackedScene" uid="uid://co0utciwu7tkp" path="res://scenes/game/inventory_slot.tscn" id="1_17o8c"]
+[ext_resource type="Script" uid="uid://xealmj1u3rkc" path="res://scripts/game/Inventory.cs" id="1_c3txp"]
+[ext_resource type="Theme" uid="uid://bmb3fyxbkogj1" path="res://data/themes/inventory.tres" id="2_yq6yy"]
+[ext_resource type="FontFile" uid="uid://8ipyr6ruhgw4" path="res://data/fonts/FhaCondensedFrenchNc-O2n3.ttf" id="3_umkma"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sdb1p"]
+bg_color = Color(0.27450982, 0.50980395, 0.7058824, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yq6yy"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.7176471, 0.25490198, 0.05490196, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nq4mu"]
+bg_color = Color(0.41930223, 0.1347124, 0.015034121, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tw7bo"]
+bg_color = Color(0.5545019, 0.18834352, 0.029314851, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
 [node name="Inventory" type="CanvasLayer" unique_id=752087043]
+script = ExtResource("1_c3txp")
 
 [node name="Control" type="Control" parent="." unique_id=777555090]
 layout_mode = 3
@@ -11,21 +41,34 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_yq6yy")
+
+[node name="Panel" type="Panel" parent="Control" unique_id=645456093]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sdb1p")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=948107250]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
 [node name="Equipment" type="GridContainer" parent="Control/HBoxContainer" unique_id=2142296624]
 layout_mode = 2
-columns = 2
+columns = 3
 
 [node name="InventorySlot1" parent="Control/HBoxContainer/Equipment" unique_id=25839187 instance=ExtResource("1_17o8c")]
 layout_mode = 2
@@ -80,7 +123,7 @@ layout_mode = 2
 [node name="Storage" type="GridContainer" parent="Control/HBoxContainer" unique_id=1386474307]
 layout_direction = 3
 layout_mode = 2
-columns = 2
+columns = 4
 
 [node name="InventorySlot1" parent="Control/HBoxContainer/Storage" unique_id=1685779356 instance=ExtResource("1_17o8c")]
 layout_mode = 2
@@ -161,3 +204,23 @@ category = 12
 [node name="InventorySlot20" parent="Control/HBoxContainer/Storage" unique_id=1894184175 instance=ExtResource("1_17o8c")]
 layout_mode = 2
 category = 12
+
+[node name="Button" type="Button" parent="." unique_id=564413803]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -93.0
+offset_top = -44.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
+theme_override_colors/font_pressed_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
+theme_override_colors/font_hover_color = Color(0.6901961, 0.76862746, 0.87058824, 1)
+theme_override_fonts/font = ExtResource("3_umkma")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6yy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_nq4mu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tw7bo")
+text = "Settings"
