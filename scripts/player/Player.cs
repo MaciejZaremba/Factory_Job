@@ -22,6 +22,10 @@ public partial class Player : CharacterBody3D
 		
 		//Capture the mouse
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+		
+		_StartingItems();
+		InventoryManager.Instance.InventoryAltered += OnInventoryAltered;
+		InventoryManager.Instance.emitInventoryAltered();
 	}
 	// What could Input mean, truly a mystery
 	public override void _Input(InputEvent @event)
@@ -54,7 +58,7 @@ public partial class Player : CharacterBody3D
 	// Physics? In my video game?
 	public override void _PhysicsProcess(double delta)
 	{
-		if(GameState.Instance.inEvent || GameState.Instance.inEvent) return;
+		if(GameState.Instance.inEvent || GameState.Instance.inInventory || GameState.Instance.inCombat) return;
 		Vector3 velocity = Velocity;
 		// Apply Gravity
 		if (!IsOnFloor())
@@ -84,47 +88,67 @@ public partial class Player : CharacterBody3D
 		MoveAndSlide();
 	}
 	
-	public void _StatCalculations()
+	public void OnInventoryAltered()
 	{
-		foreach(var (slot, item) in Inventory.Instance.equipment)
+		_StartingStats();
+		foreach(var (slot, items) in Inventory.Instance.equipment)
 		{
-			foreach(var buff in item.buffs)
+			foreach(var item in items)
 			{
-				switch(buff.type)
+				foreach(var buff in item.buffs)
 				{
-					case BuffCategory.MaxHP: 
-						var previousMaxHP = PlayerState.Instance.maxHP;
-						PlayerState.Instance.maxHP = (int)GameState.Instance.defaultStats["maxHP"] + (int)buff.strength;
-						 if(previousMaxHP > PlayerState.Instance.maxHP)
-						{
-							PlayerState.Instance.currentHP += (int)buff.strength;
-						} else {
-							PlayerState.Instance.currentHP -= (int)buff.strength;
-						}
-						
-						break;
-					case BuffCategory.CardDrawFight: 
-						PlayerState.Instance.cardDraw += (int)buff.strength;
-						break;
-					case BuffCategory.CardRetention: 
-						PlayerState.Instance.cardRetention += (int)buff.strength;
-						break;
-					case BuffCategory.MovementSpeed: 
-						PlayerState.Instance.movementSpeed += buff.strength;
-						break;
-					case BuffCategory.ConsumableRetention: 
-						PlayerState.Instance.consumableRetention += buff.strength;
-						break;
-					case BuffCategory.CardAttackFight: 
-						PlayerState.Instance.cardAttackStrength += (int)buff.strength;
-						break;
-					case BuffCategory.CardDefenseFight: 
-						PlayerState.Instance.cardDefenseStrength += (int)buff.strength;
-						break;
-					default: break;
+					switch(buff.type)
+					{
+						case BuffCategory.MaxHP: 
+							var previousMaxHP = PlayerState.Instance.maxHP;
+							var previousCurrentHP = PlayerState.Instance.currentHP;
+							PlayerState.Instance.maxHP = (int)GameState.Instance.defaultStats["maxHP"] + (int)buff.strength;
+							 if(previousMaxHP >= PlayerState.Instance.maxHP)
+							{
+								PlayerState.Instance.currentHP = (int)GameState.Instance.defaultStats["currentHP"] - (int)buff.strength;
+							} else {
+								PlayerState.Instance.currentHP = (int)GameState.Instance.defaultStats["currentHP"] + (int)buff.strength;
+							}
+							
+							break;
+						case BuffCategory.CardDrawFight: 
+							PlayerState.Instance.cardDraw = (int)GameState.Instance.defaultStats["cardDraw"] + (int)buff.strength;
+							break;
+						case BuffCategory.CardRetention: 
+							PlayerState.Instance.cardRetention = (int)GameState.Instance.defaultStats["cardRetention"] + (int)buff.strength;
+							break;
+						case BuffCategory.MovementSpeed: 
+							PlayerState.Instance.movementSpeed = (int)GameState.Instance.defaultStats["movementSpeed"] + buff.strength;
+							break;
+						case BuffCategory.ConsumableRetention: 
+							PlayerState.Instance.consumableRetention = (int)GameState.Instance.defaultStats["consumableRetention"] + buff.strength;
+							break;
+						case BuffCategory.CardAttackFight: 
+							PlayerState.Instance.cardAttackStrength = (int)GameState.Instance.defaultStats["cardAttackStrength"] + (int)buff.strength;
+							break;
+						case BuffCategory.CardDefenseFight: 
+							PlayerState.Instance.cardDefenseStrength = (int)GameState.Instance.defaultStats["cardDefenseStrength"] + (int)buff.strength;
+							break;
+						default: break;
+					}
 				}
 			}
 		}
+		
+		foreach(var (slot, items) in Inventory.Instance.equipment)
+		{
+			foreach(var item in items)
+			{
+				foreach(var (card, amount) in item.cards)
+				{
+					for(int i = 0; i<amount; i++)
+					{
+						PlayerState.Instance.deck.Add(card);
+					}
+				}
+			}
+		}
+		PlayerState.Instance.emitStatsChanged();
 	}
 	
 	private void _StartingStats()
@@ -138,5 +162,14 @@ public partial class Player : CharacterBody3D
 		PlayerState.Instance.cardAttackStrength = (int)GameState.Instance.defaultStats["cardAttackStrength"];
 		PlayerState.Instance.cardDefenseStrength = (int)GameState.Instance.defaultStats["cardDefenseStrength"];
 		PlayerState.Instance.cardUtilityStrength = (int)GameState.Instance.defaultStats["cardUtilityStrength"];
+		PlayerState.Instance.deck.Clear();
+	}
+	
+	private void _StartingItems()
+	{
+		foreach(var item in GameState.Instance.startingItems)
+		{
+			UIManager.Instance.AddItemToEquipped(item);
+		}
 	}
 }

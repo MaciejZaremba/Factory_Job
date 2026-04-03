@@ -23,6 +23,9 @@ GameState="*uid://c71mjqenk8dp5"
 PlayerState="*uid://bvv66xe185gpg"
 Inventory="*uid://xealmj1u3rkc"
 UiManager="*uid://bn6b0hoq23to"
+InventoryManager="*uid://cb3d2x8b11k37"
+CombatManager="*uid://bk2ry2uwrp7b0"
+BattleUi="*uid://du5d8utuawt0"
 
 [display]
 
@@ -35,6 +38,10 @@ project/assembly_name="Factory_Job"
 [global_group]
 
 playerGroup=""
+
+[gui]
+
+timers/tooltip_delay_sec=0.15
 
 [input]
 

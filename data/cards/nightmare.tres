@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://btpm8x3lrefwi"]
+
+[ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="1_orqb4"]
+
+[resource]
+script = ExtResource("1_orqb4")
+name = "Nightmare"
+category = 3
+effects = Dictionary[int, int]({
+2: 1,
+3: 1
+})
+metadata/_custom_type_script = "uid://cungb8upwfvrt"

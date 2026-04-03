@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://b78jpftliimlo"]
+
+[ext_resource type="Script" uid="uid://bkhy6w114hk0i" path="res://scripts/game/StatOverlay.cs" id="1_luotm"]
+
+[node name="StatOverlay" type="CanvasLayer" unique_id=1715029251]
+script = ExtResource("1_luotm")
+
+[node name="HP" type="Control" parent="." unique_id=1880089074]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HP" unique_id=1347337252]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="HP/HBoxContainer" unique_id=1741158906]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HP/HBoxContainer" unique_id=844307209]
+layout_mode = 2
+
+[node name="Stats" type="Control" parent="." unique_id=552257358]
+layout_mode = 3
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats" unique_id=411245237]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -92.5
+offset_right = 1.0
+offset_bottom = 92.5
+grow_vertical = 2
+
+[node name="cardDraw" type="Label" parent="Stats/VBoxContainer" unique_id=1665084380]
+layout_mode = 2
+
+[node name="cardRetention" type="Label" parent="Stats/VBoxContainer" unique_id=662705969]
+layout_mode = 2
+
+[node name="cardAttackStrength" type="Label" parent="Stats/VBoxContainer" unique_id=1975266934]
+layout_mode = 2
+
+[node name="cardDefenseStrength" type="Label" parent="Stats/VBoxContainer" unique_id=794017514]
+layout_mode = 2
+
+[node name="cardUtilityStrength" type="Label" parent="Stats/VBoxContainer" unique_id=1600374856]
+layout_mode = 2
+
+[node name="consumableRetention" type="Label" parent="Stats/VBoxContainer" unique_id=1853720196]
+layout_mode = 2
+
+[node name="movementSpeed" type="Label" parent="Stats/VBoxContainer" unique_id=1715258610]
+layout_mode = 2

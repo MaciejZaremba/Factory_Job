@@ -36,3 +36,34 @@ public enum BuffCategory
 	CardDefenseTurn = 10,
 	CardUtilityTurn = 11,
 }
+
+public enum CardCategory
+{
+	Special = 0,
+	Attack = 1,
+	Defense = 2,
+	Utility = 3
+}
+
+public enum CardEffect
+{
+	Damage = 0,
+	Parry = 1,
+	Draw = 2,
+	Discard = 3,
+	DiscardEnemy = 4,
+	DrawEnemy = 5,
+	Heal = 6,
+	RetainCard = 7,
+	RetainConsumable = 8,
+	DamageAll = 9,
+	DamageRandom = 10
+}
+
+public enum CombatPhase
+{
+	Draw,
+	PlayerOneAttack,
+	PlayerTwoAttack,
+	Discard
+}
