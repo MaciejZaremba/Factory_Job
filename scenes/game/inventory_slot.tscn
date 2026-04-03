@@ -1,18 +1,27 @@
 [gd_scene format=3 uid="uid://co0utciwu7tkp"]
 
 [ext_resource type="Script" uid="uid://g371j5u8oqoc" path="res://scripts/game/InventorySlot.cs" id="1_7ww46"]
+[ext_resource type="FontFile" uid="uid://8ipyr6ruhgw4" path="res://data/fonts/FhaCondensedFrenchNc-O2n3.ttf" id="2_uaf3s"]
+
+[sub_resource type="Theme" id="Theme_uaf3s"]
+default_font = ExtResource("2_uaf3s")
+default_font_size = 20
 
 [node name="InventorySlot" type="HBoxContainer" unique_id=1619933751]
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 0
+theme = SubResource("Theme_uaf3s")
 script = ExtResource("1_7ww46")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=316999741]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer" unique_id=1820639262]
 layout_mode = 2
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 

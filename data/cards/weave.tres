@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CardDefinition" format=3 uid="uid://bn4huw31p3aed"]
+
+[ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="1_3xg38"]
+
+[resource]
+script = ExtResource("1_3xg38")
+name = "Weave"
+category = 2
+effects = Dictionary[int, int]({
+1: 3
+})
+metadata/_custom_type_script = "uid://cungb8upwfvrt"

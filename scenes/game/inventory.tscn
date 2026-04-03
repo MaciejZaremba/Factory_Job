@@ -76,19 +76,19 @@ category = 1
 
 [node name="InventorySlot2" parent="Control/HBoxContainer/Equipment" unique_id=531716310 instance=ExtResource("1_17o8c")]
 layout_mode = 2
-category = 2
+category = 6
 
 [node name="InventorySlot3" parent="Control/HBoxContainer/Equipment" unique_id=78218927 instance=ExtResource("1_17o8c")]
 layout_mode = 2
-category = 3
+category = 5
 
 [node name="InventorySlot4" parent="Control/HBoxContainer/Equipment" unique_id=416508500 instance=ExtResource("1_17o8c")]
 layout_mode = 2
-category = 3
+category = 2
 
 [node name="InventorySlot5" parent="Control/HBoxContainer/Equipment" unique_id=402695245 instance=ExtResource("1_17o8c")]
 layout_mode = 2
-category = 4
+category = 6
 
 [node name="InventorySlot6" parent="Control/HBoxContainer/Equipment" unique_id=2000450302 instance=ExtResource("1_17o8c")]
 layout_mode = 2
@@ -96,7 +96,7 @@ category = 5
 
 [node name="InventorySlot7" parent="Control/HBoxContainer/Equipment" unique_id=318606421 instance=ExtResource("1_17o8c")]
 layout_mode = 2
-category = 5
+category = 3
 
 [node name="InventorySlot8" parent="Control/HBoxContainer/Equipment" unique_id=864402484 instance=ExtResource("1_17o8c")]
 layout_mode = 2
@@ -104,11 +104,10 @@ category = 6
 
 [node name="InventorySlot9" parent="Control/HBoxContainer/Equipment" unique_id=1541016484 instance=ExtResource("1_17o8c")]
 layout_mode = 2
-category = 6
 
 [node name="InventorySlot10" parent="Control/HBoxContainer/Equipment" unique_id=1144741811 instance=ExtResource("1_17o8c")]
 layout_mode = 2
-category = 6
+category = 3
 
 [node name="InventorySlot11" parent="Control/HBoxContainer/Equipment" unique_id=617333176 instance=ExtResource("1_17o8c")]
 layout_mode = 2
@@ -119,9 +118,9 @@ layout_mode = 2
 
 [node name="InventorySlot13" parent="Control/HBoxContainer/Equipment" unique_id=718885465 instance=ExtResource("1_17o8c")]
 layout_mode = 2
+category = 4
 
 [node name="Storage" type="GridContainer" parent="Control/HBoxContainer" unique_id=1386474307]
-layout_direction = 3
 layout_mode = 2
 columns = 4
 

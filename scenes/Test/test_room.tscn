@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://cdt68o5d3uh4j" path="res://scripts/generator/GenerationParameters.cs" id="3_p7t0b"]
 [ext_resource type="PackedScene" uid="uid://bueqo41daoki8" path="res://scenes/game/event_popup.tscn" id="5_jvmgk"]
 [ext_resource type="PackedScene" uid="uid://b4knwg7ijo51o" path="res://scenes/game/inventory.tscn" id="6_sy3jx"]
+[ext_resource type="PackedScene" uid="uid://b78jpftliimlo" path="res://scenes/game/stat_overlay.tscn" id="7_0mohp"]
+[ext_resource type="PackedScene" uid="uid://c3q3342fc05fh" path="res://scenes/game/battle_ui.tscn" id="8_s2gs8"]
 
 [sub_resource type="Resource" id="Resource_5phle"]
 script = ExtResource("3_p7t0b")
@@ -33,3 +35,8 @@ visible = false
 [node name="Inventory" parent="." unique_id=752087043 instance=ExtResource("6_sy3jx")]
 visible = false
 script = null
+
+[node name="StatOverlay" parent="." unique_id=1715029251 instance=ExtResource("7_0mohp")]
+
+[node name="BattleUI" parent="." unique_id=263394086 instance=ExtResource("8_s2gs8")]
+visible = false

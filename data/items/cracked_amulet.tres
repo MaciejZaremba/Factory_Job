@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://cmfxyb6ou5rt7"]
+
+[ext_resource type="Script" uid="uid://gaq1petslim3" path="res://scripts/game/BuffDefinition.cs" id="1_1fosc"]
+[ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="2_63d7i"]
+[ext_resource type="Texture2D" uid="uid://66tqpoag1rfl" path="res://data/images/placeholder.jpg" id="3_63d7i"]
+[ext_resource type="Resource" uid="uid://dx43w5xxc835a" path="res://data/cards/dream.tres" id="3_qb7or"]
+[ext_resource type="Script" uid="uid://br2a6t0v5afo1" path="res://scripts/game/ItemDefinition.cs" id="3_sndi5"]
+[ext_resource type="Resource" uid="uid://btpm8x3lrefwi" path="res://data/cards/nightmare.tres" id="4_e2w3n"]
+
+[sub_resource type="Resource" id="Resource_sndi5"]
+script = ExtResource("1_1fosc")
+name = "Temporary"
+type = 2
+strength = 1.0
+metadata/_custom_type_script = "uid://gaq1petslim3"
+
+[resource]
+script = ExtResource("3_sndi5")
+name = "Cracked Amulet"
+description = "It's been like this for as long as you remember."
+category = 6
+cards = Dictionary[ExtResource("2_63d7i"), int]({
+ExtResource("3_qb7or"): 1,
+ExtResource("4_e2w3n"): 1
+})
+buffs = Array[ExtResource("1_1fosc")]([SubResource("Resource_sndi5")])
+icon = ExtResource("3_63d7i")
+metadata/_custom_type_script = "uid://br2a6t0v5afo1"

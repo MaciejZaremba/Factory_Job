@@ -20,6 +20,8 @@ public partial class EventPopup : CanvasLayer
 	public void OnEventResolution(EventOutcome choice)
 	{
 		GD.Print($"OnEventResolution: Option chosen: {choice}");
+		
+		
 		EventManager.Instance.EventResolution(choice);
 	}
 	
@@ -40,4 +42,5 @@ public partial class EventPopup : CanvasLayer
 		}
 		GD.Print($"PopulateEvent: Button amount: {buttonContainer.GetChildren().Count}");
 	}
+	
 }

@@ -9,9 +9,11 @@ public partial class EventManager : Node
 	private RandomNumberGenerator _rand;
 	private CanvasLayer _eventPopup;
 	private static string EventDataPath = "res://data/events/";
+	private static string EnemyDataPath = "res://data/enemies/";
 	private List<EventDefinition> tileEvents = new();
 	private List<EventDefinition> walkwayEvents = new();
 	private List<EventDefinition> stairEvents = new();
+	private List<EnemyDefinition> enemies = new();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -19,6 +21,7 @@ public partial class EventManager : Node
 		GD.Print("EventManager: Ready() entered.");
 		Instance = this;
 		tileEvents = loadEvents("tile_events");
+		enemies = loadEnemies();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -101,8 +104,28 @@ public partial class EventManager : Node
 		_eventPopup.Visible = false;
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 		GameState.Instance.inEvent = false;
+		switch(option)
+		{
+			case EventOutcome.StartCombat:
+				CombatManager.Instance.enemy = GetEnemy(false);
+				GameState.Instance.inEvent = false;
+				GameState.Instance.inCombat = true;
+				CombatManager.Instance.StartCombat();
+				break;
+		}
 		GD.Print($"EventResolution: Event resolved with option: {option}.");
 	}
+	
+	public EnemyDefinition GetEnemy(bool isBoss)
+	{
+		if(isBoss)
+		{
+			return enemies.FirstOrDefault(e => e.name == "Boss");
+		} else {
+			return enemies.FirstOrDefault(e => e.name == "Guard");
+		}
+	}
+	
 	
 	private List<EventDefinition> loadEvents(string directory)
 	{
@@ -131,5 +154,34 @@ public partial class EventManager : Node
 		dir.ListDirEnd();
 		GD.Print($"EventManager: Registered {eventList.Count} events.");
 		return eventList;
+	}
+	
+	private List<EnemyDefinition> loadEnemies()
+	{
+		GD.Print("EventManager: Trying to open path...");
+		var dataPath = EnemyDataPath;
+		using var dir = DirAccess.Open(dataPath);
+		if(dir == null)
+		{
+			GD.PrintErr($"EventManager: Could not open enemy data path: {dataPath}");
+			return null;
+		}
+		
+		dir.ListDirBegin();
+		List<EnemyDefinition> enemyList = new();
+		string fileName = dir.GetNext();
+		while(fileName != "")
+		{
+			if(fileName.EndsWith(".tres"))
+			{
+				var definition = GD.Load<EnemyDefinition>(dataPath + fileName);
+				if(definition != null) enemyList.Add(definition);
+			}
+			fileName = dir.GetNext();
+		}
+		
+		dir.ListDirEnd();
+		GD.Print($"EventManager: Registered {enemyList.Count} enemies.");
+		return enemyList;
 	}
 }

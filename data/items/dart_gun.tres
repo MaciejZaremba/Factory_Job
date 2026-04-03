@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bh3wpic07862p"]
+
+[ext_resource type="Script" uid="uid://gaq1petslim3" path="res://scripts/game/BuffDefinition.cs" id="1_4l8e1"]
+[ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="2_pw2hb"]
+[ext_resource type="Resource" uid="uid://dayuiltfy6kf6" path="res://data/cards/sleep_dart.tres" id="3_7ru6o"]
+[ext_resource type="Script" uid="uid://br2a6t0v5afo1" path="res://scripts/game/ItemDefinition.cs" id="3_blcy3"]
+[ext_resource type="Texture2D" uid="uid://66tqpoag1rfl" path="res://data/images/placeholder.jpg" id="3_pw2hb"]
+
+[resource]
+script = ExtResource("3_blcy3")
+name = "Dart Gun"
+description = "An essential item for any criminal!"
+cards = Dictionary[ExtResource("2_pw2hb"), int]({
+ExtResource("3_7ru6o"): 1
+})
+icon = ExtResource("3_pw2hb")
+metadata/_custom_type_script = "uid://br2a6t0v5afo1"

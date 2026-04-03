@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://dxomkq5ksmp82"]
+
+[ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="1_n3j3n"]
+[ext_resource type="Resource" uid="uid://devmu0vl3jk3b" path="res://data/cards/whack.tres" id="2_hejl0"]
+[ext_resource type="Resource" uid="uid://bn4huw31p3aed" path="res://data/cards/weave.tres" id="3_6c868"]
+[ext_resource type="Script" uid="uid://be03cttcue8h7" path="res://scripts/combat/EnemyDefinition.cs" id="4_2bjek"]
+
+[resource]
+script = ExtResource("4_2bjek")
+name = "Guard"
+maxHP = 20
+cardDraw = 2
+cards = Array[ExtResource("1_n3j3n")]([ExtResource("2_hejl0"), ExtResource("2_hejl0"), ExtResource("2_hejl0"), ExtResource("3_6c868"), ExtResource("3_6c868"), ExtResource("3_6c868")])
+metadata/_custom_type_script = "uid://be03cttcue8h7"

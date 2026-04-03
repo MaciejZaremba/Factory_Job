@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://c87iqpvr7dd37"]
+
+[ext_resource type="Script" uid="uid://gaq1petslim3" path="res://scripts/game/BuffDefinition.cs" id="1_f8b54"]
+[ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="2_x34g5"]
+[ext_resource type="Resource" uid="uid://devmu0vl3jk3b" path="res://data/cards/whack.tres" id="3_13m88"]
+[ext_resource type="Script" uid="uid://br2a6t0v5afo1" path="res://scripts/game/ItemDefinition.cs" id="3_ve3pe"]
+[ext_resource type="Texture2D" uid="uid://66tqpoag1rfl" path="res://data/images/placeholder.jpg" id="3_x34g5"]
+
+[sub_resource type="Resource" id="Resource_ve3pe"]
+script = ExtResource("1_f8b54")
+name = "Temporary"
+type = 7
+strength = 1.0
+metadata/_custom_type_script = "uid://gaq1petslim3"
+
+[sub_resource type="Resource" id="Resource_13m88"]
+script = ExtResource("1_f8b54")
+name = "Temporary2"
+type = 9
+strength = 1.0
+metadata/_custom_type_script = "uid://gaq1petslim3"
+
+[resource]
+script = ExtResource("3_ve3pe")
+name = "Iron Pipe"
+description = "Everyone owns one!"
+category = 5
+cards = Dictionary[ExtResource("2_x34g5"), int]({
+ExtResource("3_13m88"): 3
+})
+buffs = Array[ExtResource("1_f8b54")]([SubResource("Resource_ve3pe"), SubResource("Resource_13m88")])
+icon = ExtResource("3_x34g5")
+metadata/_custom_type_script = "uid://br2a6t0v5afo1"
