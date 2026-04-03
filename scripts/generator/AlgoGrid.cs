@@ -36,9 +36,16 @@ public class AlgoGrid
 	{
 		this.width = width;
 		this.height = height;
-		this._allVariants = allVariants;
 		this._rand = seed;
 		this.stairMaxT = stairMaxT;
+		
+		this._allVariants = allVariants ?? new List<TileVariant>();
+		if (allVariants == null || allVariants.Count == 0)
+		{
+			GD.PrintErr("CRITICAL: AlgoGrid received 0 variants. Generation will fail.");
+			return; 
+		}
+		
 		InitialiseCells();
 		PreCollapseBorders();
 	}
@@ -85,6 +92,11 @@ public class AlgoGrid
 	private void PreCollapseBorders()
 	{
 		var emptyVariant = TileRegistry.Instance.GetEmptyVariant();
+		if (emptyVariant == null)
+		{
+			GD.PrintErr("AlgoGrid: Could not find 'empty' variant in Registry. Check your tile IDs!");
+			return; // Stop here to prevent the line 161 crash
+		}
 		
 		for(int i = 0; i<width; i++)
 		{
