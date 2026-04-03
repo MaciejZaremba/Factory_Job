@@ -1,8 +1,6 @@
-Factory Job (or your Game Title)
+Factory Job
 
-A brief, punchy one-sentence description of the game.
-
-    Example: A procedurally generated dungeon crawler featuring card-based combat and a worker-placement economy.
+A procedurally generated dungeon crawler featuring card-based combat.
 
 Gameplay Features
 
@@ -15,6 +13,7 @@ Gameplay Features
 Technical Architecture
 
 This project is built using Godot 4.x and C# (.NET 8.0).
+
 Key Systems
 
     AlgoGrid: The core generation engine that handles tile constraints and connectivity.
@@ -57,4 +56,6 @@ Project Structure
 
     /data: .tres Resource files for Tiles, Events, and Cards.
 
+AI usage
 
+    AI was used to help with debugging, as a tool for learining the Godot Engine, as well as to write this document.
