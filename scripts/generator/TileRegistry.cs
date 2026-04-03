@@ -35,9 +35,10 @@ public partial class TileRegistry : Node
 		while(fileName != "")
 		{
 			//GD.Print($"TileRegistry: Trying to load '{TileDataPath + fileName}...");
-			if(fileName.EndsWith(".tres"))
+			if(fileName.EndsWith(".tres") || fileName.EndsWith(".tres.remap"))
 			{
-				var definition = GD.Load<TileDefinition>(TileDataPath + fileName);
+				string cleanPath = TileDataPath + fileName.Replace(".remap", "");
+				var definition = GD.Load<TileDefinition>(cleanPath);
 				if(definition != null)
 				{
 					registerDefinition(definition);
@@ -107,5 +108,5 @@ public partial class TileRegistry : Node
 	public List<TileVariant> GetAllVariants() => _variants;
 	
 	//selects an empty tile
-	public TileVariant GetEmptyVariant() => _variants.First(fir => fir.definition.tileId == "empty");
+	public TileVariant GetEmptyVariant() => _variants.FirstOrDefault(fir => fir.definition.tileId == "empty");
 }

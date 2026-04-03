@@ -1,7 +1,6 @@
 using Godot;
 using System.Collections.Generic;
 
-[GlobalClass]
 public partial class BattleUi : CanvasLayer
 {
 	public static BattleUi Instance {get;private set;}

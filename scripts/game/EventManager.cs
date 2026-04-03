@@ -143,9 +143,10 @@ public partial class EventManager : Node
 		string fileName = dir.GetNext();
 		while(fileName != "")
 		{
-			if(fileName.EndsWith(".tres"))
+			if(fileName.EndsWith(".tres") || fileName.EndsWith(".tres.remap"))
 			{
-				var definition = GD.Load<EventDefinition>(dataPath + fileName);
+				string cleanPath = dataPath + fileName.Replace(".remap", "");
+				var definition = GD.Load<EventDefinition>(cleanPath);
 				if(definition != null) eventList.Add(definition);
 			}
 			fileName = dir.GetNext();
@@ -172,9 +173,10 @@ public partial class EventManager : Node
 		string fileName = dir.GetNext();
 		while(fileName != "")
 		{
-			if(fileName.EndsWith(".tres"))
+			if(fileName.EndsWith(".tres") || fileName.EndsWith(".tres.remap"))
 			{
-				var definition = GD.Load<EnemyDefinition>(dataPath + fileName);
+				string cleanPath = dataPath + fileName.Replace(".remap", "");
+				var definition = GD.Load<EnemyDefinition>(cleanPath);
 				if(definition != null) enemyList.Add(definition);
 			}
 			fileName = dir.GetNext();
