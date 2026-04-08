@@ -63,16 +63,13 @@ Project Structure
 
 AI usage
 
-AI usage
-
 &#x20;   A mix of Claude.ai and Gemini were used to help with debugging, as a tool for learining the Godot Engine, as well as to help write this document.
 
 
 Controls
-Player movement: WASD
-Camera movement: mouse movement
-Sprint: Hold Shift
-Open/Close Inventory: Esc
-
-Equip/Unequip items: Drag and drop them to appropriate slots
-
+&#x20;   Player movement: WASD
+&#x20;   Camera movement: mouse movement
+&#x20;   Sprint: Hold Shift
+&#x20;   Open/Close Inventory: Esc
+&#x20;   Equip/Unequip items: Drag and drop them to appropriate slots
+&#x20;   Combat: Drag and drop cards onto the middle part of the screen to play them, press End Phase button to end your turn.
