@@ -67,9 +67,15 @@ AI usage
 
 
 Controls
+
     Player movement: WASD
+
     Camera movement: mouse movement
+    
     Sprint: Hold Shift
+    
     Open/Close Inventory: Esc
+    
     Equip/Unequip items: Drag and drop them to appropriate slots
+    
     Combat: Drag and drop cards onto the middle part of the screen to play them, press End Phase button to end your turn.
