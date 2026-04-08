@@ -6,7 +6,6 @@ public partial class BattleUi : CanvasLayer
 	public static BattleUi Instance {get;private set;}
 	[Export] private HBoxContainer _playerHand;
 	[Export] private HBoxContainer _enemyHand;
-	[Export] private ProgressBar _playerHP;
 	[Export] private ProgressBar _enemyHP;
 	[Export] private Label _enemyName;
 	[Export] private Button _endTurn;
@@ -22,29 +21,34 @@ public partial class BattleUi : CanvasLayer
 	{
 		if(p1.isPlayer)
 		{
-			_playerHP.Value = p1.playerCombatant.currentHP;
-			_playerHP.MaxValue = p1.playerCombatant.maxHP;
 			_enemyHP.Value = p2.enemyCurrentHP;
 			_enemyHP.MaxValue = p2.enemyCombatant.maxHP;
 			_enemyName.Text = p2.enemyCombatant.name;
 		} else {
-			_playerHP.Value = p2.playerCombatant.currentHP;
-			_playerHP.MaxValue = p2.playerCombatant.maxHP;
 			_enemyHP.Value = p1.enemyCurrentHP;
 			_enemyHP.MaxValue = p1.enemyCombatant.maxHP;
 			_enemyName.Text = p1.enemyCombatant.name;
 		}
+		_enemyHP.GetNode<Label>("Label").Text = $"{_enemyHP.Value} / {_enemyHP.MaxValue}";
 	}
 	
 	public void RefreshUIState(CombatPhase currentPhase, Combatant p1, Combatant p2)
 	{
-		_playerHP.Value = p1.isPlayer ? p1.playerCombatant.currentHP : p2.playerCombatant.currentHP;
 		_enemyHP.Value = p1.isPlayer ? p2.enemyCurrentHP : p1.enemyCurrentHP;
 		
-		Combatant attacker = CombatManager.Instance.attacker;
-		bool isPlayerTurn = attacker.isPlayer;
-		_endTurn.Disabled = !isPlayerTurn;
-		_endTurn.Text = isPlayerTurn ? "End Phase" : "Enemy Turn...";
+		var phase = CombatManager.Instance._currentPhase;
+		
+		bool isAttackPhase = (phase == CombatPhase.PlayerOneAttack || phase == CombatPhase.PlayerTwoAttack);
+		bool isResponsePhase = (phase == CombatPhase.PlayerOneResponse || phase == CombatPhase.PlayerTwoResponse);
+		
+		bool isPlayerAttacking = (isAttackPhase && CombatManager.Instance.attacker.isPlayer);
+   		bool isPlayerDefending = (isResponsePhase && CombatManager.Instance.defender.isPlayer);
+		
+		bool playerCanAct = (isPlayerAttacking || isPlayerDefending);
+		
+		_endTurn.Disabled = !playerCanAct;
+		_endTurn.Text = playerCanAct ? "End Phase" : "Enemy Turn...";
+		UpdateUIStats(p1,p2);
 	}
 	
 	public void UpdatePlayerHand(List<CardDefinition> hand)
@@ -93,6 +97,7 @@ public partial class BattleUi : CanvasLayer
 	
 	public void OnEndTurnPressed()
 	{
+		CombatManager.Instance.PlayerEndTurn();
 		CombatManager.Instance.AdvancePhase();
 	}
 	
@@ -100,5 +105,10 @@ public partial class BattleUi : CanvasLayer
 	{
 		_endTurn.Disabled = !enabled;
 		_endTurn.Text = enabled ? "End Turn" : "Enemy Turn...";
+	}
+	
+	public override void _ExitTree()
+	{
+		_endTurn.Pressed -= OnEndTurnPressed;
 	}
 }

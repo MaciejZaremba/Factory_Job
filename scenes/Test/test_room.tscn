@@ -36,7 +36,7 @@ visible = false
 visible = false
 script = null
 
-[node name="StatOverlay" parent="." unique_id=1715029251 instance=ExtResource("7_0mohp")]
-
 [node name="BattleUI" parent="." unique_id=263394086 instance=ExtResource("8_s2gs8")]
 visible = false
+
+[node name="StatOverlay" parent="." unique_id=1715029251 instance=ExtResource("7_0mohp")]

@@ -13,6 +13,7 @@ public partial class EventManager : Node
 	private List<EventDefinition> tileEvents = new();
 	private List<EventDefinition> walkwayEvents = new();
 	private List<EventDefinition> stairEvents = new();
+	private List<EventDefinition> endEvents = new();
 	private List<EnemyDefinition> enemies = new();
 	
 	// Called when the node enters the scene tree for the first time.
@@ -21,12 +22,8 @@ public partial class EventManager : Node
 		GD.Print("EventManager: Ready() entered.");
 		Instance = this;
 		tileEvents = loadEvents("tile_events");
+		endEvents = loadEvents("end_events");
 		enemies = loadEnemies();
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
 	}
 	
 	public void FloorGenerated(RandomNumberGenerator seed)
@@ -38,10 +35,10 @@ public partial class EventManager : Node
 	public void TileEntered(CanvasLayer _eventPopup, string _tileType)
 	{
 		if(GameState.Instance.inEvent) return;
+		this._eventPopup = _eventPopup;
 		GD.Print("EventManager: Tile Entered.");
 		EventDefinition chosenEvent = null;
 		List<EventDefinition> eventList = new();
-		this._eventPopup = _eventPopup;
 		float eventWeight= 0f;
 		switch(_tileType)
 		{
@@ -53,16 +50,27 @@ public partial class EventManager : Node
 			}
 			case "walkway":
 			{
-				eventList = tileEvents;
+				eventList = walkwayEvents;
 				eventWeight = eventList.Sum(eve => eve.weight);
 				break;
 			}
 			case "stairs":
 			{
-				eventList = tileEvents;
+				eventList = stairEvents;
 				eventWeight = eventList.Sum(eve => eve.weight);
 				break;
 			}
+			case "end":
+			{
+				eventList = endEvents;
+				eventWeight = eventList.Sum(eve => eve.weight);
+				break;
+			}
+		}
+		if (!GodotObject.IsInstanceValid(_eventPopup))
+		{
+			GD.PrintErr("EventManager: Popup address is invalid.");
+			return;
 		}
 		if(!GameState.Instance.startEvent)
 		{
@@ -75,8 +83,18 @@ public partial class EventManager : Node
 			GD.Print($"EventManager: Start event completed: {GameState.Instance.startEvent}");
 			return;
 		}
-		var _event = _rand.RandfRange(0f,eventWeight * 1.5f);
+		
+		float _event;
+		
+		if(_tileType == "end")
+		{
+			_event = _rand.RandfRange(0f,eventWeight);
+		} else {
+			_event = _rand.RandfRange(0f,eventWeight * 1.5f);
+		}
+		 
 		GD.Print($"EventManager: Dice roll: {_event}");
+		
 		foreach(var eve in eventList)
 		{
 			_event -= eve.weight;
@@ -112,6 +130,28 @@ public partial class EventManager : Node
 				GameState.Instance.inCombat = true;
 				CombatManager.Instance.StartCombat();
 				break;
+			case EventOutcome.StartBossCombat:
+				CombatManager.Instance.enemy = GetEnemy(true);
+				GD.Print($"EventResolution: Starting Boss Fight");
+				GameState.Instance.inEvent = false;
+				GameState.Instance.inCombat = true;
+				CombatManager.Instance.StartCombat();
+				break;
+			case EventOutcome.AddItem:
+				var item = UIManager.Instance.GetRandomItem();
+				UIManager.Instance.AddItemToInventory(item);
+				break;
+			case EventOutcome.RemoveItem:
+				UIManager.Instance.RemoveRandomItemFromInventory();
+				break;
+			case EventOutcome.DealDamage:
+				PlayerState.Instance.currentHP -= 3;
+				PlayerState.Instance.emitStatsChanged();
+				break;
+			case EventOutcome.HealDamage:
+				PlayerState.Instance.currentHP = Mathf.Min(PlayerState.Instance.maxHP, PlayerState.Instance.currentHP + 3);
+				PlayerState.Instance.emitStatsChanged(); 
+				break;
 		}
 		GD.Print($"EventResolution: Event resolved with option: {option}.");
 	}
@@ -126,6 +166,24 @@ public partial class EventManager : Node
 		}
 	}
 	
+	public void GetSpecificEvent(string name)
+	{
+		EventDefinition _event = tileEvents.FirstOrDefault(e => e.title == name);
+		if(_event == null)
+		{
+			GD.PrintErr($"EventManager: Could not find event with title {name}");
+			return;
+		}
+		GD.Print($"EventManager: Event chosen: {_event.title}");
+		EmitSignal(SignalName.PopulateEvent, _event);
+		_eventPopup.Visible = true;
+		GameState.Instance.inEvent = true;
+	}
+	
+	public void Reset()
+	{
+		_eventPopup = null;
+	}
 	
 	private List<EventDefinition> loadEvents(string directory)
 	{
@@ -134,7 +192,7 @@ public partial class EventManager : Node
 		using var dir = DirAccess.Open(dataPath);
 		if(dir == null)
 		{
-			GD.PrintErr($"EventManager: Could not open tile data path: {dataPath}");
+			GD.PrintErr($"EventManager: Could not open event data path: {dataPath}");
 			return null;
 		}
 		

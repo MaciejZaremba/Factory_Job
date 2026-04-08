@@ -17,7 +17,7 @@ public partial class StatOverlay : CanvasLayer
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	private void OnPlayerStatsChanged()
 	{
-		UpdateLabels();
+		UpdateLabels(); //Probably shouldn't be here but for now it'll do
 	}
 	
 	public void UpdateLabels()
@@ -31,5 +31,10 @@ public partial class StatOverlay : CanvasLayer
 		_statsContainer.GetNode<Label>("consumableRetention").Text = $"Consume chance: {(1 - PlayerState.Instance.consumableRetention):P0}";
 		_statsContainer.GetNode<Label>("movementSpeed").Text = $"Speed: {PlayerState.Instance.movementSpeed:0.0}";
 		
+	}
+	
+	public override void _ExitTree()
+	{
+		PlayerState.Instance.StatsChanged -= OnPlayerStatsChanged;
 	}
 }

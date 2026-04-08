@@ -8,7 +8,8 @@
 [resource]
 script = ExtResource("4_2bjek")
 name = "Guard"
-maxHP = 20
+maxHP = 10
 cardDraw = 2
 cards = Array[ExtResource("1_n3j3n")]([ExtResource("2_hejl0"), ExtResource("2_hejl0"), ExtResource("2_hejl0"), ExtResource("3_6c868"), ExtResource("3_6c868"), ExtResource("3_6c868")])
+tags = Array[String]([""])
 metadata/_custom_type_script = "uid://be03cttcue8h7"

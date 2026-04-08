@@ -11,17 +11,10 @@ public partial class EventPopup : CanvasLayer
 			.GetNode<VBoxContainer>("VBoxContainer");
 		EventManager.Instance.PopulateEvent += PopulateEvent;
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 	
 	public void OnEventResolution(EventOutcome choice)
 	{
 		GD.Print($"OnEventResolution: Option chosen: {choice}");
-		
-		
 		EventManager.Instance.EventResolution(choice);
 	}
 	
@@ -41,6 +34,11 @@ public partial class EventPopup : CanvasLayer
 			buttonContainer.AddChild(button);
 		}
 		GD.Print($"PopulateEvent: Button amount: {buttonContainer.GetChildren().Count}");
+	}
+	
+	public override void _ExitTree()
+	{
+		EventManager.Instance.PopulateEvent -= PopulateEvent;
 	}
 	
 }

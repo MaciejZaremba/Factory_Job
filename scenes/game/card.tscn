@@ -3,24 +3,48 @@
 [ext_resource type="Script" uid="uid://cxakubi7gvd68" path="res://scripts/combat/Card.cs" id="1_j7wrb"]
 
 [node name="Card" type="Control" unique_id=539058724]
-custom_minimum_size = Vector2(50, 75)
+custom_minimum_size = Vector2(100, 75)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 54.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -37.5
+offset_right = 25.0
+offset_bottom = 37.5
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_j7wrb")
 
+[node name="TextureRect" type="ColorRect" parent="." unique_id=1999908832]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=553110378]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Name" type="Label" parent="VBoxContainer" unique_id=2134214705]
 layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="TextureRect" type="ColorRect" parent="VBoxContainer" unique_id=1999908832]
+[node name="Description" type="Label" parent="VBoxContainer" unique_id=1166575169]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-color = Color(0, 0, 0, 1)
-
-[node name="Description" type="Label" parent="VBoxContainer" unique_id=1130756125]
-layout_mode = 2
+theme_override_colors/font_color = Color(0.9078885, 0.713556, 0.5712132, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

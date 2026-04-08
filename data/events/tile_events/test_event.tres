@@ -6,7 +6,7 @@
 script = ExtResource("1_gio43")
 title = "test"
 description = "testin tedsdfg"
-outcome = Array[int]([1, 2, 3])
-outcomeTitle = Array[String](["Add", "Remove", "Start"])
+outcome = Array[int]([1, 5, 3])
+outcomeTitle = Array[String](["Add Item", "Heal", "Start"])
 weight = 2.5
 metadata/_custom_type_script = "uid://dvc4c3m08lr3p"

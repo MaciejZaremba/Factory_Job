@@ -12,7 +12,7 @@ public class Combatant
 	public List<CardDefinition> discardPile = new();
 	public List<CardDefinition> destroyedPile = new();
 	public int currentDefense = 0;
-	public int enemyCurrentHP = 0;
+	public int enemyCurrentHP = 999;
 	public RandomNumberGenerator _rand = new();
 	
 	public Combatant(PlayerState player)
@@ -40,6 +40,7 @@ public class Combatant
 	public void TakeDamage(int amount)
 	{
 		int realDamage = amount - currentDefense;
+		GD.Print($"TakeDamage: Damage amount: {amount}, defense amount: {currentDefense}, damage through defense: {realDamage}.");
 		currentDefense = Mathf.Max(0, currentDefense - amount);
 		if(realDamage <= 0) return;
 		if(isPlayer)

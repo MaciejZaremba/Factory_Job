@@ -17,15 +17,14 @@ public partial class MainMenu : Node3D
 		_menu.Visible = true;
 		_settings.Visible = false;
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 	
 	public void OnStartPressed()
 	{
 		GD.Print("MainMenu: Start Pressed.");
+		PlayerState.Instance.ResetHP();
+		UIManager.Instance.Reset();
+		EventManager.Instance.Reset();
+		GameState.Instance.startEvent = false;
 		GetTree().ChangeSceneToFile("res://scenes/test/test_room.tscn");
 	}
 	

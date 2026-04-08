@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EventDefinition" format=3 uid="uid://cp6txij4vknkx"]
+
+[ext_resource type="Script" uid="uid://dvc4c3m08lr3p" path="res://scripts/game/EventDefinition.cs" id="1_fnnhw"]
+
+[resource]
+script = ExtResource("1_fnnhw")
+title = "win"
+description = "Fight Won"
+outcome = Array[int]([1])
+outcomeTitle = Array[String](["Loot!"])
+weight = 0.0
+metadata/_custom_type_script = "uid://dvc4c3m08lr3p"
