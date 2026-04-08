@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class CombatManager : Node
 {
@@ -12,9 +13,9 @@ public partial class CombatManager : Node
 	private List<(CardDefinition card, Combatant source, Combatant target)> _defenseList = new();
 	public Combatant attacker;
 	public Combatant defender;
-	private CombatPhase _currentPhase;
+	public CombatPhase _currentPhase {get; private set;}
 	private BattleUi _battleUi;
-	// Called when the node enters the scene tree for the first time.
+	
 	public override void _Ready()
 	{
 		Instance = this;
@@ -25,30 +26,44 @@ public partial class CombatManager : Node
 		_battleUi = (BattleUi)GetNode<CanvasLayer>("/root/TestRoom/BattleUI");
 		SetupPhase();
 		_currentPhase = CombatPhase.Draw;
-		_battleUi.Show();
+		_battleUi.Visible = true;
 		AdvancePhase();
-		_battleUi.UpdateUIStats(PlayerOne,PlayerTwo);
 		_battleUi.UpdatePlayerHand(PlayerOne.isPlayer ? PlayerOne.hand : PlayerTwo.hand);
 		_battleUi.UpdateEnemyHand(PlayerOne.isPlayer ? PlayerTwo.hand : PlayerOne.hand);
+		_battleUi.UpdateUIStats(PlayerOne, PlayerTwo);
 	}
 	
 	public void SetupPhase()
 	{
 		player = PlayerState.Instance;
-		if(GD.Randi() % 2 == 0) 
-		{
-			PlayerOne = new Combatant(player);
-			PlayerTwo = new Combatant(enemy);
-			return;
-		} 
-		PlayerOne = new Combatant(enemy);
-		PlayerTwo = new Combatant(player);
+		Input.MouseMode = Input.MouseModeEnum.Confined;
+		//if(GD.Randi() % 2 == 0) 
+		//{
+			//PlayerOne = new Combatant(player);
+			//PlayerTwo = new Combatant(enemy);
+			//GD.Print($"CombatManager: Player is the attacker.");
+			//return;
+		//} 
+		//PlayerOne = new Combatant(enemy);
+		//PlayerTwo = new Combatant(player);
+		//GD.Print($"CombatManager: Player is the defender.");
+		/*
+		Z jakiegoś powodu podczas Walki gracz, nie ważne czy był oznaczony jako PlayerOne czy jako PlayerTwo, skipował drugą fazę (PlayerTwo*)
+		To powodowało że gdy gracz był obrońcą, nigdy nie był w stanie zaatakować wroga, przez co nie dało się wygrać walki.
+		Nie byłem w stanie zidentyfikować problemu, nawet przy użyciu AI, więc narazie gracz zawsze będzie atakującym
+		*/
+		PlayerOne = new Combatant(player);
+		PlayerTwo = new Combatant(enemy);
+		
+		
 	}
 	
 	public void DrawPhase()
 	{
 		PlayerOne.DrawCards(PlayerOne.isPlayer ? player.cardDraw : enemy.cardDraw);
-		PlayerTwo.DrawCards(!PlayerOne.isPlayer ? player.cardDraw : enemy.cardDraw);
+		PlayerTwo.DrawCards(PlayerTwo.isPlayer ? player.cardDraw : enemy.cardDraw);
+		GD.Print($"CombatManager: PlayerOne drew {PlayerOne.hand.Count} cards, they have {PlayerOne.deck.Count} cards left in their deck, there's {PlayerOne.discardPile.Count} cards in their discard pile");
+		GD.Print($"CombatManager: PlayerTwo drew {PlayerTwo.hand.Count} cards, they have {PlayerTwo.deck.Count} cards left in their deck, there's {PlayerTwo.discardPile.Count} cards in their discard pile");
 	}
 	
 	public void PlayCard(CardDefinition card, Combatant source, Combatant target)
@@ -73,7 +88,7 @@ public partial class CombatManager : Node
 			ResolveCard(attack.card, attack.source, attack.target);
 		}
 		_attackList.Clear();
-		
+		BattleUi.Instance.ClearBoard();
 		PlayerOne.currentDefense = 0;
 		PlayerTwo.currentDefense = 0;
 	}
@@ -120,41 +135,86 @@ public partial class CombatManager : Node
 	
 	public void AdvancePhase()
 	{
-		BattleUi.Instance.ClearBoard();
 		GD.Print(_currentPhase);
 		switch(_currentPhase)
 		{
 			case CombatPhase.Draw:
 				DrawPhase();
-				attacker = PlayerOne;
-				defender = PlayerTwo;
 				_currentPhase = CombatPhase.PlayerOneAttack;
 				BattleUi.Instance.UpdatePlayerHand(PlayerOne.isPlayer ? PlayerOne.hand : PlayerTwo.hand);
-				BattleUi.Instance.UpdatePlayerHand(!PlayerOne.isPlayer ? PlayerOne.hand : PlayerTwo.hand);
-				if(!attacker.isPlayer) AdvancePhase();
-				break;
+				BattleUi.Instance.UpdateEnemyHand(PlayerOne.isPlayer ? PlayerTwo.hand : PlayerOne.hand);
+				AdvancePhase();
+				return;
+				
 			case CombatPhase.PlayerOneAttack:
-				if(!PlayerTwo.isPlayer) EnemyAI(PlayerTwo);
+				attacker = PlayerOne;
+				defender = PlayerTwo;
+				if(!PlayerOne.isPlayer) 
+				{
+					EnemyAI(PlayerOne);
+					_currentPhase = CombatPhase.PlayerOneResponse;
+					AdvancePhase();
+					return;
+				}
+				break;
+				
+			case CombatPhase.PlayerOneResponse:
+				if(!PlayerTwo.isPlayer)
+				{
+					EnemyAI(PlayerTwo);
+					_currentPhase = CombatPhase.PlayerOneResolve;
+					AdvancePhase();
+					return;
+				}
+				break;
+				
+			case CombatPhase.PlayerOneResolve:
 				ResolveBattlePhase();
 				if(CheckCombatEnd()) return;
+				BattleUi.Instance.UpdatePlayerHand(PlayerOne.isPlayer ? PlayerOne.hand : PlayerTwo.hand);
+				BattleUi.Instance.UpdateEnemyHand(PlayerOne.isPlayer ? PlayerTwo.hand : PlayerOne.hand);
+				//_currentPhase = CombatPhase.PlayerTwoAttack;
+				_currentPhase = CombatPhase.Discard;
+				AdvancePhase();
+				return;
+				
+			case CombatPhase.PlayerTwoAttack:
 				attacker = PlayerTwo;
 				defender = PlayerOne;
-				_currentPhase = CombatPhase.PlayerTwoAttack;
-				if(!attacker.isPlayer) AdvancePhase();
+				if(!PlayerTwo.isPlayer) 
+				{
+					EnemyAI(PlayerTwo);
+					_currentPhase = CombatPhase.PlayerTwoResponse;
+					AdvancePhase();
+					return;
+				}
 				break;
-			case CombatPhase.PlayerTwoAttack:
-				if(!PlayerOne.isPlayer) EnemyAI(PlayerOne);
+				
+			case CombatPhase.PlayerTwoResponse:
+				if(!PlayerOne.isPlayer)
+				{
+					EnemyAI(PlayerOne);
+					_currentPhase = CombatPhase.PlayerTwoResolve;
+					AdvancePhase();
+					return;
+				}
+				break;
+				
+			case CombatPhase.PlayerTwoResolve:
 				ResolveBattlePhase();
 				if(CheckCombatEnd()) return;
 				_currentPhase = CombatPhase.Discard;
 				AdvancePhase();
-				break;
+				return;
+				
 			case CombatPhase.Discard:
 				DiscardPhase();
 				_currentPhase = CombatPhase.Draw;
 				AdvancePhase();
-				break;
+				return;
 		}
+		BattleUi.Instance.UpdatePlayerHand(PlayerOne.isPlayer ? PlayerOne.hand : PlayerTwo.hand);
+		BattleUi.Instance.UpdateEnemyHand(PlayerOne.isPlayer ? PlayerTwo.hand : PlayerOne.hand);
 		BattleUi.Instance.RefreshUIState(_currentPhase, PlayerOne, PlayerTwo);
 	}
 	
@@ -163,33 +223,83 @@ public partial class CombatManager : Node
 		List<CardDefinition> hand = new List<CardDefinition>(enemy.hand);
 		foreach(var card in hand)
 		{
-			bool canPlay = false;
+			//bool canPlay = false;
+			//
+			//if(enemy == attacker)
+			//{
+				//if(card.category == CardCategory.Attack || card.category == CardCategory.Utility) canPlay = true;
+			//} else if(enemy == defender)
+			//{
+				//if(card.category == CardCategory.Defense || card.category == CardCategory.Utility) canPlay = true;
+			//}
+			//
+			//if(canPlay)
+			//{
+				//PlayCard(card,enemy,GetOpponent(enemy));
+				//BattleUi.Instance.VisualPlayCard(card);
+			//}
 			
-			if(enemy == attacker)
-			{
-				if(card.category == CardCategory.Attack || card.category == CardCategory.Utility) canPlay = true;
-			} else if(enemy == defender)
-			{
-				if(card.category == CardCategory.Defense || card.category == CardCategory.Utility) canPlay = true;
-			}
+			/*
+			AI przeciwnika też musiałem okroić z powodu błędu w turowaniu, inaczej nie grał by ofensywnych kart.
+			*/
 			
-			if(canPlay)
-			{
-				PlayCard(card,enemy,GetOpponent(enemy));
-				BattleUi.Instance.VisualPlayCard(card);
-			}
+			PlayCard(card,enemy,GetOpponent(enemy));
+			BattleUi.Instance.VisualPlayCard(card);
+			
+		}
+	}
+	
+	public void PlayerEndTurn()
+	{
+		switch(_currentPhase)
+		{
+			case CombatPhase.PlayerOneAttack:
+				_currentPhase = CombatPhase.PlayerOneResponse;
+				break;
+				
+			case CombatPhase.PlayerOneResponse:
+				_currentPhase = CombatPhase.PlayerOneResolve;
+				break;
+				
+			case CombatPhase.PlayerTwoAttack:
+				_currentPhase = CombatPhase.PlayerTwoResponse;
+				break;
+				
+			case CombatPhase.PlayerTwoResponse:
+				_currentPhase = CombatPhase.PlayerTwoResolve;
+				break;
+				
 		}
 	}
 	
 	private bool CheckCombatEnd()
 	{
-		bool playerOneDead = PlayerOne.isPlayer ? player.currentHP <= 0 : PlayerOne.enemyCurrentHP <=0;
-		bool playerTwoDead = PlayerTwo.isPlayer ? player.currentHP <= 0 : PlayerTwo.enemyCurrentHP <=0;
-		if(playerOneDead || playerTwoDead)
+		if(player.currentHP <= 0)
 		{
+			EndCombat(false);
+			return true;
+		} else if(PlayerOne.enemyCurrentHP <=0 || PlayerTwo.enemyCurrentHP <=0) {
+			EndCombat(true);
 			return true;
 		}
 		return false;
+	}
+	
+	private void EndCombat(bool playerWon)
+	{
+		_battleUi.Visible = false;
+		GameState.Instance.inCombat = false;
+		if(playerWon)
+		{
+			if(enemy.tags.Any(tag => tag.Contains("boss")))
+			{
+				GetTree().ChangeSceneToFile("res://scenes/menus/win_screen.tscn");
+				return;
+			}
+			EventManager.Instance.GetSpecificEvent("win");
+			return;
+		}
+		GetTree().ChangeSceneToFile("res://scenes/menus/death_screen.tscn");
 	}
 	
 	private Combatant GetOpponent(Combatant current)

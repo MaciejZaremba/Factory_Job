@@ -19,6 +19,7 @@ public enum EventOutcome
 	StartCombat = 3,
 	DealDamage = 4,
 	HealDamage = 5,
+	StartBossCombat = 6
 }
 
 public enum BuffCategory
@@ -64,6 +65,10 @@ public enum CombatPhase
 {
 	Draw,
 	PlayerOneAttack,
+	PlayerOneResponse,
+	PlayerOneResolve,
 	PlayerTwoAttack,
+	PlayerTwoResponse,
+	PlayerTwoResolve,
 	Discard
 }

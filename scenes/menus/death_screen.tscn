@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dkxlu03xhebv0"]
+
+[ext_resource type="Script" uid="uid://c1wqks7o1kxcd" path="res://scripts/main_menu/DeathScreen.cs" id="1_khutc"]
+
+[node name="DeathScreen" type="Control" unique_id=74740819]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_khutc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1453862639]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=151512078]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ColorRect" unique_id=1020386795]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -141.0
+offset_top = -78.0
+offset_right = 141.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/ColorRect/VBoxContainer" unique_id=1052544933]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "Game Over"
+
+[node name="Label2" type="Label" parent="CanvasLayer/ColorRect/VBoxContainer" unique_id=2128130995]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "You Died!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/ColorRect/VBoxContainer" unique_id=168677706]
+layout_mode = 2
+text = "Back to menu"
+
+[connection signal="pressed" from="CanvasLayer/ColorRect/VBoxContainer/Button" to="." method="OnDeathPressed"]

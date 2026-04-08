@@ -1,17 +1,16 @@
 [gd_resource type="Resource" script_class="EnemyDefinition" format=3 uid="uid://chhcx7l3pjod7"]
 
 [ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="1_pbh8y"]
-[ext_resource type="Resource" uid="uid://bn4huw31p3aed" path="res://data/cards/weave.tres" id="2_8tydd"]
-[ext_resource type="Resource" uid="uid://devmu0vl3jk3b" path="res://data/cards/whack.tres" id="3_wi6xe"]
-[ext_resource type="Resource" uid="uid://dayuiltfy6kf6" path="res://data/cards/sleep_dart.tres" id="4_d3f16"]
+[ext_resource type="Resource" uid="uid://btpm8x3lrefwi" path="res://data/cards/nightmare.tres" id="2_xkhrp"]
 [ext_resource type="Script" uid="uid://be03cttcue8h7" path="res://scripts/combat/EnemyDefinition.cs" id="5_4dsyp"]
 
 [resource]
 script = ExtResource("5_4dsyp")
 name = "Boss"
-maxHP = 50
-cardDraw = 4
-cardAttackStrength = 1
-cardDefenseStrength = 1
-cards = Array[ExtResource("1_pbh8y")]([ExtResource("2_8tydd"), ExtResource("3_wi6xe"), ExtResource("2_8tydd"), ExtResource("3_wi6xe"), ExtResource("2_8tydd"), ExtResource("4_d3f16")])
+maxHP = 25
+cardDraw = 3
+cardAttackStrength = 2
+cardDefenseStrength = -1
+cards = Array[ExtResource("1_pbh8y")]([ExtResource("2_xkhrp"), ExtResource("2_xkhrp"), ExtResource("2_xkhrp"), ExtResource("2_xkhrp"), ExtResource("2_xkhrp")])
+tags = Array[String](["boss", "floor_1"])
 metadata/_custom_type_script = "uid://be03cttcue8h7"

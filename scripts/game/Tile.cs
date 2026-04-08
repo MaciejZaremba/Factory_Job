@@ -11,10 +11,6 @@ public partial class Tile : Node3D
 		_hasTriggered = false;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 	
 	public void OnTileEntered(Node3D body)
 	{

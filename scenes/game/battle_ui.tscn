@@ -3,11 +3,16 @@
 [ext_resource type="Script" uid="uid://kk6kmntfp21u" path="res://scripts/combat/Board.cs" id="1_dxwoy"]
 [ext_resource type="Script" uid="uid://du5d8utuawt0" path="res://scripts/combat/BattleUi.cs" id="1_m0sm0"]
 
-[node name="BattleUI" type="CanvasLayer" unique_id=263394086 node_paths=PackedStringArray("_playerHand", "_enemyHand", "_playerHP", "_enemyHP", "_enemyName", "_endTurn", "_board")]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m0sm0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l7y3b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a0gnl"]
+
+[node name="BattleUI" type="CanvasLayer" unique_id=263394086 node_paths=PackedStringArray("_playerHand", "_enemyHand", "_enemyHP", "_enemyName", "_endTurn", "_board")]
 script = ExtResource("1_m0sm0")
 _playerHand = NodePath("VBoxContainer/Player/HBoxContainer")
 _enemyHand = NodePath("VBoxContainer/Enemy/HBoxContainer")
-_playerHP = NodePath("VBoxContainer/Player/ProgressBar")
 _enemyHP = NodePath("VBoxContainer/Enemy/ProgressBar")
 _enemyName = NodePath("VBoxContainer/Enemy/Label")
 _endTurn = NodePath("Button")
@@ -41,12 +46,28 @@ layout_mode = 2
 size_flags_vertical = 0
 
 [node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/Enemy" unique_id=1104170859]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
+show_percentage = false
+
+[node name="Label" type="Label" parent="VBoxContainer/Enemy/ProgressBar" unique_id=1045592256]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Enemy" unique_id=74737413]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1538505592]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_m0sm0")
 
 [node name="Board" type="HBoxContainer" parent="VBoxContainer" unique_id=321219565]
 layout_mode = 2
@@ -55,14 +76,19 @@ theme_override_constants/separation = 50
 alignment = 1
 script = ExtResource("1_dxwoy")
 
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer" unique_id=1837733687]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_l7y3b")
+
 [node name="Player" type="HBoxContainer" parent="VBoxContainer" unique_id=635726962]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/Player" unique_id=503437262]
-custom_minimum_size = Vector2(200, 0)
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Player" unique_id=1954183270]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxEmpty_a0gnl")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Player" unique_id=596550761]
 custom_minimum_size = Vector2(200, 0)

@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://lb262ii5wx7"]
+
+[ext_resource type="Script" uid="uid://cn8ifgh83p5gx" path="res://scripts/game/TileEnd.cs" id="1_06bt2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rloo2"]
+size = Vector3(4, 0.2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w1wyk"]
+size = Vector3(1.5, 0.4, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_06bt2"]
+albedo_color = Color(0.38616502, 0.17252457, 7.219613e-08, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yonos"]
+size = Vector3(1, 0.2, 1)
+
+[node name="TileEnd" type="Node3D" unique_id=1378790568]
+script = ExtResource("1_06bt2")
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=189185756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor" unique_id=978211775]
+size = Vector3(4, 0.2, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=465235530]
+shape = SubResource("BoxShape3D_rloo2")
+
+[node name="Connectors" type="Node3D" parent="." unique_id=1520988953]
+
+[node name="ground_north" type="Marker3D" parent="Connectors" unique_id=1791320838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+
+[node name="ground_south" type="Marker3D" parent="Connectors" unique_id=1558256823]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="ground_east" type="Marker3D" parent="Connectors" unique_id=583209553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="ground_west" type="Marker3D" parent="Connectors" unique_id=1860288160]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="BossEventTrigger" type="Area3D" parent="." unique_id=1544566931]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BossEventTrigger" unique_id=2028047499]
+shape = SubResource("BoxShape3D_w1wyk")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=891333194]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3D" unique_id=1813750600]
+size = Vector3(1, 0.2, 1)
+material = SubResource("StandardMaterial3D_06bt2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=323551443]
+shape = SubResource("BoxShape3D_yonos")
+
+[connection signal="body_entered" from="BossEventTrigger" to="." method="OnEndEntered"]

@@ -25,4 +25,9 @@ public partial class PlayerState : Node
 	{
 		EmitSignal(SignalName.StatsChanged);
 	}
+	
+	public void ResetHP()
+	{
+		currentHP = maxHP;
+	}
 }

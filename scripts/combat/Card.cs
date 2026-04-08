@@ -10,9 +10,9 @@ public partial class Card : Control
 	
 	public override void _Ready()
 	{
+		_img = GetNode<ColorRect>("TextureRect");
 		_name = GetNode<VBoxContainer>("VBoxContainer").GetNode<Label>("Name");
 		_description = GetNode<VBoxContainer>("VBoxContainer").GetNode<Label>("Description");
-		_img = GetNode<VBoxContainer>("VBoxContainer").GetNode<ColorRect>("TextureRect");
 		_img.Color = Colors.Black;
 	}
 	
@@ -20,9 +20,31 @@ public partial class Card : Control
 	{
 		_data = data;
 		_name.Text = data.name;
+		SetDesctiption();
 		_description.Text = data.description;
-		TooltipText = data.description;
-		
+	}
+	
+	public void SetDesctiption()
+	{
+		_data.description = "Unmodified Effects:\n";
+		foreach(var (effect, amount) in _data.effects)
+		{
+			switch(effect)
+			{
+				case CardEffect.Damage:
+					_data.description += $"Attack: {amount}\n";
+					break;
+				case CardEffect.Parry:
+					_data.description += $"Parry: {amount}\n";
+					break;
+				case CardEffect.Heal:
+					_data.description += $"Heal: {amount}\n";
+					break;
+				case CardEffect.DrawEnemy:
+					_data.description += $"Enemy Draw: {amount}\n";
+					break;
+			}
+		}
 	}
 	
 	public override Variant _GetDragData(Vector2 atPosition)

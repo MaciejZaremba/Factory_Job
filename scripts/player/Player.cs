@@ -46,14 +46,6 @@ public partial class Player : CharacterBody3D
 				_head.Rotation = headRot;
 			}
 		}
-		//Debug tool - release mouse on Esc
-		//if (@event is InputEventKey keyEvent && keyEvent.Pressed)
-		//{
-			//if (keyEvent.Keycode == Key.Escape)
-			//{
-				//Input.MouseMode = Input.MouseModeEnum.Visible;
-			//}
-		//}
 	}
 	// Physics? In my video game?
 	public override void _PhysicsProcess(double delta)
@@ -103,7 +95,10 @@ public partial class Player : CharacterBody3D
 							var previousMaxHP = PlayerState.Instance.maxHP;
 							var previousCurrentHP = PlayerState.Instance.currentHP;
 							PlayerState.Instance.maxHP = (int)GameState.Instance.defaultStats["maxHP"] + (int)buff.strength;
-							 if(previousMaxHP >= PlayerState.Instance.maxHP)
+							if(previousCurrentHP == previousMaxHP)
+							{
+								PlayerState.Instance.currentHP = PlayerState.Instance.maxHP;
+							} else if(previousMaxHP >= PlayerState.Instance.maxHP)
 							{
 								PlayerState.Instance.currentHP = (int)GameState.Instance.defaultStats["currentHP"] - (int)buff.strength;
 							} else {

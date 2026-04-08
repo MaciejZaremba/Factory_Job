@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDefinition" format=3 uid="uid://bcyqs8jc4wjlc"]
+
+[ext_resource type="Script" uid="uid://gaq1petslim3" path="res://scripts/game/BuffDefinition.cs" id="1_ka1yr"]
+[ext_resource type="Script" uid="uid://cungb8upwfvrt" path="res://scripts/game/CardDefinition.cs" id="2_1n8b1"]
+[ext_resource type="Texture2D" uid="uid://66tqpoag1rfl" path="res://data/images/placeholder.jpg" id="3_1n8b1"]
+[ext_resource type="Script" uid="uid://br2a6t0v5afo1" path="res://scripts/game/ItemDefinition.cs" id="3_vl218"]
+
+[resource]
+script = ExtResource("3_vl218")
+name = "Sealed Box"
+description = "Probably worth something!"
+category = 7
+icon = ExtResource("3_1n8b1")
+metadata/_custom_type_script = "uid://br2a6t0v5afo1"

@@ -7,6 +7,6 @@ script = ExtResource("1_4uwnt")
 name = "Dream"
 category = 3
 effects = Dictionary[int, int]({
-2: 1
+6: 3
 })
 metadata/_custom_type_script = "uid://cungb8upwfvrt"

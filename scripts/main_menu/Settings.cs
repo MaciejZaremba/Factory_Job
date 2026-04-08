@@ -4,7 +4,9 @@ public partial class Settings : VBoxContainer
 {
 	private Vector2I _resolutionValue;
 	private HBoxContainer _resolutionSettings;
+	private VBoxContainer _volumeSettings;
 	private bool _fullscreen;
+	private HSlider _musicSlider;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -12,16 +14,14 @@ public partial class Settings : VBoxContainer
 		_fullscreen = (DisplayServer.WindowGetMode() == DisplayServer.WindowMode.Fullscreen);
 		GetNode<CheckButton>("Fullscreen").ButtonPressed = _fullscreen;
 		_resolutionSettings.GetNode<OptionButton>("Resolution").Disabled = _fullscreen;
-		//_resolutionSettings.GetNode<OptionButton>("Resolution").Selected = 
 		_resolutionValue = DisplayServer.WindowGetSize();
+		_volumeSettings = GetNode<VBoxContainer>("Volume");
+		_musicSlider = _volumeSettings.GetNode<HBoxContainer>("Music").GetNode<HSlider>("MusicSlide");
+		int busIndex = AudioServer.GetBusIndex("Music");
+		float volumeLinear = Mathf.DbToLinear(AudioServer.GetBusVolumeDb(busIndex));
+		_musicSlider.Value = volumeLinear;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		
-	}
-	
 	public void OnFullscreenToggled(bool toggled)
 	{
 		if(!toggled)
@@ -102,11 +102,26 @@ public partial class Settings : VBoxContainer
 	
 	public void OnMusicDragEnded(bool change)
 	{
+		if(!change) return;
 		
+		int busIndex = AudioServer.GetBusIndex("Music");
+		
+		float volumeLinear = (float)_musicSlider.Value;
+		float volumeDb = Mathf.LinearToDb(volumeLinear);
+		AudioServer.SetBusVolumeDb(busIndex, volumeDb);
+		
+		GD.Print($"Settings:Music volume set to {volumeDb} db.");
 	}
 	
 	public void OnSFXDragEnded(bool change)
 	{
-		
+		//There is no sfx right now so this isn't implemented.
+	}
+	
+	public void OnExitPressed()
+	{
+		GD.Print("MainMenu: Settings Pressed.");
+		GetNode<VBoxContainer>("/root/MainMenu/CanvasLayer/Menu").Visible = true;
+		GetNode<VBoxContainer>("/root/MainMenu/CanvasLayer/Settings").Visible = false;
 	}
 }

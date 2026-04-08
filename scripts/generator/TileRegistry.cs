@@ -70,7 +70,6 @@ public partial class TileRegistry : Node
 			if(!IsDuplicateVariant(candidate))
 			{
 				_variants.Add(candidate);
-				//GD.Print($"TileRegistry: Added rotated variant '{definition.tileId}' at {rotation} degrees.");
 			}
 		}
 	}
@@ -78,7 +77,6 @@ public partial class TileRegistry : Node
 	//Checks duplicates
 	public bool IsDuplicateVariant(TileVariant candidate)
 	{
-		//GD.Print($"TileRegistry: Checking for duplicate for '{candidate.definition.tileId}'...");
 		// the '=>' is basically a Java stream, a "simplified" foreach loop
 		return _variants.Any(existing =>
 			existing.definition.tileId == candidate.definition.tileId &&
@@ -88,8 +86,6 @@ public partial class TileRegistry : Node
 	private bool ConnectorSetsMatch(List<TileConnector> existing, List<TileConnector> candidate)
 	{
 		if(existing.Count != candidate.Count) return false;
-		//foreach(var existing_t in existing) GD.Print ($"Comparing: {existing_t.direction}/{existing_t.level}");
-		//foreach(var candidate_t in candidate) GD.Print ($"Against: {candidate_t.direction}/{candidate_t.level}");
 		return existing.All(existing_t => candidate.Any(
 			candidate_t => candidate_t.direction == existing_t.direction && candidate_t.level == existing_t.level
 		));
